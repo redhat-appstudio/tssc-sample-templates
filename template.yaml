@@ -30,7 +30,18 @@ spec:
         repoUrl:
           title: Repository Location
           type: string
-          ui:field: GithubRepoPicker 
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+    - title: Choose repo for github.com 2  
+      required:
+        - repoUrl2
+      properties:
+        repoUrl2:
+          title: GithubRepoPicker Repository Location
+          type: string
+          ui:field: GithubRepoPicker   
     - title: Deployment information 
       required:
         - image
@@ -61,9 +72,10 @@ spec:
         values:
           name: ${{ parameters.name }}
           repoUrl: ${{ parameters.repoUrl }}
+          repoUrl2: ${{ parameters.repoUrl2 }}
           image: ${{ parameters.image }}
           namespace: ${{ parameters.namespace }}  
-
+          
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
       name: Publish
