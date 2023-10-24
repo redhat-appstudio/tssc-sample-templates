@@ -63,7 +63,10 @@ spec:
         url: ./content 
         values:
           name: ${{ parameters.name }}
-
+          repoUrl: ${{ parameters.repoUrl }}
+          image: ${{ parameters.image }}
+          namespace: ${{ parameters.namespace }}  
+          
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
       name: Publish
