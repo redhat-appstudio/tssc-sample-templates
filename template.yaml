@@ -60,7 +60,7 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
-        url: . 
+        url: ./content 
         values:
           name: ${{ parameters.name }}
 
