@@ -34,14 +34,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-    - title: Choose repo for github.com RepoUrlPicker 
-      required:
-        - repoUrl2
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker 
+              - https://github.com
     - title: Deployment information 
       required:
         - image
