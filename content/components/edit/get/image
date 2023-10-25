@@ -1,0 +1,16 @@
+
+APP_ROOT=$1  
+GETTER='.metadata.annotations.["tad.gitops.get/image"]'
+
+FILES="$APP_ROOT/base/deployment.yaml  $APP_ROOT/overlays/development/deployment-patch.yaml"
+for file in $FILES 
+do
+    KEY=$(yq "$GETTER" $file)
+    if [  "$KEY" == "null" ]
+    then     
+        echo "$GETTER missing in $file"
+    else   
+        VALUE=$(yq e "$KEY" $file) 
+        echo "$VALUE image in $file"
+    fi
+done
