@@ -3,7 +3,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs-secure-supply-chain-e2e
-  title: Node.js Secure Supply Chain Bootstrap
+  title:  DEMO Node.js Secure Supply Chain Bootstrap
   description: A simple Node.js http application, single container, builds with secure pipelines and deploys via gitops.
 spec:
   owner: user:guest
