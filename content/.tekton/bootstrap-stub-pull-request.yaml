@@ -10,7 +10,7 @@ metadata:
     appstudio.openshift.io/component: ${{ values.name }}
     pipelines.appstudio.openshift.io/type: build
   name: ${{ values.name }}-on-pull-request
-  namespace: ${{ values.namespace}}
+  namespace: ${{ values.namespace }}
 spec:
   params:
   - name: dockerfile
@@ -20,7 +20,7 @@ spec:
   - name: image-expires-after
     value: 5d
   - name: output-image
-    value: ${{ values.image}}:on-pr-{{revision}}
+    value: ${{ values.image }}:on-pr-{{revision}}
   - name: path-context
     value: .
   - name: revision
@@ -378,5 +378,6 @@ spec:
       status: {}
   - name: git-auth
     secret:
-      secretName: '{{ git_auth_secret }}'
+      secretName: '{{git_auth_secret}}'
 status: {}
+
