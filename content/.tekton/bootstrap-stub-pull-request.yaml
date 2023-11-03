@@ -9,6 +9,7 @@ metadata:
     appstudio.openshift.io/application: ${{ values.name }}
     appstudio.openshift.io/component: ${{ values.name }}
     pipelines.appstudio.openshift.io/type: build
+    pipelines.appstudio.openshift.io/xxx: demo
   name: ${{ values.name }}-on-pull-request
   namespace: ${{ values.namespace }}
 spec:
