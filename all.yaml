@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: dance-all 
+  description: Dance Language Samples
+spec:
+  targets:
+    - ./template.yaml 
