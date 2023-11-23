@@ -1,0 +1,13 @@
+REPO=$1
+DIRNAME=$(basename $REPO) 
+mkdir -p samples
+cd samples
+if [ -d $DIRNAME ]; then
+    (cd $DIRNAME; git pull)
+else 
+    git clone $REPO
+fi
+
+echo "NAME is: $DIRNAME"
+
+

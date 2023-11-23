@@ -1,0 +1,6 @@
+./import-samples https://github.com/nodeshift-starters/devfile-sample 
+./import-samples https://github.com/devfile-samples/devfile-sample-code-with-quarkus/blob/main/src/main/docker/Dockerfile.jvm
+./import-samples https://github.com/devfile-samples/devfile-sample-java-springboot-basic/blob/main/docker/Dockerfile
+./import-samples https://github.com/devfile-samples/devfile-sample-python-basic/blob/main/docker/Dockerfile
+./import-samples https://github.com/devfile-samples/devfile-sample-go-basic/blob/main/docker/Dockerfile
+./import-samples  https://github.com/devfile-samples/devfile-sample-dotnet60-basic/blob/main/docker/Dockerfile 

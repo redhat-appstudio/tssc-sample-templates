@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: t1-nodejs-secure-supply-chain-e2e
-  title:  T1 Node.js Secure Supply Chain Bootstrap
+  name: nodejs-secure-supply-chain-e2e
+  title:  Node.js Secure Supply Chain Bootstrap
   description: A simple Node.js http application, single container, builds with secure pipelines and deploys via gitops. The default Pipelines are installed in Tekton PaC format using shared pipelines which will automatically update when the PE provides updates. 
 spec:
   owner: user:guest
