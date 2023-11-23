@@ -5,4 +5,5 @@ metadata:
   description: Dance Language Samples
 spec:
   targets:
-    - ./template.yaml 
+    - ./templates/nodejs/template.yaml 
+    - ./templates/java/template.yaml 

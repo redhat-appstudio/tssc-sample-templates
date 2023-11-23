@@ -1,0 +1,4 @@
+IMAGE=quay.io/jduimovich0/bootstrap
+docker build . -t "$IMAGE"
+docker push "$IMAGE"
+ 

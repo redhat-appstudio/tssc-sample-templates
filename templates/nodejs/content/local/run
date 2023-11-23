@@ -1,0 +1,6 @@
+bash build 
+NM=stub
+docker.exe stop $NM
+docker.exe rm $NM
+docker.exe run -d --name $NM -p 8080:8080 --env GIT_REPO=XYZ $IMAGE 
+docker.exe logs -f  $NM 
