@@ -11,6 +11,8 @@ else
 fi
  
 APP_NAME=$(yq ".metadata.name" samples/$DIRNAME/devfile.yaml)
+APP_DISPLAY_NAME=$(yq ".metadata.displayName" samples/$DIRNAME/devfile.yaml)
+APP_DESC=$(yq ".metadata.description" samples/$DIRNAME/devfile.yaml)
 
 DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' samples/$DIRNAME/devfile.yaml)
 BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' samples/$DIRNAME/devfile.yaml)
@@ -19,11 +21,28 @@ BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfi
 # yq ".components[].image.dockerfile.buildContext" samples/$DIRNAME/devfile.yaml  
 
 echo $APP_NAME
+echo $APP_DISPLAY_NAME
+echo $APP_DESC
 echo $DOCKERFILE
 echo $BUILDCONTEXT 
 
-rm -rf templates/$DIRNAME
-mkdir -p templates/$DIRNAME 
-cp -r samples/$DIRNAME templates/$DIRNAME/content   
-cp $ROOT_DIR/templates/tekton/docker-build/.tekton  templates/$DIRNAME/content/.tekton
-cp $ROOT_DIR/templates/backstage/template.yaml samples/$DIRNAME
+DEST=$ROOT_DIR/templates/$DIRNAME
+
+rm -rf $DEST
+mkdir -p $DEST
+cp -r $SCRIPTDIR/samples/$DIRNAME $DEST/content   
+cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
+cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
+
+# updates 
+for i in $DEST/content/.tekton/*.yaml
+do  
+    echo $i
+    sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $i  
+    sed -i "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $i    
+done 
+sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
+sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
+sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+
+ 
