@@ -13,7 +13,9 @@ fi
 APP_NAME=$(yq ".metadata.name" samples/$DIRNAME/devfile.yaml)
 APP_DISPLAY_NAME=$(yq ".metadata.displayName" samples/$DIRNAME/devfile.yaml)
 APP_DESC=$(yq ".metadata.description" samples/$DIRNAME/devfile.yaml)
-
+if [ "$APP_DESC" == "null" ]; then
+    APP_DESC="Sample Code for $APP_DISPLAY_NAME"
+fi 
 DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' samples/$DIRNAME/devfile.yaml)
 BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' samples/$DIRNAME/devfile.yaml)
 
@@ -23,6 +25,7 @@ BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfi
 echo $APP_NAME
 echo $APP_DISPLAY_NAME
 echo $APP_DESC
+
 echo $DOCKERFILE
 echo $BUILDCONTEXT 
 
