@@ -3,11 +3,11 @@ ROOT_DIR=$(realpath $SCRIPTDIR/..)
 
 REPO=$1
 DIRNAME=$(basename $REPO) 
-mkdir -p samples 
-if [ -d samples/$DIRNAME ]; then
-    (cd samples/$DIRNAME; git pull 2>&1 > /dev/null)
+mkdir -p $SCRIPTDIR/samples 
+if [ -d $SCRIPTDIR/samples/$DIRNAME ]; then
+    (cd $SCRIPTDIR/samples/$DIRNAME; git pull 2>&1 > /dev/null)
 else 
-    (cd samples;  git clone $REPO 2>&1 > /dev/null)
+    (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
 fi
  
 APP_NAME=$(yq ".metadata.name" samples/$DIRNAME/devfile.yaml)
@@ -19,18 +19,7 @@ fi
 DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' samples/$DIRNAME/devfile.yaml)
 BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' samples/$DIRNAME/devfile.yaml)
 
-# yq ".components[].image.dockerfile.uri" samples/$DIRNAME/devfile.yaml  
-# yq ".components[].image.dockerfile.buildContext" samples/$DIRNAME/devfile.yaml  
-
-echo $APP_NAME
-echo $APP_DISPLAY_NAME
-echo $APP_DESC
-
-echo $DOCKERFILE
-echo $BUILDCONTEXT 
-
-DEST=$ROOT_DIR/templates/$DIRNAME
-
+DEST=$ROOT_DIR/templates/$DIRNAME 
 rm -rf $DEST
 mkdir -p $DEST $DEST/content 
 cp -r $SCRIPTDIR/samples/$DIRNAME $DEST/content   
