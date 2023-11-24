@@ -23,7 +23,7 @@ metadata:
 spec: 
   params:
   - name: dockerfile
-    value: Dockerfile
+    value: sed.edit.DOCKERFILE
   - name: git-url
     value: '{{repo_url}}'
   - name: image-expires-after
@@ -31,7 +31,7 @@ spec:
   - name: output-image
     value: ${{ values.image }}:on-pr-{{revision}}
   - name: path-context
-    value: .
+    value: sed.edit.BUILDCONTEXT
   - name: revision
     value: '{{revision}}'
   pipelineRef:

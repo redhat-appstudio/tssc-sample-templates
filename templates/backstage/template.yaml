@@ -2,9 +2,9 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: name-tbd
-  title:  title-tbd
-  description:   description-tbd
+  name: sed.edit.NAME
+  title:  sed.edit.TITLE
+  description: sed.edit.DESCRIPTION
 spec:
   owner: user:guest
   type: service
