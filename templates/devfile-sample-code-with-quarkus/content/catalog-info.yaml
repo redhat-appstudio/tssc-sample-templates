@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Quarkus with Java   
-  tags: ["Java", "Quarkus"]   
+  description: Secure Supply Chain Example for Quarkus with Java    
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
       title: Trusted Secure Supply Chain 

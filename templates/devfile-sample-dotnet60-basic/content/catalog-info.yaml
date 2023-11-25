@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Sample Code for Basic .NET   
-  tags: [".NET"]   
+  description: Secure Supply Chain Example for Sample Code for Basic .NET    
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
       title: Trusted Secure Supply Chain 

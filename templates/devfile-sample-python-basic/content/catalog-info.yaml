@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.   
-  tags: ["Python", "Pip", "Flask"]   
+  description: Secure Supply Chain Example for Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.    
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
       title: Trusted Secure Supply Chain 

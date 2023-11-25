@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Stack with Node.js 18   
-  tags: ["Node.js", "Express", "ubi8"]   
+  description: Secure Supply Chain Example for Stack with Node.js 18    
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
       title: Trusted Secure Supply Chain 

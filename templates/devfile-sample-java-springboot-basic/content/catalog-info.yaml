@@ -2,8 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Spring Boot® using Maven   
-  tags: ["Java", "Spring"]   
+  description: Secure Supply Chain Example for Spring Boot® using Maven    
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
       title: Trusted Secure Supply Chain 
