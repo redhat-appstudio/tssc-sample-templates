@@ -2,27 +2,28 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$(realpath $SCRIPTDIR/..)
 
 REPO=$1
-DIRNAME=$(basename $REPO) 
+DIRNAME=$(basename $REPO)
 mkdir -p $SCRIPTDIR/samples 
-if [ -d $SCRIPTDIR/samples/$DIRNAME ]; then
-    (cd $SCRIPTDIR/samples/$DIRNAME; git pull 2>&1 > /dev/null)
+SAMPLE_DIR=$SCRIPTDIR/samples/$DIRNAME 
+if [ -d $SAMPLE_DIR ]; then
+    (cd $SAMPLE_DIR; git pull 2>&1 > /dev/null)
 else 
     (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
 fi
  
-APP_NAME=$(yq ".metadata.name" samples/$DIRNAME/devfile.yaml)
-APP_DISPLAY_NAME=$(yq ".metadata.displayName" samples/$DIRNAME/devfile.yaml)
-APP_DESC=$(yq ".metadata.description" samples/$DIRNAME/devfile.yaml)
+APP_NAME=$(yq ".metadata.name" $SAMPLE_DIR/devfile.yaml)
+APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)
+APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
 fi 
-DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' samples/$DIRNAME/devfile.yaml)
-BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' samples/$DIRNAME/devfile.yaml)
+DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' $SAMPLE_DIR/devfile.yaml)
+BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' $SAMPLE_DIR/devfile.yaml)
 
 DEST=$ROOT_DIR/templates/$DIRNAME 
 rm -rf $DEST
 mkdir -p $DEST $DEST/content 
-cp -r $SCRIPTDIR/samples/$DIRNAME $DEST/content  
+cp -r $SAMPLE_DIR/. $DEST/content  
 cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
 cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
 
