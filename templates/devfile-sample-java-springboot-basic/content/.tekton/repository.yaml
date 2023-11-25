@@ -1,0 +1,9 @@
+apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
+kind: Repository
+metadata:
+  name: ${{ values.name }}
+  namespace: ${{ values.namespace}}
+spec:
+  url: ${{ values.repoUrl }}
+
+  

@@ -22,7 +22,7 @@ BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfi
 DEST=$ROOT_DIR/templates/$DIRNAME 
 rm -rf $DEST
 mkdir -p $DEST $DEST/content 
-cp -r $SCRIPTDIR/samples/$DIRNAME $DEST/content   
+cp -r $SCRIPTDIR/samples/$DIRNAME $DEST/content  
 cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
 cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
 
