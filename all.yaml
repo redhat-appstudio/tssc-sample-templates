@@ -5,5 +5,10 @@ metadata:
   description: Dance Language Samples
 spec:
   targets:
-    - ./templates/nodejs/template.yaml 
-    - ./templates/java/template.yaml 
+    - ./templates/nodejs/template.yaml  
+    - ./templates/devfile-sample/template.yaml  
+    - ./templates/devfile-sample-code-with-quarkus/template.yaml  
+    - ./templates/devfile-sample-dotnet60-basic/template.yaml  
+    - ./templates/devfile-sample-go-basic/template.yaml  
+    - ./templates/devfile-sample-java-springboot-basic/template.yaml  
+    - ./templates/devfile-sample-python-basic/template.yaml   
