@@ -4,13 +4,7 @@ kind: Template
 metadata:
   name: sed.edit.NAME
   title:  sed.edit.TITLE
-  description: sed.edit.DESCRIPTION
-  tags: sed.edit.TAGS   
-  links:
-    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
-      title: Trusted Secure Supply Chain 
-      icon: dashboard
-      type: admin-dashboard
+  description: sed.edit.DESCRIPTION 
 spec:
   owner: user:guest
   type: service

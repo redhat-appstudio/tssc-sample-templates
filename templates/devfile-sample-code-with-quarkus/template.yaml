@@ -4,13 +4,7 @@ kind: Template
 metadata:
   name: java-quarkus
   title:  Quarkus Java
-  description: Quarkus with Java
-  tags: ["Java", "Quarkus"]   
-  links:
-    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
-      title: Trusted Secure Supply Chain 
-      icon: dashboard
-      type: admin-dashboard
+  description: Quarkus with Java 
 spec:
   owner: user:guest
   type: service

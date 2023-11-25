@@ -4,13 +4,7 @@ kind: Template
 metadata:
   name: java-springboot
   title:  Spring Boot®
-  description: Spring Boot® using Maven
-  tags: ["Java", "Spring"]   
-  links:
-    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
-      title: Trusted Secure Supply Chain 
-      icon: dashboard
-      type: admin-dashboard
+  description: Spring Boot® using Maven 
 spec:
   owner: user:guest
   type: service
