@@ -3,12 +3,15 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: python
-  title:  Python
-  description: Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together. 
+  title: Python
+  description: Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.
+  tags:
+    - python
+    - pip
+    - flask
 spec:
   owner: user:guest
   type: service
-
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:
@@ -19,11 +22,11 @@ spec:
         name:
           title: Name
           type: string
-          description: Unique name of the component 
+          description: Unique name of the component
           ui:autofocus: true
           ui:options:
             rows: 5
-    - title: Choose repo for github.com 
+    - title: Choose repo for github.com
       required:
         - repoUrl
       properties:
@@ -35,24 +38,23 @@ spec:
             allowedHosts:
               - github.com
               - https://github.com
-    - title: Deployment information 
+    - title: Deployment information
       required:
         - image
-        - namespace 
+        - namespace
       properties:
         image:
-          title: Deployment Image 
+          title: Deployment Image
           type: string
           ui:autofocus: true
           ui:options:
             rows: 5
         namespace:
-          title: Deployment NS 
+          title: Deployment NS
           type: string
           ui:autofocus: true
           ui:options:
             rows: 5
-
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -61,14 +63,13 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./content 
+        url: ./content
         values:
           name: ${{ parameters.name }}
           repoUrl: ${{ parameters.repoUrl }}
           repoUrl2: ${{ parameters.repoUrl2 }}
           image: ${{ parameters.image }}
-          namespace: ${{ parameters.namespace }}  
-          
+          namespace: ${{ parameters.namespace }}
     # This step publishes the contents of the working directory to GitHub.
     - id: publish
       name: Publish
@@ -77,7 +78,6 @@ spec:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
-
     # The final step is to register our new component in the catalog.
     - id: register
       name: Register
@@ -85,7 +85,6 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
-
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
