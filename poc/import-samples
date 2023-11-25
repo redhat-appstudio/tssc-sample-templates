@@ -14,6 +14,7 @@ fi
 APP_NAME=$(yq ".metadata.name" $SAMPLE_DIR/devfile.yaml)
 APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)
 APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
+APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq) 
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
 fi 
@@ -38,5 +39,9 @@ done
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+sed -i "s!sed.edit.TAGS!$APP_TAGS!g" $DEST/template.yaml
+ 
 
+sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
+sed -i "s!sed.edit.TAGS!$APP_TAGS!g" $DEST/content/catalog-info.yaml
  

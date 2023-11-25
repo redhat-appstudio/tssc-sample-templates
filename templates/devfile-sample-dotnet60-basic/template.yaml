@@ -5,6 +5,12 @@ metadata:
   name: dotnet-basic
   title:  Basic .NET
   description: Sample Code for Basic .NET
+  tags: [".NET"]   
+  links:
+    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
+      title: Trusted Secure Supply Chain 
+      icon: dashboard
+      type: admin-dashboard
 spec:
   owner: user:guest
   type: service

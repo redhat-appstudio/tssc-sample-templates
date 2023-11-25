@@ -5,6 +5,12 @@ metadata:
   name: nodejs
   title:  Node.js Runtime
   description: Stack with Node.js 18
+  tags: ["Node.js", "Express", "ubi8"]   
+  links:
+    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
+      title: Trusted Secure Supply Chain 
+      icon: dashboard
+      type: admin-dashboard
 spec:
   owner: user:guest
   type: service

@@ -5,6 +5,12 @@ metadata:
   name: go
   title:  Go Runtime
   description: Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+  tags: ["Go"]   
+  links:
+    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
+      title: Trusted Secure Supply Chain 
+      icon: dashboard
+      type: admin-dashboard
 spec:
   owner: user:guest
   type: service
