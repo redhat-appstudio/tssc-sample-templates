@@ -9,9 +9,9 @@ metadata:
       icon: dashboard
       type: admin-dashboard
   tags:
-    - Python
-    - Pip
-    - Flask
+    - "Python"
+    - "Pip"
+    - "Flask"
 spec:
   type: service
   owner: user:guest
