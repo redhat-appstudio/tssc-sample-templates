@@ -39,9 +39,9 @@ done
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
-sed -i "s!sed.edit.TAGS!$APP_TAGS!g" $DEST/template.yaml
  
 
 sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
-sed -i "s!sed.edit.TAGS!$APP_TAGS!g" $DEST/content/catalog-info.yaml
+
+yq  -i ".metadata.tags = $APP_TAGS"  $DEST/content/catalog-info.yaml
  

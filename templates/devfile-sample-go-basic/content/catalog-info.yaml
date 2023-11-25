@@ -1,13 +1,15 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ values.name | dump }} 
-  description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.    
+  name: ${{ values.name | dump }}
+  description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
   links:
     - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
-      title: Trusted Secure Supply Chain 
+      title: Trusted Secure Supply Chain
       icon: dashboard
       type: admin-dashboard
+  tags:
+    - Go
 spec:
   type: service
   owner: user:guest
