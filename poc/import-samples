@@ -14,7 +14,7 @@ fi
 APP_NAME=$(yq ".metadata.name" $SAMPLE_DIR/devfile.yaml)
 APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)
 APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
-APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq) 
+APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq | tr '[:upper:]' '[:lower:]') 
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
 fi 

@@ -9,7 +9,7 @@ metadata:
       icon: dashboard
       type: admin-dashboard
   tags:
-    - Go
+    - go
 spec:
   type: service
   owner: user:guest
