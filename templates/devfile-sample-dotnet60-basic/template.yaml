@@ -6,7 +6,7 @@ metadata:
   title: Basic .NET
   description: Sample Code for Basic .NET
   tags:
-    - .net
+    - net
 spec:
   owner: user:guest
   type: service

@@ -9,7 +9,7 @@ metadata:
       icon: dashboard
       type: admin-dashboard
   tags:
-    - node.js
+    - nodejs
     - express
     - ubi8
 spec:
