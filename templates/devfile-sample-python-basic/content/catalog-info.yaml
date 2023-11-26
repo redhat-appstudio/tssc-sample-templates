@@ -13,6 +13,7 @@ metadata:
     - pip
     - flask
     - ssc
+    - sbom
 spec:
   type: service
   owner: user:guest

@@ -12,6 +12,7 @@ metadata:
     - java
     - spring
     - ssc
+    - sbom
 spec:
   type: service
   owner: user:guest

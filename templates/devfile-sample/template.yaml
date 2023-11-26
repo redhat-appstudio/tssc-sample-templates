@@ -10,6 +10,7 @@ metadata:
     - express
     - ubi8
     - ssc
+    - sbom
 spec:
   owner: user:guest
   type: service

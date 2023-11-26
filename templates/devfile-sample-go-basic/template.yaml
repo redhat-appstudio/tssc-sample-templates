@@ -8,6 +8,7 @@ metadata:
   tags:
     - go
     - ssc
+    - sbom
 spec:
   owner: user:guest
   type: service

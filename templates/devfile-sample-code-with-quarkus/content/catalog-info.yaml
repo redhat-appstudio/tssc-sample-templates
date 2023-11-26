@@ -12,6 +12,7 @@ metadata:
     - java
     - quarkus
     - ssc
+    - sbom
 spec:
   type: service
   owner: user:guest

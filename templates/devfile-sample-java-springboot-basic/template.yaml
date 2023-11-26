@@ -9,6 +9,7 @@ metadata:
     - java
     - spring
     - ssc
+    - sbom
 spec:
   owner: user:guest
   type: service

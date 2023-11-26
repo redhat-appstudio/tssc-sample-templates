@@ -11,6 +11,7 @@ metadata:
   tags:
     - go
     - ssc
+    - sbom
 spec:
   type: service
   owner: user:guest
