@@ -8,6 +8,8 @@ metadata:
       title: Trusted Secure Supply Chain
       icon: dashboard
       type: admin-dashboard
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   tags:
     - python
     - pip

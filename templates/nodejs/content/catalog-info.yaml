@@ -6,6 +6,8 @@ metadata:
     - ssc
     - nodejs
     - sbom 
+  annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   owner: user:guest

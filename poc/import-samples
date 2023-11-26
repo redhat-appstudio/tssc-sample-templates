@@ -28,6 +28,8 @@ cp -r $SAMPLE_DIR/. $DEST/content
 cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
 cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
 cp $ROOT_DIR/templates/backstage/catalog-info.yaml $DEST/content/catalog-info.yaml
+cp -r $ROOT_DIR/templates/backstage/docs  $DEST/content/docs
+cp -r $ROOT_DIR/templates/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
 
 # updates 
 for i in $DEST/content/.tekton/*.yaml

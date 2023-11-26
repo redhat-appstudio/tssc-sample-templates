@@ -1,0 +1,4 @@
+site_name: 'Documentation'
+
+nav:
+  - Home: index.md
