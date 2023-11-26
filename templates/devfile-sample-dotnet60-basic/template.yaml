@@ -7,6 +7,7 @@ metadata:
   description: Sample Code for Basic .NET
   tags:
     - net
+    - ssc
 spec:
   owner: user:guest
   type: service

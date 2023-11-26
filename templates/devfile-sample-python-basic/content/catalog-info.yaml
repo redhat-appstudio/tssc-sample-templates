@@ -12,6 +12,7 @@ metadata:
     - python
     - pip
     - flask
+    - ssc
 spec:
   type: service
   owner: user:guest

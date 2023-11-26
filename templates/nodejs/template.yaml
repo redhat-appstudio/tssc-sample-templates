@@ -5,6 +5,10 @@ metadata:
   name: nodejs-secure-supply-chain-e2e
   title:  Node.js Secure Supply Chain Bootstrap
   description: A simple Node.js http application, single container, builds with secure pipelines and deploys via gitops. The default Pipelines are installed in Tekton PaC format using shared pipelines which will automatically update when the PE provides updates. 
+  tags:
+    - ssc
+    - nodejs
+    - sbom 
 spec:
   owner: user:guest
   type: service

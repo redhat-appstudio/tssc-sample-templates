@@ -8,6 +8,7 @@ metadata:
   tags:
     - java
     - spring
+    - ssc
 spec:
   owner: user:guest
   type: service

@@ -9,6 +9,7 @@ metadata:
     - nodejs
     - express
     - ubi8
+    - ssc
 spec:
   owner: user:guest
   type: service

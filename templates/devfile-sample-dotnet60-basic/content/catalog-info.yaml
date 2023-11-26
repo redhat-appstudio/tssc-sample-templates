@@ -10,6 +10,7 @@ metadata:
       type: admin-dashboard
   tags:
     - net
+    - ssc
 spec:
   type: service
   owner: user:guest

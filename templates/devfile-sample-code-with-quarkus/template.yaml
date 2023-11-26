@@ -8,6 +8,7 @@ metadata:
   tags:
     - java
     - quarkus
+    - ssc
 spec:
   owner: user:guest
   type: service
