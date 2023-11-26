@@ -2,6 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }}
+  tags:
+    - ssc
+    - nodejs
+    - sbom 
 spec:
   type: service
   owner: user:guest
