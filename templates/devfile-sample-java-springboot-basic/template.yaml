@@ -79,9 +79,9 @@ spec:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch?: main;
-        protectDefaultBranch?: false
-        repoVisibility?: public
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
     # The final step is to register our new component in the catalog.
     - id: register
       name: Register
