@@ -9,6 +9,7 @@ metadata:
     - go
     - ssc
     - sbom
+    - demo
 spec:
   owner: user:guest
   type: service
