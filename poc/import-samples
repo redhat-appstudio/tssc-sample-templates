@@ -48,4 +48,6 @@ yq  -i '(. | .metadata.tags += ["ssc", "sbom"]'  $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
 yq  -i ".metadata.tags = $APP_TAGS"  $DEST/content/catalog-info.yaml
 yq  -i '(. | .metadata.tags += ["ssc", "sbom"]'  $DEST/content/catalog-info.yaml
+sed -i "s!sed.edit.SRC_URL!$REPO!g" $DEST/content/catalog-info.yaml
+
  

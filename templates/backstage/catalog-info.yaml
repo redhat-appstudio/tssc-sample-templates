@@ -8,6 +8,10 @@ metadata:
       title: Trusted Secure Supply Chain 
       icon: dashboard
       type: admin-dashboard
+    - url: sed.edit.SRC_URL
+      title: Example Source Repo  
+      icon: dashboard
+      type: admin-dashboard
   annotations:
     backstage.io/techdocs-ref: dir:.
 spec:

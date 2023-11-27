@@ -8,6 +8,10 @@ metadata:
       title: Trusted Secure Supply Chain
       icon: dashboard
       type: admin-dashboard
+    - url: https://github.com/devfile-samples/devfile-sample-dotnet60-basic
+      title: Example Source Repo
+      icon: dashboard
+      type: admin-dashboard
   annotations:
     backstage.io/techdocs-ref: dir:.
   tags:
