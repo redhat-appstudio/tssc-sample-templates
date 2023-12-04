@@ -16,6 +16,7 @@ metadata:
     - ubi8
     - ssc
     - sbom
+    - acs
 spec:
   type: service
   owner: user:guest

@@ -10,6 +10,7 @@ metadata:
     - quarkus
     - ssc
     - sbom
+    - acs
 spec:
   owner: user:guest
   type: service

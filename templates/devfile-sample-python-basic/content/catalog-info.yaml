@@ -16,6 +16,7 @@ metadata:
     - flask
     - ssc
     - sbom
+    - acs
 spec:
   type: service
   owner: user:guest
