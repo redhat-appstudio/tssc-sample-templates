@@ -94,7 +94,6 @@ spec:
         values:
           name: ${{ parameters.name }}
           repoUrl: ${{ parameters.repoUrl }}
-          branch: ${{ parameters.branch }}
           image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
           namespace: ${{ parameters.namespace }}
     # This step publishes the contents of the working directory to GitHub.
