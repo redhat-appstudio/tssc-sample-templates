@@ -12,7 +12,7 @@ Add the following to your `app-config.yaml` file in your backstage configuration
 
 ``` 
     - type: url
-      target: https://github.com/jduimovich/template-node/blob/main/all.yaml 
+      target:  https://github.com/redhat-appstudio/tssc-sample-templates/blob/main/all.yaml
       rules:
         - allow: [Location, Template]
 ```
