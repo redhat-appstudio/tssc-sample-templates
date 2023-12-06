@@ -47,7 +47,6 @@ spec:
           title: Repository Default Branch
           type: string
           default: main
-
     - title: Deployment information
       required:
         - imageRegistry

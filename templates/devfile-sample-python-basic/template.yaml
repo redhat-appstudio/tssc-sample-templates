@@ -18,7 +18,7 @@ spec:
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:
-    - title: Enter the name for the application
+    - title: Application Information
       required:
         - name
       properties:
@@ -29,9 +29,12 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-    - title: Choose repo for github.com
+          ui:field: EntityNamePicker
+          maxLength: 63
+    - title: Application Repository Information
       required:
         - repoUrl
+        - branch
       properties:
         repoUrl:
           title: Repository Location
@@ -40,20 +43,42 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-              - https://github.com
+              # - gitlab.com can be provided as an option
+        branch:
+          title: Repository Default Branch
+          type: string
+          default: main
     - title: Deployment information
       required:
-        - image
+        - imageRegistry
+        - imageOrg
+        - imageName
         - namespace
       properties:
-        image:
-          title: Deployment Image
+        imageRegistry:
+          title: Select a image registry
+          type: string
+          default: quay.io
+          enum:
+            - quay.io
+            - image-registry.openshift-image-registry.svc:5000
+            - docker.io
+          enumNames:
+            - Quay
+            - Internal OpenShift Registry
+            - Docker
+        imageOrg:
+          title: Image Organization
+          type: string
+          description: The organization, user or project that this repo will belong to
+        imageName:
+          title: Image Name
           type: string
           ui:autofocus: true
           ui:options:
             rows: 5
         namespace:
-          title: Deployment NS
+          title: Deployment Namespace
           type: string
           ui:autofocus: true
           ui:options:
@@ -61,7 +86,8 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
-    # Each step executes an action, in this case one templates files into the working directory.
+    # Each step executes an action, in this case one templates files into the workspace.
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-base
       name: Fetch Base
       action: fetch:template
@@ -70,18 +96,17 @@ spec:
         values:
           name: ${{ parameters.name }}
           repoUrl: ${{ parameters.repoUrl }}
-          repoUrl2: ${{ parameters.repoUrl2 }}
-          image: ${{ parameters.image }}
+          image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
           namespace: ${{ parameters.namespace }}
-    # This step publishes the contents of the working directory to GitHub.
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
-      name: Publish
+      name: Publish Repository to Github
       action: publish:github
       input:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: "main"
+        defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
     # The final step is to register our new component in the catalog.
