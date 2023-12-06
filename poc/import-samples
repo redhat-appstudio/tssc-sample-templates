@@ -25,6 +25,7 @@ DEST=$ROOT_DIR/templates/$DIRNAME
 rm -rf $DEST
 mkdir -p $DEST $DEST/content 
 cp -r $SAMPLE_DIR/. $DEST/content  
+rm -rf $DEST/content/.git
 cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
 cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
 cp $ROOT_DIR/templates/backstage/catalog-info.yaml $DEST/content/catalog-info.yaml
