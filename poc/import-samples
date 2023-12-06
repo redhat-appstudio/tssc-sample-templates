@@ -26,29 +26,34 @@ rm -rf $DEST
 mkdir -p $DEST $DEST/content 
 cp -r $SAMPLE_DIR/. $DEST/content  
 rm -rf $DEST/content/.git
-cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
+#cp -r $ROOT_DIR/templates/tekton/docker-build/.tekton  $DEST/content/.tekton
 cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
-cp $ROOT_DIR/templates/backstage/catalog-info.yaml $DEST/content/catalog-info.yaml
+#cp $ROOT_DIR/templates/backstage/catalog-info.yaml $DEST/content/catalog-info.yaml
 cp -r $ROOT_DIR/templates/backstage/docs  $DEST/content/docs
 cp -r $ROOT_DIR/templates/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
  
 # updates 
-for i in $DEST/content/.tekton/*.yaml
-do  
-    echo $i
-    sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $i  
-    sed -i "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $i    
-done 
+# for i in $DEST/content/.tekton/*.yaml
+# do  
+#     echo $i
+#     sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $i  
+#     sed -i "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $i    
+# done 
  
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
 yq  -i ".metadata.tags = $APP_TAGS" $DEST/template.yaml
 yq  -i '(. | .metadata.tags += ["ssc", "sbom", "acs"])'  $DEST/template.yaml
+APP_TAGS=$(yq ".metadata.tags" $DEST/template.yaml)
+sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
+sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
+sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $DEST/template.yaml
+sed -i "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $DEST/template.yaml
 
-sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
-yq  -i ".metadata.tags = $APP_TAGS"  $DEST/content/catalog-info.yaml
-yq  -i '(. | .metadata.tags += ["ssc", "sbom", "acs"])'  $DEST/content/catalog-info.yaml
-sed -i "s!sed.edit.SRC_URL!$REPO!g" $DEST/content/catalog-info.yaml
+
+# sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
+# yq  -i ".metadata.tags = $APP_TAGS"  $DEST/content/catalog-info.yaml
+# yq  -i '(. | .metadata.tags += ["ssc", "sbom", "acs"])'  $DEST/content/catalog-info.yaml
 
  

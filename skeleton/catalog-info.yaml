@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }} 
+  description: ${{ values.description}}   
+  links:
+    - url: https://www.redhat.com/en/solutions/trusted-software-supply-chain
+      title: Trusted Secure Supply Chain 
+      icon: dashboard
+      type: admin-dashboard
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  tags: ${{ values.tags }} 
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: experimental
