@@ -102,11 +102,12 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton
+        tags: ["java", "quarkus", "ssc", "sbom", "acs"]
         values:
+          name: ${{ parameters.name }}
           description: Secure Supply Chain Example for Quarkus with Java
           dockerfile: src/main/docker/Dockerfile.jvm.staged
           buildContext: .
-          tags: "["java", "quarkus", "ssc", "sbom", "acs"]"
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github

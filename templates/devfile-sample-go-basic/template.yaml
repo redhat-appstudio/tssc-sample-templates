@@ -101,11 +101,12 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton
+        tags: ["go", "ssc", "sbom", "acs"]
         values:
+          name: ${{ parameters.name }}
           description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
           dockerfile: docker/Dockerfile
           buildContext: .
-          tags: "["go", "ssc", "sbom", "acs"]"
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github
