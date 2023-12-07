@@ -107,7 +107,7 @@ spec:
           description: Secure Supply Chain Example for Stack with Node.js 18
           dockerfile: Dockerfile
           buildContext: .
-          tags: ["nodejs", "express", "ubi8", "ssc", "sbom", "acs"]
+          tags: "["nodejs", "express", "ubi8", "ssc", "sbom", "acs"]"
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github

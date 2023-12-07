@@ -101,13 +101,12 @@ spec:
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ../../skeleton/
+        url: ../../skeleton
         values:
-          name: ${{ parameters.name }}
           description: Secure Supply Chain Example for Spring Boot® using Maven
           dockerfile: docker/Dockerfile
           buildContext: .
-          tags: ["java", "spring", "ssc", "sbom", "acs"]
+          tags: "["java", "spring", "ssc", "sbom", "acs"]"
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github
