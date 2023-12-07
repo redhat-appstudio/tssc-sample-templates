@@ -10,7 +10,7 @@ metadata:
       type: admin-dashboard
   annotations:
     backstage.io/techdocs-ref: dir:.
-  tags: ${{ tags }} 
+  tags: ${{ values.tags }} 
 spec:
   type: service
   owner: user:guest

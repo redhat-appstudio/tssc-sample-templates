@@ -97,12 +97,12 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton
-        tags: sed.edit.APPTAGS
         values:
           name: ${{ parameters.name }}
           description: sed.edit.CATALOG_DESCRIPTION 
           dockerfile: sed.edit.DOCKERFILE
           buildContext: sed.edit.BUILDCONTEXT
+          tags: sed.edit.APPTAGS
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github

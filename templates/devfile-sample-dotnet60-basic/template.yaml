@@ -101,12 +101,12 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton
-        tags: ["net", "ssc", "sbom", "acs"]
         values:
           name: ${{ parameters.name }}
           description: Secure Supply Chain Example for Sample Code for Basic .NET
           dockerfile: docker/Dockerfile
           buildContext: .
+          tags: ["net", "ssc", "sbom", "acs"]
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github
