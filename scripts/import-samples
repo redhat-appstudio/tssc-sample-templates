@@ -36,15 +36,10 @@ sed -i "" "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "" "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
 yq  -i ".metadata.tags = $APP_TAGS" $DEST/template.yaml
 yq  -i '(. | .metadata.tags += ["ssc", "sbom", "acs"])'  $DEST/template.yaml
-APP_TAGS=$(yq ".metadata.tags" $DEST/template.yaml |  yq -o json | yq | tr '[:upper:]' '[:lower:]' | tr -d "\.")
+APP_TAGS=$(yq ".metadata.tags" $DEST/template.yaml |  yq -o json | yq | tr -d "\.")
 sed -i "" "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
 sed -i "" "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
 sed -i "" "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $DEST/template.yaml
 sed -i "" "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $DEST/template.yaml
-
-
-# sed -i "s!sed.edit.DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/content/catalog-info.yaml
-# yq  -i ".metadata.tags = $APP_TAGS"  $DEST/content/catalog-info.yaml
-# yq  -i '(. | .metadata.tags += ["ssc", "sbom", "acs"])'  $DEST/content/catalog-info.yaml
 
  
