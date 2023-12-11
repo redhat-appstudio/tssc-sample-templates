@@ -21,7 +21,7 @@ metadata:
 spec: 
   params:
   - name: dockerfile
-    value: Dockerfile
+    value: ${{ values.dockerfile }}
   - name: git-url
     value: '{{repo_url}}'
   - name: image-expires-after
