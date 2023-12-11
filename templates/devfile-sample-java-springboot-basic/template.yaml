@@ -97,6 +97,17 @@ spec:
           repoUrl: ${{ parameters.repoUrl }}
           image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
           namespace: ${{ parameters.namespace }}
+    - id: fetch-skeleton
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: Secure Supply Chain Example for Spring Boot® using Maven
+          dockerfile: docker/Dockerfile
+          buildContext: .
+          tags: '["java", "spring", "ssc", "sbom", "acs"]'
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github

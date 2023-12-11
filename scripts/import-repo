@@ -6,3 +6,6 @@ $SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-java
 $SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-python-basic 
 $SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-go-basic 
 $SCRIPTDIR/import-samples  https://github.com/devfile-samples/devfile-sample-dotnet60-basic 
+
+# cleanup cloned path
+rm -rf $SCRIPTDIR/samples
