@@ -11,7 +11,7 @@ metadata:
     - sbom
     - acs
 spec:
-  owner: user:guest
+  owner: ${{ user.entity }}
   type: service
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
@@ -107,6 +107,7 @@ spec:
           dockerfile: docker/Dockerfile
           buildContext: .
           tags: '["go", "ssc", "sbom", "acs"]'
+          owner: ${{ user.entity }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github
