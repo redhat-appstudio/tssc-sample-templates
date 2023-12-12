@@ -13,11 +13,22 @@ metadata:
     - sbom
     - acs
 spec:
-  owner: ${{ user.entity }}
   type: service
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:
+    - title: Component Owner
+      required:
+        - owner
+      properties:
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
     - title: Application Information
       required:
         - name
@@ -109,7 +120,7 @@ spec:
           dockerfile: docker/Dockerfile
           buildContext: .
           tags: '["python", "pip", "flask", "ssc", "sbom", "acs"]'
-          owner: ${{ user.entity }}
+          owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Github
