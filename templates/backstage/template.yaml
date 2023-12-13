@@ -28,6 +28,7 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
+          default: user:guest
           ui:field: OwnerPicker
           ui:options:
             catalogFilter:
