@@ -50,7 +50,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-              # - gitlab.com can be provided as an option
+              - gitlab.com
         branch:
           title: Repository Default Branch
           type: string
@@ -117,12 +117,12 @@ spec:
           buildContext: .
           tags: '["go", "ssc", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
-    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
+    # This action creates a new GitHub/GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish
-      name: Publish Repository to Github
-      action: publish:github
+      name: Publish Repository to Git
+      action: publish:${{ github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else gitlab }}
       input:
-        allowedHosts: ['github.com']
+        allowedHosts: [${{ (parameters.repoUrl | parseRepoUrl).host }}]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
