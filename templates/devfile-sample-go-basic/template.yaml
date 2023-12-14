@@ -122,7 +122,7 @@ spec:
       name: Publish Repository to Git
       action: publish:${{ github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else gitlab }}
       input:
-        allowedHosts: [${{ (parameters.repoUrl | parseRepoUrl).host }}]
+        allowedHosts: [ '${{ (parameters.repoUrl | parseRepoUrl).host }}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
