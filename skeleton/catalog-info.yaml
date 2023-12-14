@@ -13,5 +13,5 @@ metadata:
   tags: ${{ values.tags }} 
 spec:
   type: service
-  owner: user:guest
+  owner: ${{ values.owner }} 
   lifecycle: experimental
