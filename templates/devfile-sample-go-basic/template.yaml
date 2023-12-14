@@ -105,18 +105,18 @@ spec:
           repoUrl: ${{ parameters.repoUrl }}
           image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
           namespace: ${{ parameters.namespace }}
-    # - id: fetch-skeleton
-    #   name: Fetch Skeleton
-    #   action: fetch:template
-    #   input:
-    #     url: ../../skeleton
-    #     values:
-    #       name: ${{ parameters.name }}
-    #       description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
-    #       dockerfile: docker/Dockerfile
-    #       buildContext: .
-    #       tags: '["go", "ssc", "sbom", "acs"]'
-    #       owner: ${{ parameters.owner }}
+    - id: fetch-skeleton
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+          dockerfile: docker/Dockerfile
+          buildContext: .
+          tags: '["go", "ssc", "sbom", "acs"]'
+          owner: ${{ parameters.owner }}
     # This action creates a new GitHub/GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to Github
