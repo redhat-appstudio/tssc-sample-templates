@@ -33,8 +33,8 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
-          #default: user:guest
-          ui:field: EntityPicker
+          default: user:guest
+          ui:field: OwnerPicker
           ui:options:
             catalogFilter:
               kind: [Group, User]
@@ -50,7 +50,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-              - gitlab.com
+              # - gitlab.com can be provided as an option
         branch:
           title: Repository Default Branch
           type: string
@@ -117,12 +117,10 @@ spec:
           buildContext: .
           tags: '["go", "ssc", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
-    # This action creates a new GitHub/GitLab repository and publishes the files in the workspace directory to the repository.
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to Github
-      #action: ${{ publish:github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else publish:gitlab }}
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
-      action: publish:github
       input:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
@@ -130,13 +128,12 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-gitlab
-      name: Publish Repository to Gitlab
-      #action: ${{ publish:github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else publish:gitlab }}
+      name: Publish Repository to GitLab
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
-      action: publish:gitlab
       input:
-        allowedHosts:  ['gitlab.com']
+        allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}

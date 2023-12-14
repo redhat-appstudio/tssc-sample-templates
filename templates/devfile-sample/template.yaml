@@ -120,9 +120,20 @@ spec:
           tags: '["nodejs", "express", "ubi8", "ssc", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
-    - id: publish
+    - id: publish-github
       name: Publish Repository to Github
-      action: publish:github
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
+      input:
+        allowedHosts: ['github.com']
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab
+      name: Publish Repository to GitLab
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
       input:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
@@ -135,13 +146,13 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
