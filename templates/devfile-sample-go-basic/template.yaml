@@ -120,7 +120,7 @@ spec:
     # This action creates a new GitHub/GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish
       name: Publish Repository to Git
-      action: publish:${{ github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else gitlab }}
+      action: publish:'${{ github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else gitlab }}'
       input:
         allowedHosts: [ '${{ (parameters.repoUrl | parseRepoUrl).host }}' ]
         description: This is ${{ parameters.name }}
