@@ -33,8 +33,8 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
-          default: user:guest
-          ui:field: OwnerPicker
+          #default: user:guest
+          ui:field: EntityPicker
           ui:options:
             catalogFilter:
               kind: [Group, User]
@@ -105,24 +105,38 @@ spec:
           repoUrl: ${{ parameters.repoUrl }}
           image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
           namespace: ${{ parameters.namespace }}
-    - id: fetch-skeleton
-      name: Fetch Skeleton
-      action: fetch:template
-      input:
-        url: ../../skeleton
-        values:
-          name: ${{ parameters.name }}
-          description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
-          dockerfile: docker/Dockerfile
-          buildContext: .
-          tags: '["go", "ssc", "sbom", "acs"]'
-          owner: ${{ parameters.owner }}
+    # - id: fetch-skeleton
+    #   name: Fetch Skeleton
+    #   action: fetch:template
+    #   input:
+    #     url: ../../skeleton
+    #     values:
+    #       name: ${{ parameters.name }}
+    #       description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+    #       dockerfile: docker/Dockerfile
+    #       buildContext: .
+    #       tags: '["go", "ssc", "sbom", "acs"]'
+    #       owner: ${{ parameters.owner }}
     # This action creates a new GitHub/GitLab repository and publishes the files in the workspace directory to the repository.
-    - id: publish
-      name: Publish Repository to Git
-      action: publish:'${{ github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else gitlab }}'
+    - id: publish-github
+      name: Publish Repository to Github
+      #action: ${{ publish:github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else publish:gitlab }}
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
+      action: publish:github
       input:
-        allowedHosts: [ '${{ (parameters.repoUrl | parseRepoUrl).host }}' ]
+        allowedHosts: ['github.com']
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    - id: publish-gitlab
+      name: Publish Repository to Gitlab
+      #action: ${{ publish:github if (parameters.repoUrl | parseRepoUrl).host === 'github.com' else publish:gitlab }}
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
+      action: publish:gitlab
+      input:
+        allowedHosts:  ['gitlab.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
@@ -133,13 +147,13 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
