@@ -51,7 +51,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-              # - gitlab.com can be provided as an option
+              - gitlab.com
         branch:
           title: Repository Default Branch
           type: string
