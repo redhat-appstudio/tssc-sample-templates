@@ -103,7 +103,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           repoUrl: ${{ parameters.repoUrl }}
-          image: ${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           namespace: ${{ parameters.namespace }}
     - id: fetch-skeleton
       name: Fetch Skeleton
