@@ -9,6 +9,7 @@ metadata:
     - ssc
     - nodejs
     - sbom 
+    - experimental
 spec:
   owner: user:guest
   type: service
