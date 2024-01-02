@@ -116,6 +116,7 @@ spec:
           description: Secure Supply Chain Example for Quarkus with Java
           dockerfile: src/main/docker/Dockerfile.jvm.staged
           buildContext: .
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["java", "quarkus", "ssc", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
