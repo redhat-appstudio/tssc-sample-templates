@@ -1,0 +1,17 @@
+
+COMPONENTS_ROOT=$1
+VALUE=${2:-error}   
+SETTER='.metadata.annotations.["tad.gitops.set/image"]'
+
+FILES="$COMPONENTS_ROOT/base/deployment.yaml $COMPONENTS_ROOT/overlays/development/deployment-patch.yaml"
+for file in $FILES 
+do
+    KEY=$(yq "$SETTER" $file)
+    if [  "$KEY" == "null" ]
+    then     
+        echo "$SETTER missing in $file"
+    else  
+        echo "Using $KEY to set image in $file" 
+        yq -i e "$KEY=\"$VALUE\""  $file
+    fi
+done

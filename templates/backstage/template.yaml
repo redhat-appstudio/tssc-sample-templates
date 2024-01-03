@@ -90,24 +90,21 @@ spec:
   # via the parameters above.
   steps:
     # Each step executes an action, in this case one templates files into the workspace.
-    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
+    # Get the sample source code
     - id: fetch-base
       name: Fetch Base
-      action: fetch:template
+      action: fetch:plain
       input:
         url: ./content
-        values:
-          name: ${{ parameters.name }}
-          repoUrl: ${{ parameters.repoUrl }}
-          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          namespace: ${{ parameters.namespace }}
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ../../skeleton
+        url: ../../skeleton/source-repo
         values:
           name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
           description: sed.edit.CATALOG_DESCRIPTION 
           dockerfile: sed.edit.DOCKERFILE
           buildContext: sed.edit.BUILDCONTEXT
@@ -145,10 +142,26 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+    - id: fetch-gitops-skeleton
+      name: Fetch Gitops Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/gitops-template
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          repoURL: ${{ parameters.repoUrl }}
+          argoComponent: './components/${{ parameters.name }}'
+          description: sed.edit.CATALOG_DESCRIPTION 
+          dockerfile: sed.edit.DOCKERFILE
+          buildContext: sed.edit.BUILDCONTEXT
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          tags: 'sed.edit.APPTAGS'
+          owner: ${{ parameters.owner }} 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
-      - title: Repository
+      - title: Source Repository
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
