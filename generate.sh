@@ -15,7 +15,8 @@ git clone $REPO 2>&1 > /dev/null
 
 
 DEST=$ROOTDIR/skeleton/gitops-template
-rm -rf $DEST
+rm -rf $DEST/components
+rm -rf $DEST/application.yaml
 mkdir -p $DEST/components
 cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support http now
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/

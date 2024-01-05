@@ -56,6 +56,7 @@ components:
         - name: http-8081
           targetPort: 8081
           path: /
+          secure: true
   - name: kubernetes-service
     attributes:
       deployment/replicas: 1
