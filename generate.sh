@@ -27,7 +27,7 @@ function iterate() {
   local dir="$1"
 
   for file in "$dir"/*; do
-    if [ -f "$file" ]; then
+    if [ -f "$file" ]  &&  [[ "$file" != *"catalog-info.yaml"* ]]; then
       sed -i "" "s/{{/\${{ /g" $file
       sed -i "" "s/}}/ }}/g" $file
     fi

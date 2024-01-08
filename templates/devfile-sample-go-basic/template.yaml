@@ -151,6 +151,7 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton/gitops-template
+        targetPath: gitops
         values:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
@@ -165,6 +166,7 @@ spec:
       action: publish:github
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
       input:
+        sourcePath: gitops
         allowedHosts: ['github.com']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
@@ -177,6 +179,7 @@ spec:
       action: publish:gitlab
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
       input:
+        sourcePath: gitops
         allowedHosts: ['gitlab.com']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
