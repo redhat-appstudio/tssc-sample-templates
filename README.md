@@ -20,3 +20,17 @@ Add the following to your `app-config.yaml` file in your backstage configuration
 This will add the samples into a set of backstage templates.
 
 ![Screenshot](backstage.png)
+
+
+## Conributing
+
+run `./generate.sh` to generate all the templates before commit to this repository
+
+note: if your are on MacOS, the GNU version of `sed` is required to be installed
+```
+brew install gnu-sed
+```
+After this, alter PATH. For example, add the following line to your `~/.bash_profile`:
+```
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+```

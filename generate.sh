@@ -28,8 +28,8 @@ function iterate() {
 
   for file in "$dir"/*; do
     if [ -f "$file" ]  &&  [[ "$file" != *"catalog-info.yaml"* ]]; then
-      sed -i "" "s/{{/\${{ /g" $file
-      sed -i "" "s/}}/ }}/g" $file
+      sed -i "s/{{/\${{ /g" $file
+      sed -i "s/}}/ }}/g" $file
     fi
 
     if [ -d "$file" ]; then
