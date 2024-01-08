@@ -1,0 +1,16 @@
+
+COMPONENTS_ROOT=$1  
+GETTER='.metadata.annotations.["tad.gitops.get/replicas"]'
+
+FILES="$COMPONENTS_ROOT/base/deployment.yaml  $COMPONENTS_ROOT/overlays/development/deployment-patch.yaml"
+for file in $FILES 
+do
+    KEY=$(yq "$GETTER" $file)
+    if [  "$KEY" == "null" ]
+    then     
+        echo "$GETTER missing in $file"
+    else   
+        VALUE=$(yq e "$KEY" $file) 
+        echo "$VALUE replicas in $file"
+    fi
+done

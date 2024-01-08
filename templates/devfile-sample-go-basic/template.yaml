@@ -94,24 +94,21 @@ spec:
   # via the parameters above.
   steps:
     # Each step executes an action, in this case one templates files into the workspace.
-    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
+    # Get the sample source code
     - id: fetch-base
       name: Fetch Base
-      action: fetch:template
+      action: fetch:plain
       input:
         url: ./content
-        values:
-          name: ${{ parameters.name }}
-          repoUrl: ${{ parameters.repoUrl }}
-          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          namespace: ${{ parameters.namespace }}
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
       action: fetch:template
       input:
-        url: ../../skeleton
+        url: ../../skeleton/source-repo
         values:
           name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
           description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
           dockerfile: docker/Dockerfile
           buildContext: .
@@ -136,7 +133,7 @@ spec:
       action: publish:gitlab
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
       input:
-        allowedHosts: ['github.com']
+        allowedHosts: ['gitlab.com']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
@@ -149,11 +146,60 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+    - id: fetch-gitops-skeleton
+      name: Fetch Gitops Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/gitops-template
+        targetPath: gitops
+        values:
+          name: ${{ parameters.name }}
+          appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
+          description: This is GitOps manifest for ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
+          repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+          argoComponent: './components/${{ parameters.name }}'
+          owner: ${{ parameters.owner }}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+    - id: publish-github-gitops
+      name: Publish GitOps Repository to Github
+      action: publish:github
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['github.com']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab-gitops
+      name: Publish GitOps Repository to GitLab
+      action: publish:gitlab
+      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['gitlab.com']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    - id: register-gitops
+      name: Register Gitops
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
-      - title: Repository
+      - title: Source Repository
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      - title: GitOps Repository
+        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
