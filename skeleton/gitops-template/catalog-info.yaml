@@ -15,4 +15,4 @@ spec:
   owner: ${{ values.owner }} 
   lifecycle: experimental
   dependsOn:
-    - ${{ values.name }}
+    - component:${{ values.name }}
