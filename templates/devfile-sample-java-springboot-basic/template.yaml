@@ -168,7 +168,7 @@ spec:
       input:
         allowedHosts: ['github.com']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl: ${{ steps['fetch-gitops-skeleton'].input.values.repoURL }}
+        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -180,7 +180,7 @@ spec:
       input:
         allowedHosts: ['gitlab.com']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl: ${{ steps['fetch-gitops-skeleton'].input.values.repoURL }}
+        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
