@@ -3,12 +3,12 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: java-springboot
-  title: Spring Boot®
+  title: Spring Boot® - Trusted Application Pipeline
   description: Spring Boot® using Maven
   tags:
     - java
     - spring
-    - ssc
+    - sscs
     - sbom
     - acs
 spec:
@@ -114,7 +114,7 @@ spec:
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["java", "spring", "ssc", "sbom", "acs"]'
+          tags: '["java", "spring", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
