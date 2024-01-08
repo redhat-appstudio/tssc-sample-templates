@@ -3,12 +3,12 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: java-quarkus
-  title: Quarkus Java
+  title: Quarkus Java - Trusted Application Pipeline
   description: Quarkus with Java
   tags:
     - java
     - quarkus
-    - ssc
+    - sscs
     - sbom
     - acs
 spec:
@@ -114,7 +114,7 @@ spec:
           dockerfile: src/main/docker/Dockerfile.jvm.staged
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["java", "quarkus", "ssc", "sbom", "acs"]'
+          tags: '["java", "quarkus", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github

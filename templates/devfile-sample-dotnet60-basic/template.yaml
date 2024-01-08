@@ -3,11 +3,11 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: dotnet-basic
-  title: Basic .NET
-  description: Sample Code for Basic .NET
+  title: Basic .NET - Trusted Application Pipeline
+  description: Sample Code for Basic .NET - Trusted Application Pipeline
   tags:
     - net
-    - ssc
+    - sscs
     - sbom
     - acs
 spec:
@@ -109,11 +109,11 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Sample Code for Basic .NET
+          description: Secure Supply Chain Example for Sample Code for Basic .NET - Trusted Application Pipeline
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["net", "ssc", "sbom", "acs"]'
+          tags: '["net", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
