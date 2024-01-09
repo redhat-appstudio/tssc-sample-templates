@@ -1,0 +1,4 @@
+
+# in this case more descriptive text for the app and fix the title to include framework
+APP_DESC="Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment"
+APP_DISPLAY_NAME="Node.js Express - Trusted Application Pipeline"

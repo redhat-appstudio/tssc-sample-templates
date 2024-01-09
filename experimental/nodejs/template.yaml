@@ -3,8 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs-secure-supply-chain-e2e
-  title:  Node.js Secure Supply Chain Bootstrap
-  description: A simple Node.js http application, single container, builds with secure pipelines and deploys via gitops. The default Pipelines are installed in Tekton PaC format using shared pipelines which will automatically update when the PE provides updates. 
+  title:  Node.js Bootstrap - Trusted Application Pipeline
+  description: "A simple Node.js http application, with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment. This is a single container application using Tekton Pipelines as Code configured for simple update and management of common components, simplifying the Platform Engineer and DevOps teams workflows." 
   tags:
     - ssc
     - nodejs

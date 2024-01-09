@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: java-quarkus
   title: Quarkus Java - Trusted Application Pipeline
-  description: Quarkus with Java
+  description: Quarkus Java example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
     - java
     - quarkus
@@ -110,7 +110,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Quarkus with Java
+          description: Secure Supply Chain Example for Quarkus Java example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
           dockerfile: src/main/docker/Dockerfile.jvm.staged
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'

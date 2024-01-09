@@ -18,6 +18,16 @@ APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq | tr 
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
 fi 
+  
+# Temp workaround to allow override descriptions 
+if test -f  $SCRIPTDIR/override/$DIRNAME; then 
+    echo "Temp: Overriding vars for repo $DIRNAME "
+    source $SCRIPTDIR/override/$DIRNAME 
+else 
+    echo "NO FILE $SCRIPTDIR/override/$DIRNAME"
+    touch $SCRIPTDIR/override/$DIRNAME
+fi 
+
 DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' $SAMPLE_DIR/devfile.yaml)
 BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' $SAMPLE_DIR/devfile.yaml)
 

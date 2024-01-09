@@ -1,0 +1,2 @@
+
+APP_DESC="Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment."
