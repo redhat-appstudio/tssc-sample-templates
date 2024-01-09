@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: java-springboot
   title: Spring Boot® - Trusted Application Pipeline
-  description: Spring Boot® using Maven
+  description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
     - java
     - spring
@@ -110,7 +110,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Spring Boot® using Maven
+          description: Secure Supply Chain Example for Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'

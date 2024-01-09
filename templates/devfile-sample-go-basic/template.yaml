@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: go
   title: Go Runtime - Trusted Application Pipeline
-  description: Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+  description: Go Rutime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
     - go
     - sscs
@@ -109,7 +109,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
+          description: Secure Supply Chain Example for Go Rutime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'

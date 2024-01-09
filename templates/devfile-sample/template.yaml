@@ -3,8 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs
-  title: Node.js Runtime - Trusted Application Pipeline
-  description: Stack with Node.js 18
+  title: Node.js Express - Trusted Application Pipeline
+  description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
     - nodejs
     - express
@@ -111,7 +111,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Stack with Node.js 18
+          description: Secure Supply Chain Example for Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
           dockerfile: Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
