@@ -2,13 +2,10 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: nodejs
+  name:
   title: Node.js Express - Trusted Application Pipeline
   description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
-    - nodejs
-    - express
-    - ubi8
     - sscs
     - sbom
     - acs
@@ -112,10 +109,10 @@ spec:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
           description: Secure Supply Chain Example for Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
-          dockerfile: Dockerfile
-          buildContext: .
+          dockerfile: 
+          buildContext: 
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["nodejs", "express", "ubi8", "sscs", "sbom", "acs"]'
+          tags: '["sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }}
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
@@ -161,11 +158,17 @@ spec:
           namespace: ${{ parameters.namespace }}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
-          # TODO - change this to the application root when multicomponents are created
-          #argoComponent: './components/${{ parameters.name }}'
-          argoComponent: './components/http/overlays/development'
+          argoComponent: './components/${{ parameters.name }}'
           owner: ${{ parameters.owner }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+    - action: fs:rename
+      id: renameComponentDir
+      name: Rename Component Directory
+      input:
+        files:
+          - from: gitops/components/http
+            to: gitops/components/${{ parameters.name }}
+            overwrite: true
     - id: publish-github-gitops
       name: Publish GitOps Repository to Github
       action: publish:github
