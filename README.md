@@ -1,10 +1,24 @@
-#  Dance Sample Backstage Templates
+#  RHTAP Sample Backstage Templates
 
 
-## Samples
+## Software Supply Chain Security 
 
-These samples have been imported from the RHTAP Devfile Samples and augmented with additional backstage content for demo purposes. The information has come from the devfiles and augmented with more information (tags and docs) for the sample apps as placeholders. 
+This repository provides a suite of language/framework examples that implement end-to-end software supply chain security (SSCS).
 
+The examples contain an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
+
+GPT authors and IDP builders can take these samples to create their own SSCS based starters. The components in the samples are designed to be maintainable to ensure that day 2 maintainance of default build pipelines and deployment yaml ensures teams have 
+
+
+## Usage in Red Hat Developer Hub
+
+To import these templates, register a component in on the golden path template page 
+
+![Screenshot](register.png)
+
+Import `https://github.com/redhat-appstudio/tssc-sample-templates/blob/main/all.yaml`
+
+![Screenshot](register2.png)
 
 ## Usage in backstage 
 
@@ -21,12 +35,26 @@ This will add the samples into a set of backstage templates.
 
 ![Screenshot](backstage.png)
 
+ 
+## Contributing
 
-## Conributing
+The templates are found in `./templates` and reference reusable content in `./skeleton`.  
 
-run `./generate.sh` to generate all the templates before commit to this repository
+The templates are maintained by importing external samples into GPT format. This allows the external samples to be used standalone, developed, and evolved and then imported.
 
-note: if your are on MacOS, the GNU version of `sed` is required to be installed
+The pipelines are also maintained externally to allow standalone use outside of GPTs, as well as evolution of the pipelines in one of more GPTs.
+
+To update the templates from these or any new samples you update the list of imported repos and run the following. 
+
+
+ `./generate.sh` to generate all the templates before commit to this repository.
+
+
+
+### MacOS 
+
+Due to differences between Linux and MacOS, the GNU version of `sed` is required to be installed.
+
 ```
 brew install gnu-sed
 ```
