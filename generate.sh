@@ -23,11 +23,14 @@ cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 rm -rf $TEMPDIR
 
 # replace {{value}} to ${{ value }} for GPT
+sed -i "s/{{/\${{ /g" $DEST/application.yaml
+sed -i "s/}}/ }}/g" $DEST/application.yaml
+
 function iterate() {
   local dir="$1"
 
   for file in "$dir"/*; do
-    if [ -f "$file" ]  &&  [[ "$file" != *"catalog-info.yaml"* ]]; then
+    if [ -f "$file" ]; then
       sed -i "s/{{/\${{ /g" $file
       sed -i "s/}}/ }}/g" $file
     fi
@@ -38,4 +41,5 @@ function iterate() {
   done
 }
 
-iterate $DEST
+iterate $DEST/components
+
