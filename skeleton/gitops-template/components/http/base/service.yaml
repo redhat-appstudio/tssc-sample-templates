@@ -9,7 +9,7 @@ metadata:
   namespace: ${{ values.namespace }}
 spec:
   ports:
-  - port: 8080
-    targetPort: 8080
+  - port: ${{ values.port }} 
+    targetPort: ${{ values.port }} 
   selector:
     app.kubernetes.io/instance: ${{ values.name }} 

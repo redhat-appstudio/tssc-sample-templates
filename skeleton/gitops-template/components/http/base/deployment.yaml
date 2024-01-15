@@ -29,17 +29,17 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 8080
+            port: ${{ values.port }} 
           initialDelaySeconds: 10
           periodSeconds: 10
         name: container-image
         ports:
-        - containerPort: 8080
+        - containerPort: ${{ values.port }} 
         readinessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
           tcpSocket:
-            port: 8080
+            port: ${{ values.port }} 
         resources:
           limits:
             cpu: "1"

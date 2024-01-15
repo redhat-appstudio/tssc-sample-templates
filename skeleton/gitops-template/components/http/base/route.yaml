@@ -9,7 +9,7 @@ metadata:
   namespace: ${{ values.namespace }}
 spec:
   port:
-    targetPort: 8080
+    targetPort: ${{ values.port }} 
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
