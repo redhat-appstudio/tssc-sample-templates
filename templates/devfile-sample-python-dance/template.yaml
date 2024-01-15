@@ -3,7 +3,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: python
-  title:  Python - Trusted Application Pipeline - Trusted Application Pipeline
+  title:  Python - Trusted Application Pipeline
   description: Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment. 
 spec:
   type: service
@@ -109,7 +109,7 @@ spec:
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["python", "pip", "flask", "sscs", "sbom", "acs"]'
+          tags: 'sed.edit.APPTAGS'
           owner: ${{ parameters.owner }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github

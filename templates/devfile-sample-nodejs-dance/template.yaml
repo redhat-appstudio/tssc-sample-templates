@@ -3,7 +3,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs
-  title:  Node.js Express - Trusted Application Pipeline - Trusted Application Pipeline
+  title:  Node.js Express - Trusted Application Pipeline
   description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
 spec:
   type: service
@@ -109,7 +109,7 @@ spec:
           dockerfile: Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["nodejs", "express", "ubi8", "sscs", "sbom", "acs"]'
+          tags: '["Node.js", "Express", "ubi8", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
