@@ -109,7 +109,7 @@ spec:
           dockerfile: docker/Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["Go", "sscs", "sbom", "acs"]'
+          tags: '["go", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
