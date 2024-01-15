@@ -17,11 +17,12 @@ APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
 APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq | tr '[:upper:]' '[:lower:]' | tr -d "\.") 
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
-fi 
+fi
 
 
-DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' $SAMPLE_DIR/devfile.yaml)
-BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' $SAMPLE_DIR/devfile.yaml)
+DOCKER_FILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' $SAMPLE_DIR/devfile.yaml)
+BUILD_CONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' $SAMPLE_DIR/devfile.yaml)
+IMAGE_PORT=$(yq '.components[] | select(.name == "kubernetes-deploy").attributes.deployment/container-port' $SAMPLE_DIR/devfile.yaml)
 
 DEST=$ROOT_DIR/templates/$DIRNAME 
 rm -rf $DEST
@@ -38,7 +39,8 @@ sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
 sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
 sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
-sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $DEST/template.yaml
-sed -i "s!sed.edit.BUILDCONTEXT!$BUILDCONTEXT!g" $DEST/template.yaml
+sed -i "s!sed.edit.DOCKERFILE!$DOCKER_FILE!g" $DEST/template.yaml
+sed -i "s!sed.edit.BUILDCONTEXT!$BUILD_CONTEXT!g" $DEST/template.yaml
+sed -i "s!sed.edit.IMAGEPORT!$IMAGE_PORT!g" $DEST/template.yaml
 
  
