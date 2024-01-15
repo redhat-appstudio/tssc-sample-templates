@@ -7,8 +7,8 @@ spec:
   targets:
     - ./templates/devfile-sample-nodejs-dance/template.yaml  
     - ./templates/devfile-sample-code-with-quarkus-dance/template.yaml  
-    - ./templates/devfile-sample-dotnet60-basic-dance/template.yaml  
-    - ./templates/devfile-sample-go-basic-dance/template.yaml  
-    - ./templates/devfile-sample-java-springboot-basic-dance/template.yaml  
-    - ./templates/devfile-sample-python-basic-dance/template.yaml
+    - ./templates/devfile-sample-dotnet60-dance/template.yaml  
+    - ./templates/devfile-sample-go-dance/template.yaml  
+    - ./templates/devfile-sample-java-springboot-dance/template.yaml  
+    - ./templates/devfile-sample-python-dance/template.yaml
     - ./experimental/nodejs/template.yaml     
