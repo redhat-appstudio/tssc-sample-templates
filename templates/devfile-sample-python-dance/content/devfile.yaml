@@ -1,25 +1,30 @@
 schemaVersion: 2.2.0
 metadata:
-  name: go
-  displayName: Go Runtime
-  description: 'Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.'
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/golang.svg
-  language: Go
-  projectType: Go
-  tags:
-    - Go
-  version: 1.1.0
+  name: python
+  projectType: Python
+  displayName: Python - Trusted Application Pipeline
+  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/python.svg
+  description: Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
+  language: Python
+  version: 1.0.1
   provider: Red Hat
+  tags:
+    - Python
+    - Pip
+    - Flask
+    - sscs
+    - sbom
+    - acs
   supportUrl: https://github.com/devfile-samples/devfile-support#support-information
   attributes:
     alpha.dockerimage-port: 8081
 parent:
-  id: go
+  id: python
   registryUrl: 'https://registry.devfile.io'
 components:
   - name: image-build
     image:
-      imageName: go-image:latest
+      imageName: python-image:latest
       dockerfile:
         uri: docker/Dockerfile
         buildContext: .
@@ -28,15 +33,15 @@ components:
     attributes:
       deployment/replicas: 1
       deployment/cpuRequest: 10m
-      deployment/memoryRequest: 10Mi
+      deployment/memoryRequest: 50Mi
       deployment/container-port: 8081
     kubernetes:
       uri: deploy.yaml
       endpoints:
-      - name: http-8081
-        targetPort: 8081
-        path: /
-        secure: true
+        - name: http-8081
+          targetPort: 8081
+          path: /
+          secure: true
 commands:
   - id: build-image
     apply:

@@ -5,6 +5,7 @@ metadata:
   name: sed.edit.NAME
   title:  sed.edit.TITLE
   description: sed.edit.DESCRIPTION 
+  tags: sed.edit.APPTAGS
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -159,6 +160,7 @@ spec:
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           owner: ${{ parameters.owner }} 
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          port: sed.edit.IMAGEPORT
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

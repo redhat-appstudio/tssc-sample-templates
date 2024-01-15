@@ -43,3 +43,6 @@ function iterate() {
 
 iterate $DEST/components
 
+
+cp -r  $DEST/.tekton/*-repository.yaml $DEST/components/http/overlays/development    # temporary workaround for gitops
+

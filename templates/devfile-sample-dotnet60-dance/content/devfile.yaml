@@ -1,7 +1,8 @@
 schemaVersion: 2.2.0
 metadata:
   name: dotnet-basic
-  displayName: Basic .NET
+  displayName: C# .NET - Trusted Application Pipeline
+  description: C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   version: 1.1.1
   icon: https://github.com/dotnet/brand/raw/main/logo/dotnet-logo.png
   provider: Red Hat
@@ -10,6 +11,9 @@ metadata:
   projectType: dotnet
   tags:
     - .NET
+    - sscs
+    - sbom
+    - acs
   attributes:
     alpha.dockerimage-port: 8081
 starterProjects:

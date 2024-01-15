@@ -1,11 +1,11 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 
-$SCRIPTDIR/import-samples https://github.com/nodeshift-starters/devfile-sample 
-$SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-code-with-quarkus  
-$SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-java-springboot-basic 
-$SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-python-basic 
-$SCRIPTDIR/import-samples https://github.com/devfile-samples/devfile-sample-go-basic 
-$SCRIPTDIR/import-samples  https://github.com/devfile-samples/devfile-sample-dotnet60-basic 
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-nodejs-dance
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-code-with-quarkus-dance 
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-java-springboot-dance
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-python-dance
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-go-dance
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-dotnet60-dance
 
 # cleanup cloned path
 rm -rf $SCRIPTDIR/samples
