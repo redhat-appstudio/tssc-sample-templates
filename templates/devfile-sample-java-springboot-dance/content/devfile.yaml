@@ -4,12 +4,15 @@ metadata:
   version: 1.2.1
   attributes:
     alpha.dockerimage-port: 8081
-  displayName: Spring Boot®
-  description: Spring Boot® using Maven
+  displayName: Spring Boot® - Trusted Application Pipeline
+  description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/spring.svg
   tags:
     - Java
     - Spring
+    - sscs
+    - sbom
+    - acs
   projectType: springboot
   language: Java
   provider: Red Hat

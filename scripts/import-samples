@@ -12,21 +12,13 @@ else
 fi
  
 APP_NAME=$(yq ".metadata.name" $SAMPLE_DIR/devfile.yaml)
-APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)" - Trusted Application Pipeline"
+APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)
 APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
-APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml |  yq -o json | yq | tr '[:upper:]' '[:lower:]' | tr -d "\.") 
+APP_TAGS=$(yq ".metadata.tags" $SAMPLE_DIR/devfile.yaml) # |  yq -o json | yq | tr '[:upper:]' '[:lower:]' | tr -d "\.") 
 if [ "$APP_DESC" == "null" ]; then
     APP_DESC="Sample Code for $APP_DISPLAY_NAME"
 fi 
-  
-# Temp workaround to allow override descriptions 
-if test -f  $SCRIPTDIR/override/$DIRNAME; then 
-    echo "Temp: Overriding vars for repo $DIRNAME "
-    source $SCRIPTDIR/override/$DIRNAME 
-else 
-    echo "NO FILE $SCRIPTDIR/override/$DIRNAME"
-    touch $SCRIPTDIR/override/$DIRNAME
-fi 
+
 
 DOCKERFILE=$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' $SAMPLE_DIR/devfile.yaml)
 BUILDCONTEXT=$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' $SAMPLE_DIR/devfile.yaml)
@@ -44,9 +36,6 @@ cp -r $ROOT_DIR/templates/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
-yq  -i ".metadata.tags = $APP_TAGS" $DEST/template.yaml
-yq  -i '(. | .metadata.tags += ["sscs", "sbom", "acs"])'  $DEST/template.yaml
-APP_TAGS=$(yq ".metadata.tags" $DEST/template.yaml |  yq -o json | yq | tr -d "\.")
 sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
 sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
 sed -i "s!sed.edit.DOCKERFILE!$DOCKERFILE!g" $DEST/template.yaml

@@ -1,2 +1,0 @@
-
-APP_DESC="Go Runtime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment"

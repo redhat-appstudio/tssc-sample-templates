@@ -1,3 +1,0 @@
-
-APP_DESC="C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment"
-APP_DISPLAY_NAME="C# .NET - Trusted Application Pipeline"

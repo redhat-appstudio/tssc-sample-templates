@@ -3,15 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs
-  title: Node.js Express - Trusted Application Pipeline
-  description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
-  tags:
-    - nodejs
-    - express
-    - ubi8
-    - sscs
-    - sbom
-    - acs
+  title:  Node.js Express - Trusted Application Pipeline - Trusted Application Pipeline
+  description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -57,6 +50,7 @@ spec:
           title: Repository Default Branch
           type: string
           default: main
+
     - title: Deployment information
       required:
         - imageRegistry
@@ -111,12 +105,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+          description: Secure Supply Chain Example for Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
           dockerfile: Dockerfile
           buildContext: .
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["nodejs", "express", "ubi8", "sscs", "sbom", "acs"]'
-          owner: ${{ parameters.owner }}
+          owner: ${{ parameters.owner }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to Github
@@ -163,7 +157,7 @@ spec:
           repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
           srcRepoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
           argoComponent: './components/${{ parameters.name }}/overlays/development'
-          owner: ${{ parameters.owner }}
+          owner: ${{ parameters.owner }} 
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
     - action: fs:rename
       id: renameComponentDir

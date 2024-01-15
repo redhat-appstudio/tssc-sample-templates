@@ -3,4 +3,4 @@ kind: Repository
 metadata:
   name: gitops-repository
 spec:
-  url: $${{  values.repoURL  }}
+  url: ${{ values.repoURL }}

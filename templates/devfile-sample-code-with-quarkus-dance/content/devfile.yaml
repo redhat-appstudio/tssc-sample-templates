@@ -6,11 +6,14 @@ metadata:
   supportUrl: https://github.com/devfile-samples/devfile-support#support-information
   icon: https://design.jboss.org/quarkus/logo/final/SVG/quarkus_icon_rgb_default.svg
   website: https://quarkus.io
-  displayName: Quarkus Java
-  description: Quarkus with Java
+  displayName: Quarkus Java - Trusted Application Pipeline
+  description: Quarkus Java example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   tags:
     - Java
     - Quarkus
+    - sscs
+    - sbom
+    - acs
   projectType: Quarkus
   language: Java
   attributes:

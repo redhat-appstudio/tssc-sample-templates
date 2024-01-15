@@ -2,9 +2,9 @@ schemaVersion: 2.2.0
 metadata:
   name: nodejs
   version: 3.0.0
-  displayName: Node.js Runtime
-  description: Stack with Node.js 18
-  tags: ["Node.js", "Express", "ubi8"]
+  displayName: Node.js Express - Trusted Application Pipeline
+  description: Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+  tags: ["Node.js", "Express", "ubi8", "sscs", "sbom", "acs"]
   projectType: "Node.js"
   language: "JavaScript"
   attributes:

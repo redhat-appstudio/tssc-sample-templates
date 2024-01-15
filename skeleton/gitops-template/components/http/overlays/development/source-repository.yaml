@@ -3,4 +3,4 @@ kind: Repository
 metadata:
   name: source-repository
 spec:
-  url: $${{  values.srcRepoURL  }}
+  url: ${{ values.srcRepoURL }}
