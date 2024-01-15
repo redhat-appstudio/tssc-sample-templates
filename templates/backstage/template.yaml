@@ -5,6 +5,7 @@ metadata:
   name: sed.edit.NAME
   title:  sed.edit.TITLE
   description: sed.edit.DESCRIPTION 
+  tags: sed.edit.APPTAGS
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are

@@ -5,6 +5,7 @@ metadata:
   name: java-quarkus
   title:  Quarkus Java - Trusted Application Pipeline
   description: Quarkus Java example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
+  tags: ["java", "quarkus", "sscs", "sbom", "acs"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are

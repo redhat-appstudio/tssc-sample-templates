@@ -5,6 +5,7 @@ metadata:
   name: dotnet-basic
   title:  C# .NET - Trusted Application Pipeline
   description: C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
+  tags: ["net", "sscs", "sbom", "acs"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
