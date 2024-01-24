@@ -7,7 +7,6 @@ metadata:
     tad.gitops.set/replicas: ".spec.replicas"
     tad.gitops.get/replicas: ".spec.replicas" 
   name: ${{ values.name }}
-  namespace:  ${{ values.namespace }}
 spec:
   replicas: 1 
   template: 
