@@ -206,12 +206,12 @@ spec:
       name: Create ArgoCD Resources
       action: argocd:create-resources
       input:
-        appName: ${{ parameters.name }}-gitops
+        appName: ${{ parameters.name }}
         # name set in rhdh config
         argoInstance: default
         namespace: ${{ parameters.namespace}}
         repoUrl: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-        path: ./
+        path: './components/${{ parameters.name }}/overlays/development'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
