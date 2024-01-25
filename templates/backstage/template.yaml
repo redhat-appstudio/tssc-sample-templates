@@ -159,7 +159,9 @@ spec:
           srcRepoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           owner: ${{ parameters.owner }} 
-          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
+          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
+          srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: sed.edit.IMAGEPORT
     - action: fs:rename
       id: renameComponentDir
@@ -200,6 +202,16 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.name }}
+        # name set in rhdh config
+        argoInstance: default
+        namespace: ${{ parameters.namespace}}
+        repoUrl: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+        path: './components/${{ parameters.name }}/overlays/development'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:

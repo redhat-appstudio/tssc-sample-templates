@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: ${{ values.name }} 
   name: ${{ values.name }}
-  namespace: ${{ values.namespace }}
 spec:
   port:
     targetPort: ${{ values.port }} 
