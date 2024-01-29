@@ -202,16 +202,16 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
-    # - id: create-argocd-resources
-    #   name: Create ArgoCD Resources
-    #   action: argocd:create-resources
-    #   input:
-    #     appName: ${{ parameters.name }}
-    #     # name set in rhdh config
-    #     argoInstance: default
-    #     namespace: ${{ parameters.namespace}}
-    #     repoUrl: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-    #     path: './components/${{ parameters.name }}/overlays/development'
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.name }}
+        # name set in rhdh config
+        argoInstance: default
+        namespace: ${{ parameters.namespace}}
+        repoUrl: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+        path: './components/${{ parameters.name }}/overlays/development'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
