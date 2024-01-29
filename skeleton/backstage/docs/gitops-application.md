@@ -1,4 +1,4 @@
-# GitOps Http Application for ${{ values.name }}
+# GitOps Http Application Sample
 
 ## HTTP Application 
 This Gitops sample provides a standard HTTP component consisting of a deployment, service and route. 

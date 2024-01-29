@@ -1,3 +1,3 @@
 # Documentation
 
-## Sample techdoc documentation for ${{ values.name }}
+## Sample techdoc documentation from a template
