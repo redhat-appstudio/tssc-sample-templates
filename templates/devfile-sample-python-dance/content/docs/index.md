@@ -1,4 +1,3 @@
 # Documentation
 
-## Sample documentation from a template
-
+## Sample techdoc documentation from a template

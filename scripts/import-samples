@@ -29,9 +29,13 @@ rm -rf $DEST
 mkdir -p $DEST $DEST/content 
 cp -r $SAMPLE_DIR/. $DEST/content  
 rm -rf $DEST/content/.git
-cp $ROOT_DIR/templates/backstage/template.yaml $DEST/template.yaml
-cp -r $ROOT_DIR/templates/backstage/docs  $DEST/content/docs
-cp -r $ROOT_DIR/templates/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
+cp $ROOT_DIR/skeleton/backstage/template.yaml $DEST/template.yaml
+cp -r $ROOT_DIR/skeleton/backstage/docs  $DEST/content/docs
+cp -r $ROOT_DIR/skeleton/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
+
+# get readme to source component doc
+cp -r $DEST/content/README.md  $DEST/content/docs/source-component.md
+cp -r $ROOT_DIR/skeleton/source-repo/.tekton/README.md  $DEST/content/docs/pipelines.md
 
  
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
