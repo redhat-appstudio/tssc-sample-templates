@@ -10,7 +10,7 @@ metadata:
     pipelinesascode.tekton.dev/pipeline: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/pipelines/docker-build-dance.yaml"
     pipelinesascode.tekton.dev/task-0: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/init.yaml"
     pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/git-clone.yaml"
-    pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/buildah.yaml"
+    pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/buildah-rhtap.yaml"
     pipelinesascode.tekton.dev/task-3: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/source-build.yaml"
     pipelinesascode.tekton.dev/task-4: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/clair-scan.yaml"
     pipelinesascode.tekton.dev/task-5: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/new-for-dance/tasks/task-acs-image-check.yaml"
