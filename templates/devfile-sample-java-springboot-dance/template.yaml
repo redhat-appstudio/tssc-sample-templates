@@ -137,12 +137,6 @@ spec:
         protectDefaultBranch: false
         repoVisibility: "public"
     # The final step is to register our new component in the catalog.
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
       action: fetch:template
@@ -196,6 +190,17 @@ spec:
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
+    - id: wait-for-github-repository
+      name: Waiting for repository availability
+      action: 'debug:wait'
+      input:
+        seconds: 3
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
     - id: register-gitops
       name: Register Gitops
       action: catalog:register
