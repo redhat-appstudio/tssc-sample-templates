@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: go
-  title:  Go Runtime - Trusted Application Pipeline
+  name: go-test
+  title:  Go Runtimen test - Trusted Application Pipeline
   description: Go Runtime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
   tags: ["go", "sscs", "sbom", "acs"]
 spec:
@@ -213,7 +213,7 @@ spec:
         # name set in rhdh config
         argoInstance: default
         namespace: ${{ parameters.namespace}}
-        repoUrl: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+        repoUrl: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops.git
         path: './components/${{ parameters.name }}/overlays/development'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
