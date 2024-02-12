@@ -45,8 +45,8 @@ spec:
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
-              - github.com
-              - gitlab.com
+              - github.com # PE can replace this with on-prem host
+              - gitlab.com # PE can replace this with on-prem host
         branch:
           title: Repository Default Branch
           type: string
@@ -64,13 +64,11 @@ spec:
           type: string
           default: quay.io
           enum:
-            - quay.io
-            - image-registry.openshift-image-registry.svc:5000
-            - docker.io
+            - quay.io # PE can replace this with on-prem registry
+            - image-registry.openshift-image-registry.svc:5000 # PE can replace this with on-prem registry
           enumNames:
             - Quay
             - Internal OpenShift Registry
-            - Docker
         imageOrg:
           title: Image Organization
           type: string
