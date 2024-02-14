@@ -8,8 +8,12 @@ metadata:
       title: Trusted Secure Supply Chain 
       icon: dashboard
       type: admin-dashboard
-  annotations:
-    backstage.io/techdocs-ref: dir:.
+  annotations:    
+    argocd/app-name: ${{ values.name }}
+    janus-idp.io/tekton: ${{ values.name }} 
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    backstage.io/techdocs-ref: dir:. 
 spec:
   type: gitops
   owner: ${{ values.owner }} 
