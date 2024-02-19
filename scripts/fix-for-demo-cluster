@@ -1,0 +1,31 @@
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+
+# example usage
+# fix-for-demo-cluster gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com quay-ljg9z.apps.cluster-ljg9z.sandbox219.opentlc.com 
+
+GITSERVER=$1
+QUAYSERVER=$2
+if [ -z "$GITSERVER" ]; then
+     echo "Usage: $0 git-server quay-server " 
+     exit 0
+fi
+if [ -z "$QUAYSERVER" ]; then
+     echo "Usage: $0 git-server quay-server " 
+     exit 0
+fi
+
+for template in $SCRIPTDIR/../templates/*
+do
+    template=$(realpath $template)
+    if [ -d "$template" ]; then
+        echo $template
+        cd $template
+        sed -i s!quay.io/redhat-appstudio!QUAY-IMAGE_REF!g  template.yaml 
+        sed -i s!quay.io!$QUAYSERVER!g  template.yaml 
+        sed -i s!QUAY-IMAGE_REF!quay.io/redhat-appstudio!g  template.yaml 
+        sed -i s!gitlab.com!$GITSERVER!g  template.yaml  
+        sed -i 's/argoInstance\: default/argoInstance\: main/g'  template.yaml 
+        sed -i 's/namespace: ${{ parameters.namespace}}/namespace: janus-argocd/g'  template.yaml 
+    fi
+done
+ 
