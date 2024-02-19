@@ -2,7 +2,13 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: ${{ values.name }}-on-push
-  namespace: ${{ values.namespace }}
+  namespace: ${{ values.namespace }}  
+  labels:
+    argocd/app-name: ${{ values.name }}
+    janus-idp.io/tekton: ${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }} 
+    app.kubernetes.io/part-of: ${{ values.name }}
   annotations:
     pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
