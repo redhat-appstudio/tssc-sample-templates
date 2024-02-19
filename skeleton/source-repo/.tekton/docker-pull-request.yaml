@@ -3,6 +3,10 @@ kind: PipelineRun
 metadata:
   name: ${{ values.name }}-on-pull-request
   namespace: ${{ values.namespace }}
+  labels: 
+    janus-idp.io/tekton: ${{ values.name }} 
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
   annotations:
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
