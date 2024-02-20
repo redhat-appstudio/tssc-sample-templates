@@ -19,20 +19,26 @@ metadata:
     pipelinesascode.tekton.dev/task-8: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/0f5c8764b4cda4d1f7ee0e2b05d1054c099f925a/pac/tasks/show-sbom.yaml"
     pipelinesascode.tekton.dev/task-9: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/0f5c8764b4cda4d1f7ee0e2b05d1054c099f925a/pac/tasks/summary.yaml"
     pipelinesascode.tekton.dev/task-10: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/0f5c8764b4cda4d1f7ee0e2b05d1054c099f925a/pac/tasks/update-deployment.yaml"
+  labels:
+    argocd/app-name: ${{ values.name }}
+    janus-idp.io/tekton: ${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    app.kubernetes.io/part-of: ${{ values.name }}
 spec:
   params:
-  - name: dockerfile
-    value: ${{ values.dockerfile }}
-  - name: git-url
-    value: '{{repo_url}}'
-  - name: image-expires-after
-    value: 5d
-  - name: output-image
-    value: ${{ values.image }}:on-pr-{{revision}}
-  - name: path-context
-    value: ${{ values.buildContext }}
-  - name: revision
-    value: '{{revision}}'
+    - name: dockerfile
+      value: ${{ values.dockerfile }}
+    - name: git-url
+      value: '{{repo_url}}'
+    - name: image-expires-after
+      value: 5d
+    - name: output-image
+      value: ${{ values.image }}:on-pr-{{revision}}
+    - name: path-context
+      value: ${{ values.buildContext }}
+    - name: revision
+      value: '{{revision}}'
   pipelineRef:
     name: docker-build-rhtap
   workspaces:
@@ -40,7 +46,7 @@ spec:
       volumeClaimTemplate:
         spec:
           accessModes:
-          - ReadWriteOnce
+            - ReadWriteOnce
           resources:
             requests:
               storage: 1Gi
