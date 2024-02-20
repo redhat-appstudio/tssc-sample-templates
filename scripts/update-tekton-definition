@@ -1,0 +1,32 @@
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+ROOTDIR=$(realpath $SCRIPTDIR/..)
+
+REPO="https://github.com/redhat-appstudio/tssc-sample-pipelines"
+REPONAME=$(basename $REPO)
+
+TEMPDIR=$ROOTDIR/temp
+rm -rf $TEMPDIR # clean up
+mkdir -p $TEMPDIR
+cd $TEMPDIR
+git clone $REPO 2>&1 > /dev/null
+
+DEST=$ROOTDIR/skeleton/source-repo/.tekton
+
+cd $TEMPDIR/$REPONAME
+COMMIT_HASH=$(git rev-parse HEAD)
+cp -r $TEMPDIR/$REPONAME/pac/docker-build-rhtap/ $DEST
+rm -rf $TEMPDIR
+
+
+
+# replace {{values.rawUrl}} to the current commit's URL
+sed -i "s!{{values.rawUrl}}!https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/$COMMIT_HASH!g" $DEST/docker-push.yaml
+sed -i "s!{{ values!\${{ values!g" $DEST/docker-push.yaml
+yq -i '(. | .metadata.labels += ["argocd/app-name: ${{ values.name }}", "sbom", "acs"])' $DEST/docker-push.yaml
+
+sed -i "s!{{values.rawUrl}}!https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/$COMMIT_HASH!g" $DEST/docker-pull-request.yaml
+sed -i "s!{{ values!\${{ values!g" $DEST/docker-pull-request.yaml
+
+ 
+
+ 
