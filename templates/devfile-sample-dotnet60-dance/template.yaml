@@ -51,7 +51,6 @@ spec:
           title: Repository Default Branch
           type: string
           default: main
-
     - title: Deployment information
       required:
         - imageRegistry
@@ -60,15 +59,10 @@ spec:
         - namespace
       properties:
         imageRegistry:
-          title: Select a image registry
+          title: Image Registry
           type: string
-          default: quay.io
-          enum:
-            - quay.io # PE can replace this with on-prem registry
-            - image-registry.openshift-image-registry.svc:5000 # PE can replace this with on-prem registry
-          enumNames:
-            - Quay
-            - Internal OpenShift Registry
+          description: The image registry host
+          default: quay.io  # PE can replace this with on-prem registry
         imageOrg:
           title: Image Organization
           type: string
@@ -116,7 +110,7 @@ spec:
       action: publish:github
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
       input:
-        allowedHosts: ['github.com']
+        allowedHosts: ['github.com'] # PE can replace this with on-prem host
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
@@ -128,7 +122,7 @@ spec:
       action: publish:gitlab
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
       input:
-        allowedHosts: ['gitlab.com']
+        allowedHosts: ['gitlab.com'] # PE can replace this with on-prem host
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: ${{ parameters.branch }}
@@ -169,7 +163,7 @@ spec:
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['github.com']
+        allowedHosts: ['github.com'] # PE can replace this with on-prem host
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
         defaultBranch: "main"
@@ -182,7 +176,7 @@ spec:
       if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['gitlab.com']
+        allowedHosts: ['gitlab.com'] # PE can replace this with on-prem host
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
         defaultBranch: "main"
