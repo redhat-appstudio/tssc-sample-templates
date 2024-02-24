@@ -2,13 +2,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: ${{ values.name }}-on-push
-  namespace: ${{ values.namespace }}  
-  labels:
-    argocd/app-name: ${{ values.name }}
-    janus-idp.io/tekton: ${{ values.name }}
-    backstage.io/kubernetes-id: ${{ values.name }}
-    backstage.io/kubernetes-namespace: ${{ values.namespace }} 
-    app.kubernetes.io/part-of: ${{ values.name }}
+  namespace: ${{ values.namespace }}
   annotations:
     pipelinesascode.tekton.dev/on-event: "[push]"
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
@@ -25,28 +19,34 @@ metadata:
     pipelinesascode.tekton.dev/task-8: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/show-sbom.yaml"
     pipelinesascode.tekton.dev/task-9: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/summary.yaml"
     pipelinesascode.tekton.dev/task-10: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/update-deployment.yaml"
-spec: 
+  labels:
+    argocd/app-name: ${{ values.name }}
+    janus-idp.io/tekton: ${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    app.kubernetes.io/part-of: ${{ values.name }}
+spec:
   params:
-  - name: dockerfile
-    value: ${{ values.dockerfile }}
-  - name: git-url
-    value: '{{repo_url}}'
-  - name: image-expires-after
-    value: 5d
-  - name: output-image
-    value: ${{ values.image }}:{{revision}}
-  - name: path-context
-    value: ${{ values.buildContext }}
-  - name: revision
-    value: '{{revision}}'
+    - name: dockerfile
+      value: ${{ values.dockerfile }}
+    - name: git-url
+      value: '{{repo_url}}'
+    - name: image-expires-after
+      value: 5d
+    - name: output-image
+      value: ${{ values.image }}:{{revision}}
+    - name: path-context
+      value: ${{ values.buildContext }}
+    - name: revision
+      value: '{{revision}}'
   pipelineRef:
     name: docker-build-rhtap
   workspaces:
     - name: workspace
-      volumeClaimTemplate: 
+      volumeClaimTemplate:
         spec:
           accessModes:
-          - ReadWriteOnce
+            - ReadWriteOnce
           resources:
             requests:
               storage: 1Gi
