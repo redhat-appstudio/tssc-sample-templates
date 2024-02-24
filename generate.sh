@@ -19,8 +19,11 @@ git clone $REPO 2>&1 > /dev/null
 
 DEST=$ROOTDIR/skeleton/gitops-template
 rm -rf $DEST/components
+rm -rf $DEST/app-of-apps
 rm -rf $DEST/application.yaml
 mkdir -p $DEST/components
+mkdir -p $DEST/app-of-apps
+cp -r $TEMPDIR/$REPONAME/templates/app-of-apps $DEST/
 cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support http now
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 rm -rf $TEMPDIR
@@ -45,6 +48,7 @@ function iterate() {
 }
 
 iterate $DEST/components
+iterate $DEST/app-of-apps
 
 
 cp -r  $DEST/.tekton/*-repository.yaml $DEST/components/http/overlays/development    # temporary workaround for gitops

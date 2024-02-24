@@ -9,10 +9,10 @@ metadata:
       icon: dashboard
       type: admin-dashboard
   annotations:
-    argocd/app-name: ${{ values.name }}
+    # ArgoCD apps from this template used rhtap-gitops as the grouping
+    argocd/app-selector: rhtap/gitops=${{  values.name  }}  
     janus-idp.io/tekton: ${{ values.name }} 
-    backstage.io/kubernetes-id: ${{ values.name }}
-    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
   tags: ${{ values.tags }} 
 spec:
