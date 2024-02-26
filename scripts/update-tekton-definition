@@ -10,10 +10,12 @@ mkdir -p $TEMPDIR
 cd $TEMPDIR
 git clone $REPO 2>&1 > /dev/null
 
-DEST=$ROOTDIR/skeleton/source-repo/.tekton
+DEST=$ROOTDIR/skeleton/source-repo/.tekton 
+rm -rf $DEST
+mkdir -p $DEST
 
 cd $TEMPDIR/$REPONAME
-cp -r $TEMPDIR/$REPONAME/pac/docker-build-rhtap/ $DEST
+cp -r $TEMPDIR/$REPONAME/pac/docker-build-rhtap/. $DEST
 rm -rf $TEMPDIR
 
 

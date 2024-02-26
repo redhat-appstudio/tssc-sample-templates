@@ -11,8 +11,7 @@ metadata:
   annotations:    
     argocd/app-name: ${{ values.name }}
     janus-idp.io/tekton: ${{ values.name }} 
-    backstage.io/kubernetes-id: ${{ values.name }}
-    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
 spec:
   type: gitops
