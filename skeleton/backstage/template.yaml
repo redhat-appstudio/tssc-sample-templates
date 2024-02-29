@@ -86,9 +86,15 @@ spec:
     # Get the sample source code
     - id: fetch-base
       name: Fetch Base
-      action: fetch:plain
+      action: fetch:template
       input:
         url: ./content
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+          srcRepoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
