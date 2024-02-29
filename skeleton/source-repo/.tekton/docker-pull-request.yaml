@@ -41,6 +41,9 @@ spec:
   pipelineRef:
     name: docker-build-rhtap
   workspaces:
+    - name: git-auth
+      secret:
+        secretName: "{{ git_auth_secret }}"
     - name: workspace
       volumeClaimTemplate:
         spec:
