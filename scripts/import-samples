@@ -47,4 +47,7 @@ sed -i "s!sed.edit.DOCKERFILE!$DOCKER_FILE!g" $DEST/template.yaml
 sed -i "s!sed.edit.BUILDCONTEXT!$BUILD_CONTEXT!g" $DEST/template.yaml
 sed -i "s!sed.edit.IMAGEPORT!$IMAGE_PORT!g" $DEST/template.yaml
 
- 
+source $ROOT_DIR/properties
+cat $DEST/template.yaml | envsubst > $DEST/new-template.yaml
+mv $DEST/new-template.yaml $DEST/template.yaml
+rf $DEST/new-template.yaml

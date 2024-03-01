@@ -1,0 +1,4 @@
+# PE can replace these values with on-prem host
+export GITHUB__DEFAULT__HOST=github.com
+export GITLAB__DEFAULT__HOST=gitlab.com
+export QUAY__DEFAULT__HOST=quay.io

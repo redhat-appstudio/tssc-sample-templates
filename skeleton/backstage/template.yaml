@@ -70,7 +70,7 @@ spec:
                 githubServer:
                   title: Repository Server
                   type: string
-                  default: github.com
+                  default: ${GITHUB__DEFAULT__HOST}
                   ui:help: "You can also provide the on-prem github server, example: github-github.apps.cluster-ljg9z.sandbox219.opentlc.com"
             - required:
                 - gitlabServer
@@ -80,7 +80,7 @@ spec:
                 gitlabServer:
                   title: Repository Server
                   type: string
-                  default: gitlab.com
+                  default: ${GITLAB__DEFAULT__HOST}
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment information
       required:
@@ -93,7 +93,7 @@ spec:
           title: Image Registry
           type: string
           description: The image registry host
-          default: quay.io  # PE can replace this with on-prem registry
+          default: ${QUAY__DEFAULT__HOST}
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization

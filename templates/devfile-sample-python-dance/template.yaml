@@ -93,7 +93,7 @@ spec:
           title: Image Registry
           type: string
           description: The image registry host
-          default: quay.io  # PE can replace this with on-prem registry
+          default: quay.io
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
