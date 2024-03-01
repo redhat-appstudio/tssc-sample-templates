@@ -36,21 +36,52 @@ spec:
               kind: [Group, User]
     - title: Application Repository Information
       required:
-        - repoUrl
+        - hostType
+        - repoOwner
+        - repoName
         - branch
       properties:
-        repoUrl:
-          title: Repository Location
+        hostType:
+          title: Host Type
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com # PE can replace this with on-prem host
-              - gitlab.com # PE can replace this with on-prem host
+          enum:
+            - GitHub
+            - GitLab
+          defaut: GitHub
+        repoOwner:
+          title: Repository Owner
+          type: string
+          ui:help: The organization, user or project that this repo will belong to
+        repoName:
+          title: Repository Name
+          type: string
         branch:
           title: Repository Default Branch
           type: string
           default: main
+      dependencies:
+        hostType:
+          oneOf:
+            - required:
+                - github-server
+              properties:
+                hostType:
+                    const: GitHub
+                github-server:
+                  title: Repository Server
+                  type: string
+                  default: 'github.com'
+                  ui:help: "You can also provide the on-prem github server, example: github-github.apps.cluster-ljg9z.sandbox219.opentlc.com"
+            - required:
+                - gitlab-server
+              properties:
+                hostType:
+                    const: GitLab
+                gitlab-server:
+                  title: Repository Server
+                  type: string
+                  default: 'gitlab.com'
+                  ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment information
       required:
         - imageRegistry
@@ -63,6 +94,7 @@ spec:
           type: string
           description: The image registry host
           default: quay.io  # PE can replace this with on-prem registry
+          ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
           type: string
@@ -92,8 +124,8 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
-          srcRepoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+          repoURL: https://${{ parameters.github-server if parameters.hostType === 'GitHub' else parameters.gitlab-server }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.github-server if parameters.hostType === 'GitHub' else parameters.gitlab-server }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
@@ -112,13 +144,13 @@ spec:
           owner: ${{ parameters.owner }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
-      name: Publish Repository to Github
+      name: Publish Repository to GitHub
       action: publish:github
-      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
+      if: ${{ parameters.hostType === 'GitHub' }}
       input:
-        allowedHosts: ['github.com'] # PE can replace this with on-prem host
+        allowedHosts: [ '${{ parameters.github-server}}' ]
         description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: ${{ parameters.github-server }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -126,11 +158,11 @@ spec:
     - id: publish-gitlab
       name: Publish Repository to GitLab
       action: publish:gitlab
-      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
+      if: ${{ parameters.hostType === 'GitLab' }}
       input:
-        allowedHosts: ['gitlab.com'] # PE can replace this with on-prem host
+        allowedHosts: [ '${{ parameters.gitlab-server }}' ]
         description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: ${{ parameters.gitlab-server }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -147,8 +179,8 @@ spec:
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
-          repoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
-          srcRepoURL: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}
+          repoURL: https://${{ parameters.github-server if parameters.hostType === 'GitHub' else parameters.gitlab-server }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.github-server if parameters.hostType === 'GitHub' else parameters.gitlab-server }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }} 
@@ -167,12 +199,12 @@ spec:
     - id: publish-github-gitops
       name: Publish GitOps Repository to Github
       action: publish:github
-      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'github.com' }}
+      if: ${{ parameters.hostType === 'GitHub' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['github.com'] # PE can replace this with on-prem host
+        allowedHosts: ['${{ parameters.github-server }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+        repoUrl:  ${{ parameters.github-server }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -180,12 +212,12 @@ spec:
     - id: publish-gitlab-gitops
       name: Publish GitOps Repository to GitLab
       action: publish:gitlab
-      if: ${{ (parameters.repoUrl | parseRepoUrl).host === 'gitlab.com' }}
+      if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['gitlab.com'] # PE can replace this with on-prem host
+        allowedHosts: ['${{ parameters.gitlab-server }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl: ${{ (parameters.repoUrl | parseRepoUrl).host }}?owner=${{ (parameters.repoUrl | parseRepoUrl).owner }}&repo=${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops
+        repoUrl:  ${{ parameters.gitlab-server }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -214,7 +246,7 @@ spec:
         # name set in rhdh config
         argoInstance: default
         namespace: openshift-gitops 
-        repoUrl: https://${{ (parameters.repoUrl | parseRepoUrl).host }}/${{ (parameters.repoUrl | parseRepoUrl).owner }}/${{ (parameters.repoUrl | parseRepoUrl).repo }}-gitops.git
+        repoUrl: https://${{ parameters.github-server if parameters.hostType === 'GitHub' else parameters.gitlab-server }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
