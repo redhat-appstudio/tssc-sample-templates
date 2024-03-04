@@ -2,3 +2,7 @@
 export GITHUB__DEFAULT__HOST=github.com
 export GITLAB__DEFAULT__HOST=gitlab.com
 export QUAY__DEFAULT__HOST=quay.io
+
+export ARGOCD__DEFAULT__NAMESPACE=openshift-gitops
+export ARGOCD__DEFAULT__INSTANCE=default
+export ARGOCD__DEFAULT__PROJECT=default

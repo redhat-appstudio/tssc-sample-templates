@@ -2,10 +2,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ${{ values.name }}-stage
-  namespace: openshift-gitops 
+  namespace:  ${{ values.argoNS }} 
   finalizers: ["resources-finalizer.argocd.argoproj.io"] 
 spec:
-  project: default
+  project: ${{ values.argoProject }}
   source:
     path: ${{ values.argoComponentOverlays }}/stage
     repoURL: ${{ values.repoURL }}
@@ -16,7 +16,7 @@ spec:
   syncPolicy:
     managedNamespaceMetadata:
       labels: 
-        argocd.argoproj.io/managed-by: openshift-gitops
+        argocd.argoproj.io/managed-by:  ${{ values.argoNS }}
     automated: 
       prune: true
       selfHeal: true
