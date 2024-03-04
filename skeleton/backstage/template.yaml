@@ -189,7 +189,6 @@ spec:
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: sed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
-          argoInstance: ${ARGOCD__DEFAULT__INSTANCE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
     - action: fs:rename
       id: renameComponentDir
@@ -247,7 +246,7 @@ spec:
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
-        argoInstance: main
+        argoInstance: ${ARGOCD__DEFAULT__INSTANCE}
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
