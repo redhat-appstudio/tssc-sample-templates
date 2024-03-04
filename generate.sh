@@ -28,7 +28,7 @@ cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 rm -rf $TEMPDIR
 
-# replace {{value}} to ${{ value }} for GPT
+# replace {{value}} to ${{ value }} for software templates
 sed -i "s/{{/\${{ /g" $DEST/application.yaml
 sed -i "s/}}/ }}/g" $DEST/application.yaml
 

@@ -7,7 +7,7 @@ This repository provides a suite of language/framework examples that implement e
 
 The examples contain an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
 
-GPT authors and IDP builders can take these samples to create their own SSCS based starters. The components in the samples are designed to be maintainable to ensure that day 2 maintainance of default build pipelines and deployment yaml ensures teams have 
+Software Template authors and IDP builders can take these samples to create their own SSCS based starters. The components in the samples are designed to be maintainable to ensure that day 2 maintainance of default build pipelines and deployment yaml ensures teams have 
 
 
 ## Usage in Red Hat Developer Hub
@@ -40,9 +40,9 @@ This will add the samples into a set of backstage templates.
 
 The templates are found in `./templates` and reference reusable content in `./skeleton`.  
 
-The templates are maintained by importing external samples into GPT format. This allows the external samples to be used standalone, developed, and evolved and then imported.
+The templates are maintained by importing external samples into the software template format. This allows the external samples to be used standalone, developed, and evolved and then imported.
 
-The pipelines are also maintained externally to allow standalone use outside of GPTs, as well as evolution of the pipelines in one of more GPTs.
+The pipelines are also maintained externally to allow standalone use outside of software templates, as well as evolution of the pipelines in one of more software templates.
 
 To update the templates from these or any new samples you update the list of imported repos and run the following. 
 
