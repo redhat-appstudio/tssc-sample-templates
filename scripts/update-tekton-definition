@@ -1,7 +1,9 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
-REPO="https://github.com/redhat-appstudio/tssc-sample-pipelines"
+REPO="${1:-https://github.com/redhat-appstudio/tssc-sample-pipelines}"
+BRANCH="${2:-main}"
+RAW_BASE=$(echo $REPO/$BRANCH |  sed "s/github.com/raw.githubusercontent.com/")  
 REPONAME=$(basename $REPO)
 
 TEMPDIR=$ROOTDIR/temp
@@ -9,6 +11,7 @@ rm -rf $TEMPDIR # clean up
 mkdir -p $TEMPDIR
 cd $TEMPDIR
 git clone $REPO 2>&1 > /dev/null
+(cd $REPONAME; git checkout $BRANCH; git pull)
 
 DEST=$ROOTDIR/skeleton/source-repo/.tekton 
 rm -rf $DEST
@@ -20,7 +23,7 @@ rm -rf $TEMPDIR
 
 
 # replace {{values.rawUrl}} to the current commit's URL
-sed -i "s!{{values.rawUrl}}!https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main!g" $DEST/docker-push.yaml
+sed -i "s!{{values.rawUrl}}!$RAW_BASE!g" $DEST/docker-push.yaml
 sed -i "s!{{ values!\${{ values!g" $DEST/docker-push.yaml
 # add labels for RHDH
 yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
@@ -30,7 +33,7 @@ yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
         "app.kubernetes.io/part-of": "${{ values.name }}"
         } )' $DEST/docker-push.yaml
 
-sed -i "s!{{values.rawUrl}}!https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main!g" $DEST/docker-pull-request.yaml
+sed -i "s!{{values.rawUrl}}!$RAW_BASE!g" $DEST/docker-pull-request.yaml
 sed -i "s!{{ values!\${{ values!g" $DEST/docker-pull-request.yaml
 # add labels for RHDH
 yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
