@@ -7,8 +7,8 @@ metadata:
 spec:
   project: ${{ values.argoProject }}
   source:
-    path: ${{ values.argoComponent }}
-    repoURL: ${{ values.repoURL }}
+    path: ./app-of-apps
+    repoURL: ${{ values.repoURL }}.git
     targetRevision: main
   destination:
     namespace: ${{ values.namespace }}
