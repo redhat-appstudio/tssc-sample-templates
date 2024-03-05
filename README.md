@@ -35,6 +35,28 @@ This will add the samples into a set of backstage templates.
 
 ![Screenshot](backstage.png)
 
+
+## On-prem host support
+
+You need to ensure the on-prem host is being configured in `app-config.yaml` file in your backstage/RHDH configuration 
+
+### Change default host for Git or Quay
+
+[properties](./properties) file holds the default host for GitHub, GitLab and Quay.
+
+Modify the value and run `./generate.sh` will generate new templates with customized default value.
+
+### Provide on-prem host value when create a component
+
+On `Application Repository Information` Page, provide your Git host in the `Repository Server`
+
+**Note:** Please Ensure the correct `Host Type` is selected
+
+![Screenshot](on-prem-git.png)
+
+On `Deployment information` Page, provide your Quay host in the `Image Registry`
+
+![Screenshot](on-prem-quay.png)
  
 ## Contributing
 
