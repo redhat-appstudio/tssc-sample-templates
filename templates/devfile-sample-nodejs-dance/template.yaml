@@ -188,7 +188,7 @@ spec:
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: 3001
-          argoNS: openshift-gitops
+          argoNS: rhtap
           argoProject: default
     - action: fs:rename
       id: renameComponentDir
@@ -247,7 +247,7 @@ spec:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
         argoInstance: default
-        namespace: openshift-gitops
+        namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
