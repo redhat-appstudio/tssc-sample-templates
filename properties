@@ -6,3 +6,5 @@ export QUAY__DEFAULT__HOST=quay.io
 export ARGOCD__DEFAULT__NAMESPACE=rhtap
 export ARGOCD__DEFAULT__INSTANCE=default
 export ARGOCD__DEFAULT__PROJECT=default
+
+export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
