@@ -108,9 +108,11 @@ spec:
         namespace:
           title: Deployment Namespace
           type: string
+          default: rhtap-app
           ui:autofocus: true
           ui:options:
             rows: 5
+          ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
