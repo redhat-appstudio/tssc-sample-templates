@@ -192,6 +192,11 @@ spec:
           port: 3001
           argoNS: rhtap
           argoProject: default
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          gitSecret: gitops-auth-secret
+          gitSecretKey: password
+          webhookSecret: rhtap-pipelines-secret
+          webhookSecretKey: webhook-github-secret
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

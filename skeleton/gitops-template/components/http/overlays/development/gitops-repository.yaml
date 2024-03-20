@@ -4,3 +4,12 @@ metadata:
   name: ${{ values.appName }}-repository
 spec:
   url: ${{ values.repoURL }}
+  {%- if values.secretRef %}
+  git_provider:
+    secret:
+        name: ${{ values.gitSecret }}
+        key: ${{ values.gitSecretKey }}
+    webhook_secret:
+        name: ${{ values.webhookSecret }}
+        key:  ${{ values.webhookSecretKey }}
+  {%- endif %}

@@ -3,8 +3,15 @@ export GITHUB__DEFAULT__HOST=github.com
 export GITLAB__DEFAULT__HOST=gitlab.com
 export QUAY__DEFAULT__HOST=quay.io
 
+export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
+
 export ARGOCD__DEFAULT__NAMESPACE=rhtap
 export ARGOCD__DEFAULT__INSTANCE=default
 export ARGOCD__DEFAULT__PROJECT=default
 
-export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
+
+# For secret reference in Repositroy CRs
+export GIT__SECRET__DEFAULT__NAME=gitops-auth-secret
+export GIT__SECRET__DEFAULT__KEY=password
+export WEBHOOK__SECRET__DEFAULT__NAME=rhtap-pipelines-secret
+export WEBHOOK__SECRET__DEFAULT__KEY=webhook-github-secret
