@@ -13,35 +13,36 @@ cd $TEMPDIR
 git clone $REPO 2>&1 > /dev/null
 (cd $REPONAME; git checkout $BRANCH; git pull)
 
-DEST=$ROOTDIR/skeleton/source-repo/.tekton 
-rm -rf $DEST
-mkdir -p $DEST
+function add-backstage-labels () { 
+        FILE_NAME=$1 
+        # replace {{values.rawUrl}} to the current commit's URL
+        sed -i "s!{{values.rawUrl}}!$RAW_BASE!g" $FILE_NAME
+        sed -i "s!{{ values!\${{ values!g" $FILE_NAME
+        # add labels for RHDH
+        yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
+                "janus-idp.io/tekton": "${{ values.name }}", 
+                "backstage.io/kubernetes-id": "${{ values.name }}",
+                "backstage.io/kubernetes-namespace": "${{ values.namespace }}",
+                "app.kubernetes.io/part-of": "${{ values.name }}"
+                } )' $FILE_NAME     
+}
 
-cd $TEMPDIR/$REPONAME
-cp -r $TEMPDIR/$REPONAME/pac/docker-build-rhtap/. $DEST
+#source and gitops tekton copied, note new names 
+SRC_TEKTON=$ROOTDIR/skeleton/source-repo/.tekton 
+GITOPS_TEKTON=$ROOTDIR/skeleton/gitops-template/.tekton 
+
+rm -rf $SRC_TEKTON
+mkdir -p $SRC_TEKTON   
+cp -r $TEMPDIR/$REPONAME/pac/source-repo/. $SRC_TEKTON
+
+rm -rf $GITOPS_TEKTON
+mkdir -p $GITOPS_TEKTON   
+cp -r $TEMPDIR/$REPONAME/pac/gitops-repo/. $GITOPS_TEKTON
+
 rm -rf $TEMPDIR
-
-
-# replace {{values.rawUrl}} to the current commit's URL
-sed -i "s!{{values.rawUrl}}!$RAW_BASE!g" $DEST/docker-push.yaml
-sed -i "s!{{ values!\${{ values!g" $DEST/docker-push.yaml
-# add labels for RHDH
-yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
-        "janus-idp.io/tekton": "${{ values.name }}", 
-        "backstage.io/kubernetes-id": "${{ values.name }}",
-        "backstage.io/kubernetes-namespace": "${{ values.namespace }}",
-        "app.kubernetes.io/part-of": "${{ values.name }}"
-        } )' $DEST/docker-push.yaml
-
-sed -i "s!{{values.rawUrl}}!$RAW_BASE!g" $DEST/docker-pull-request.yaml
-sed -i "s!{{ values!\${{ values!g" $DEST/docker-pull-request.yaml
-# add labels for RHDH
-yq -i '(. | .metadata.labels += { "argocd/app-name": "${{ values.name }}",
-        "janus-idp.io/tekton": "${{ values.name }}", 
-        "backstage.io/kubernetes-id": "${{ values.name }}",
-        "backstage.io/kubernetes-namespace": "${{ values.namespace }}",
-        "app.kubernetes.io/part-of": "${{ values.name }}"
-        } )' $DEST/docker-pull-request.yaml
  
-
+for prun in $SRC_TEKTON/*.yaml $GITOPS_TEKTON/*.yaml; do 
+        echo "Labels for $prun" 
+        add-backstage-labels $prun
+done 
  

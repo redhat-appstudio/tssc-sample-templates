@@ -14,7 +14,7 @@ metadata:
     pipelinesascode.tekton.dev/task-4: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/acs-image-scan.yaml"
     pipelinesascode.tekton.dev/task-5: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/acs-deploy-check.yaml"
     pipelinesascode.tekton.dev/task-6: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/update-deployment.yaml"
-    pipelinesascode.tekton.dev/task-7: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/show-sbom.yaml"
+    pipelinesascode.tekton.dev/task-7: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/show-sbom-rhdh.yaml"
     pipelinesascode.tekton.dev/task-8: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/summary.yaml"
   labels:
     argocd/app-name: ${{ values.name }}
@@ -36,6 +36,8 @@ spec:
       value: ${{ values.buildContext }}
     - name: revision
       value: '{{revision}}'
+    - name: event-type
+      value: '{{event_type}}'
   pipelineRef:
     name: docker-build-rhtap
   workspaces:
