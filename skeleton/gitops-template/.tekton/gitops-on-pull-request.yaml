@@ -21,6 +21,8 @@ spec:
       value: '{{repo_url}}'
     - name: revision
       value: '{{revision}}'
+    - name: target-branch
+      value: '{{target_branch}}'
   pipelineRef:
     name: gitops-pull-request
   workspaces:

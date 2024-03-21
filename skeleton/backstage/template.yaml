@@ -192,6 +192,11 @@ spec:
           port: sed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          gitSecret: ${GIT__SECRET__DEFAULT__NAME}
+          gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
+          webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
+          webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
