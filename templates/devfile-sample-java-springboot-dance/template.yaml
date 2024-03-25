@@ -144,6 +144,7 @@ spec:
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["java", "spring", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }} 
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
