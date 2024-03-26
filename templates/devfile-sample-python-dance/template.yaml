@@ -108,7 +108,7 @@ spec:
         namespace:
           title: Deployment Namespace
           type: string
-          default: rhtap-app
+          default: rhtap-test-organization-jk
           ui:autofocus: true
           ui:options:
             rows: 5

@@ -1,15 +1,15 @@
 apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
 kind: Repository
 metadata:
-  name: ${{ values.appName }}-repository
+  name: ${{  values.appName  }}-repository
 spec:
-  url: ${{ values.repoURL }}
+  url: ${{  values.repoURL  }}
   {%- if values.secretRef %}
   git_provider:
     secret:
-        name: ${{ values.gitSecret }}
-        key: ${{ values.gitSecretKey }}
+        name: ${{  values.gitSecret  }}
+        key: ${{  values.gitSecretKey  }}
     webhook_secret:
-        name: ${{ values.webhookSecret }}
-        key:  ${{ values.webhookSecretKey }}
+        name: ${{  values.webhookSecret  }}
+        key:  ${{  values.webhookSecretKey  }}
   {%- endif %}

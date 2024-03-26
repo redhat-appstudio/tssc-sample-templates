@@ -3,7 +3,7 @@ export GITHUB__DEFAULT__HOST=github.com
 export GITLAB__DEFAULT__HOST=gitlab.com
 export QUAY__DEFAULT__HOST=quay.io
 
-export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
+export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-test-organization-jk
 
 export ARGOCD__DEFAULT__NAMESPACE=rhtap
 export ARGOCD__DEFAULT__INSTANCE=default
