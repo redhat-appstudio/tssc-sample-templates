@@ -145,6 +145,7 @@ spec:
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["java", "spring", "sscs", "sbom", "acs"]'
           owner: ${{ parameters.owner }} 
+          defaultBranch: ${{ parameters.branch }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -198,6 +199,7 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
+          defaultBranch: main
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
