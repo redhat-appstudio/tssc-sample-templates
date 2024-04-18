@@ -35,7 +35,7 @@ spec:
                       - name: name
                         value: rhtap-dev-namespace-setup
                       - name: namespace
-                        value: rhtap
+                        value: ${ rhtapNamespace }
                     resolver: cluster 
           CONFIGURE_PIPELINE
           
