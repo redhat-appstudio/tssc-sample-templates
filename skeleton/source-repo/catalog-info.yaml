@@ -14,7 +14,7 @@ metadata:
     janus-idp.io/tekton: ${{ values.name }} 
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
-    quay.io/repository-slug: ${{  values.repoSlug  }}
+    quay.io/repository-slug: ${{ values.repoSlug }}
   tags: ${{ values.tags }} 
 spec:
   type: service
