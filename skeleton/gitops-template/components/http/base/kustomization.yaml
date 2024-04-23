@@ -7,7 +7,9 @@ commonLabels:
   backstage.io/kubernetes-namespace: ${{  values.namespace  }} 
   app.kubernetes.io/part-of: ${{  values.name  }}
 resources: 
+{%- if values.namespace != values.defaultDeployNamespace %}
 - initialize-namespace.yaml
+{%- endif %}
 - deployment.yaml
 - route.yaml
 - service.yaml 
