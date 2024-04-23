@@ -183,6 +183,7 @@ spec:
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
           rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
