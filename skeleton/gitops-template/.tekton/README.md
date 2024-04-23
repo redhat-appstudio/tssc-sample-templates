@@ -6,7 +6,7 @@ This pipeline is used to validate pull-requests into the gitops repository. This
 
 Tasks references come from this repository ` ../pipelines` `../tasks` and are referenced by URL using the git resolver in tekton. 
  
-When the pipleines in this repo are updated, all future runs in existin pipelines are shared.
+When the pipleines in this repo are updated, all future runs in existing pipelines are shared.
 
 A developer can override these tasks with a local copy and updated annotations. 
 
@@ -14,7 +14,7 @@ Example
 
 To override the git-clone task, you may simply copy the git reference into your .tekton directory and then reference it from the remote task annotation. 
 
-`pipelinesascode.tekton.dev/task-0: "./tekton/git-clone.yaml"` 
+`pipelinesascode.tekton.dev/task-0: ".tekton/git-clone.yaml"` 
    
 
 ## Templates 

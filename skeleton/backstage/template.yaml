@@ -141,10 +141,12 @@ spec:
           description: sed.edit.CATALOG_DESCRIPTION 
           dockerfile: sed.edit.DOCKERFILE
           buildContext: sed.edit.BUILDCONTEXT
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: 'sed.edit.APPTAGS'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -181,6 +183,8 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
+          rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
+          defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
@@ -198,6 +202,7 @@ spec:
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
+          defaultBranch: main
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
