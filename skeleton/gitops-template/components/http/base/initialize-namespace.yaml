@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: initialize-namespace-${{ values.appName }}  
+  name: initialize-namespace-${{ values.appName }}
 spec:  
   template:         
     metadata:

@@ -11,5 +11,5 @@ spec:
         key: ${{ values.gitSecretKey }}
     webhook_secret:
         name: ${{ values.webhookSecret }}
-        key:  ${{ values.webhookSecretKey }}
+        key: ${{ values.webhookSecretKey }}
   {%- endif %}
