@@ -1,8 +1,10 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
-REPO="${1:-https://github.com/redhat-appstudio/tssc-sample-pipelines}"
-BRANCH="${2:-main}"
+source $ROOTDIR/properties
+
+REPO="${1:-$PIPELINE__REPO__URL}"
+BRANCH="${2:-$PIPELINE__REPO__BRANCH}"
 RAW_BASE=$(echo $REPO/$BRANCH |  sed "s/github.com/raw.githubusercontent.com/")  
 REPONAME=$(basename $REPO)
 
