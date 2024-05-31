@@ -33,7 +33,7 @@ spec:
         targetRevision: main
       destination:
         server: "{{url}}"
-        namespace: "{{namespace}}-{{stage}}"
+        namespace: "${{ values.namespace }}-{{stage}}"
       syncPolicy:
         managedNamespaceMetadata:
           labels:
