@@ -262,7 +262,7 @@ spec:
         argoInstance: default
         namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
-        path: './argo'
+        path: './application.yaml'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
