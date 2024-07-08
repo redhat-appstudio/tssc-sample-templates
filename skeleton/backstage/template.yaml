@@ -47,7 +47,7 @@ spec:
           enum:
             - GitHub
             - GitLab
-          defaut: GitHub
+          default: GitHub
         repoOwner:
           title: Repository Owner
           type: string
