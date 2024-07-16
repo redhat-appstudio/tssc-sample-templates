@@ -53,7 +53,7 @@ spec:
           title: Repository Owner
           type: string
           ui:help: The organization, user or project that this repo will belong to
-          default: northdepot
+          
         repoName:
           title: Repository Name
           type: string
@@ -123,7 +123,7 @@ spec:
           title: Image Organization
           type: string
           description: The organization, user or project that this repo will belong to
-          default: jduimovich0
+          
         imageName:
           title: Image Name
           type: string

@@ -4,8 +4,8 @@ export GITLAB__DEFAULT__HOST=gitlab.com
 export QUAY__DEFAULT__HOST=quay.io
 
 # leave empty if you don't want to set defaults for your git or quay org 
-export GITHUB__DEFAULT__ORG="northdepot"
-export QUAY__DEFAULT__ORG="jduimovich0"
+export GITHUB__DEFAULT__ORG=""
+export QUAY__DEFAULT__ORG=""
 
 # PE can replace these values with own pipeline fork
 export PIPELINE__REPO__URL=https://github.com/redhat-appstudio/tssc-sample-pipelines
