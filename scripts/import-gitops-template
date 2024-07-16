@@ -3,6 +3,15 @@ ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 # get gitops templates
 REPO='https://github.com/redhat-appstudio/tssc-sample-gitops'
+
+echo "----------------------"
+echo 
+echo "WARNING USING jduimovich --- CHANGE BACK TO redhat-appstudio/tssc-sample-gitops"
+echo "when gitops changes merged"
+echo 
+echo "----------------------"
+
+REPO='https://github.com/jduimovich/tssc-sample-gitops'
 REPONAME=$(basename $REPO)
 
 TEMPDIR=$ROOTDIR/temp
@@ -45,4 +54,8 @@ function iterate() {
 iterate $DEST/components
 iterate $DEST/app-of-apps
 
-
+echo "----------------------"
+echo 
+echo "CHECK WARNINGS TO UNDO DEV URLS and temp fixes" 
+echo 
+echo "----------------------"

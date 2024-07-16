@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
-  name: dance-all 
+  name: dance-all
   description: Dance Language Samples
 spec:
   targets:
@@ -10,4 +10,4 @@ spec:
     - ./templates/devfile-sample-dotnet60-dance/template.yaml  
     - ./templates/devfile-sample-go-dance/template.yaml  
     - ./templates/devfile-sample-java-springboot-dance/template.yaml  
-    - ./templates/devfile-sample-python-dance/template.yaml    
+    - ./templates/devfile-sample-python-dance/template.yaml  

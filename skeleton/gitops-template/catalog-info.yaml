@@ -10,7 +10,12 @@ metadata:
       type: admin-dashboard
   annotations:    
     argocd/app-name: ${{ values.name }}
+  {%- if values.isTekton %}
     janus-idp.io/tekton: ${{ values.name }} 
+  {%- endif %}
+  {%- if values.isJenkins %}
+    jenkins.io/job-full-name: ${{ values.name }} 
+  {%- endif %}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
 spec:

@@ -40,6 +40,7 @@ spec:
         - repoOwner
         - repoName
         - branch
+        - ciType
       properties:
         hostType:
           title: Host Type
@@ -52,6 +53,7 @@ spec:
           title: Repository Owner
           type: string
           ui:help: The organization, user or project that this repo will belong to
+          default: northdepot
         repoName:
           title: Repository Name
           type: string
@@ -64,6 +66,7 @@ spec:
           oneOf:
             - required:
                 - githubServer
+                - ciType
               properties:
                 hostType:
                     const: GitHub
@@ -72,8 +75,19 @@ spec:
                   type: string
                   default: github.com
                   ui:help: "You can also provide the on-prem github server, example: github-github.apps.cluster-ljg9z.sandbox219.opentlc.com"
+                ciType:
+                  title: CI Provider
+                  type: string
+                  default: tekton
+                  enum:
+                    - tekton
+                    - jenkins 
+                  enumNames:
+                    - Tekton (SLSA 3)
+                    - Jenkins (SLSA 2) 
             - required:
                 - gitlabServer
+                - ciType
               properties:
                 hostType:
                     const: GitLab
@@ -82,6 +96,16 @@ spec:
                   type: string
                   default: gitlab.com
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
+                ciType:
+                  title: CI Provider
+                  type: string
+                  default: tekton
+                  enum:
+                    - tekton
+                    - jenkins 
+                  enumNames:
+                    - Tekton (SLSA 3)
+                    - Jenkins (SLSA 2) 
     - title: Deployment information
       required:
         - imageRegistry
@@ -99,6 +123,7 @@ spec:
           title: Image Organization
           type: string
           description: The organization, user or project that this repo will belong to
+          default: jduimovich0
         imageName:
           title: Image Name
           type: string
@@ -144,9 +169,30 @@ spec:
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["nodejs", "express", "ubi8", "sscs", "sbom", "acs"]'
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops  
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
+          isTekton: ${{ parameters.ciType === 'tekton' }} 
+          isJenkins: ${{ parameters.ciType === 'jenkins' }} 
+    - id: fetch-ci-skeleton
+      name: Fetch CI Components
+      action: fetch:template
+      input:
+        url: ../../skeleton/ci/source-repo/${{ parameters.ciType}} 
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          description: Secure Supply Chain Example for Node.js+Express REST API with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment 
+          dockerfile: Dockerfile
+          buildContext: .
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          tags: '["nodejs", "express", "ubi8", "sscs", "sbom", "acs"]'
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops  
+          owner: ${{ parameters.owner }} 
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }}  
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -198,6 +244,42 @@ spec:
           argoNS: rhtap
           argoProject: default
           secretRef: ${{ parameters.hostType === 'GitLab' }}
+          isTekton: ${{ parameters.ciType === 'tekton' }} 
+          isJenkins: ${{ parameters.ciType === 'jenkins' }} 
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
+          defaultBranch: main
+    # Fetch CI which will be in a folder ci/gitops/type
+    - id: fetch-gitops-ci-skeleton
+      name: Fetch Gitops CI Components
+      action: fetch:template
+      input:
+        url: ../../skeleton/ci/gitops-template/${{ parameters.ciType}} 
+        targetPath: gitops
+        values:
+          name: ${{ parameters.name }}
+          appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
+          description: This is GitOps manifest for ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
+          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          argoComponent: './components/${{ parameters.name }}/overlays/development'
+          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
+          owner: ${{ parameters.owner }} 
+          image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
+          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
+          srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          port: 3001
+          argoNS: rhtap
+          argoProject: default
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          isTekton: ${{ parameters.ciType === 'tekton' }} 
+          isJenkins: ${{ parameters.ciType === 'jenkins' }} 
           gitSecret: gitlab-auth-secret
           gitSecretKey: password
           webhookSecret: pipelines-secret
