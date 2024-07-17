@@ -35,8 +35,6 @@ cp -r $ROOT_DIR/skeleton/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
 
 # get readme to source component doc
 cp -r $DEST/content/README.md  $DEST/content/docs/source-component.md
-cp -r $ROOT_DIR/skeleton/source-repo/.tekton/README.md  $DEST/content/docs/pipelines.md
-
  
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml

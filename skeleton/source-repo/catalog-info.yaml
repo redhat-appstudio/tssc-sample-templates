@@ -11,10 +11,15 @@ metadata:
   annotations:
     # ArgoCD apps from this template used rhtap-gitops as the grouping
     argocd/app-selector: rhtap/gitops=${{  values.name  }}  
+  {%- if values.isTekton %}
     janus-idp.io/tekton: ${{ values.name }} 
+  {%- endif %}
+  {%- if values.isJenkins %}
+    jenkins.io/job-full-name: ${{ values.name }} 
+  {%- endif %}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
-    quay.io/repository-slug: ${{ values.repoSlug }}
+    quay.io/repository-slug: ${{ values.repoSlug }}  
   tags: ${{ values.tags }} 
 spec:
   type: service
