@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
@@ -53,4 +55,3 @@ for prun in $SRC_TEKTON/*.yaml $GITOPS_TEKTON/*.yaml; do
         echo "Labels for $prun" 
         add-backstage-labels $prun
 done 
- 
