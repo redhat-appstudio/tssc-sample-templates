@@ -30,11 +30,8 @@ export SOURCE_BUILD_RESULT_FILE=
 # gather images params
 
 export TARGET_BRANCH=""
-# needs to be generated and private and public key and put into the Jenkins secrets
-# TBD signing it
-export PUBLIC_KEY=
 # enterprise contract
-export POLICY_CONFIGURATION="enterprise-contract-service/default"
+export POLICY_CONFIGURATION="github.com/enterprise-contract/config//rhtap-jenkins"
 #internal, assumes jenkins is local openshift
 export REKOR_HOST=http://rekor-server.rhtap.svc
 export IGNORE_REKOR=false

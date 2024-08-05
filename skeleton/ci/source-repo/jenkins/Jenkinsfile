@@ -12,10 +12,10 @@ pipeline {
         QUAY_IO_CREDS = credentials('QUAY_IO_CREDS')
     }
     stages {
-        stage('init.sh') {
+        stage('init') {
             steps {
                 script {
-                    rhtap.info ("Init")
+                    rhtap.info('init')
                     rhtap.init()
                 }
             }
@@ -23,17 +23,32 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    rhtap.info( 'build_container..')
+                    rhtap.info('buildah_rhtap')
                     rhtap.buildah_rhtap()
+                }
+            }
+        }
+        stage('sign-attest') {
+            environment {
+                COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
+                COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
+                COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+            }
+            steps {
+                script {
+                    rhtap.info('cosign_sign_attest')
+                    rhtap.cosign_sign_attest()
                 }
             }
         }
         stage('scan') {
             steps {
                 script {
-                    rhtap.info('acs_scans' )
+                    rhtap.info('acs_deploy_check')
                     rhtap.acs_deploy_check()
+                    rhtap.info('acs_image_check')
                     rhtap.acs_image_check()
+                    rhtap.info('acs_image_scan' )
                     rhtap.acs_image_scan()
                 }
             }
@@ -41,7 +56,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    rhtap.info('deploy' )
+                    rhtap.info('update_deployment')
                     rhtap.update_deployment()
                 }
             }
@@ -49,8 +64,9 @@ pipeline {
         stage('summary') {
             steps {
                 script {
-                    rhtap.info('summary' )
+                    rhtap.info('show_sbom_rhdh')
                     rhtap.show_sbom_rhdh()
+                    rhtap.info('summary')
                     rhtap.summary()
                 }
             }
