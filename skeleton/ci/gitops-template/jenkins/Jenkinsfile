@@ -5,9 +5,10 @@ library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
 pipeline {
     agent any
     environment {
-        // Only COSIGN_PUBLIC_KEY is needed but init.sh will fail otherwise
-        COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
-        COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
+        // Not used but init.sh will fail if they're missing
+        COSIGN_SECRET_PASSWORD = 'dummy'
+        COSIGN_SECRET_KEY = 'dummy'
+        // Used to verify the image signature and attestation
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
     }
     stages {
