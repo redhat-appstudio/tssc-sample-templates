@@ -14,7 +14,7 @@ metadata:
     janus-idp.io/tekton: ${{ values.name }} 
   {%- endif %}
   {%- if values.isJenkins %}
-    jenkins.io/job-full-name: ${{ values.name }} 
+    jenkins.io/job-full-name: ${{ values.appName }} 
   {%- endif %}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
