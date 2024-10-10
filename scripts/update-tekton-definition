@@ -7,8 +7,8 @@ source $ROOTDIR/properties
 
 REPO="${1:-$PIPELINE__REPO__URL}"
 BRANCH="${2:-$PIPELINE__REPO__BRANCH}"
-RAW_BASE=$(echo $REPO/$BRANCH |  sed "s/github.com/raw.githubusercontent.com/")  
-REPONAME=$(basename $REPO)
+RAW_BASE="$REPO/blob/$(echo $BRANCH | sed "s|/|%2F|g")"
+REPONAME="$(basename $REPO)"
 
 TEMPDIR=$ROOTDIR/temp
 rm -rf $TEMPDIR # clean up
@@ -50,7 +50,7 @@ mkdir -p $GITOPS_TEKTON/../docs
 cp -r $GITOPS_TEKTON/README.md  $GITOPS_TEKTON/../docs/pipelines.md
 
 rm -rf $TEMPDIR
- 
+
 for prun in $SRC_TEKTON/*.yaml $GITOPS_TEKTON/*.yaml; do 
         echo "Labels for $prun" 
         add-backstage-labels $prun
