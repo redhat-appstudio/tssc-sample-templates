@@ -36,11 +36,9 @@ spec:
               kind: [Group, User]
     - title: Application Repository Information
       required:
-        - hostType
-        - repoOwner
+        - hostType 
         - repoName
-        - branch
-        - ciType
+        - branch 
       properties:
         hostType:
           title: Host Type
@@ -48,12 +46,8 @@ spec:
           enum:
             - GitHub
             - GitLab
+            - Bitbucket
           default: GitHub
-        repoOwner:
-          title: Repository Owner
-          type: string
-          ui:help: The organization, user or project that this repo will belong to
-          ${DEFAULT_ORG_FOR_GITHUB}
         repoName:
           title: Repository Name
           type: string
@@ -65,12 +59,19 @@ spec:
         hostType:
           oneOf:
             - required:
-                - githubServer
-                - ciType
+                - ghHost
+                - ciType  
+                - ghOwner
+                - hostType
               properties:
                 hostType:
-                    const: GitHub
-                githubServer:
+                  const: GitHub   
+                ghOwner:
+                  title: Repository Owner
+                  type: string
+                  ui:help: The organization, user or project that this repo will belong to
+                  ${DEFAULT_ORG_FOR_GITHUB}
+                ghHost:
                   title: Repository Server
                   type: string
                   default: ${GITHUB__DEFAULT__HOST}
@@ -82,20 +83,69 @@ spec:
                   enum:
                     - tekton
                     - jenkins 
+                    - githubactions 
                   enumNames:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2) 
+                    - Github Actions (SLSA 2) 
             - required:
-                - gitlabServer
-                - ciType
+                - glHost
+                - ciType  
+                - glOwner
+                - hostType
               properties:
                 hostType:
-                    const: GitLab
-                gitlabServer:
+                    const: GitLab  
+                glOwner:
+                  title: Repository Owner
+                  type: string
+                  ui:help: The organization, user or project that this repo will belong to
+                  ${DEFAULT_ORG_FOR_GITLAB}
+                glHost:
                   title: Repository Server
                   type: string
                   default: ${GITLAB__DEFAULT__HOST}
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
+                ciType:
+                  title: CI Provider
+                  type: string
+                  default: gitlabci
+                  enum:
+                    - tekton
+                    - jenkins
+                    - gitlabci
+                  enumNames:
+                    - Tekton (SLSA 3)
+                    - Jenkins (SLSA 2) 
+                    - Gitlab CI (SLSA 2) 
+            - required:
+                - bbHost
+                - ciType  
+                - bbOwner
+                - hostType   
+                - workspace
+                - project
+              properties:
+                hostType:
+                    const: Bitbucket  
+                bbOwner:
+                  title: Repository Owner
+                  type: string
+                  ui:help: The organization, user or project that this repo will belong to
+                  ${DEFAULT_ORG_FOR_BITBUCKET}
+                bbHost:
+                  title: Repository Server
+                  type: string
+                  default: ${BITBUCKET__DEFAULT__HOST}
+                  ui:help: "Bitbucket Cloud Default"
+                workspace:
+                  title: Workspace
+                  type: string 
+                  ui:help: "Bitbucket Workspace"
+                project:
+                  title: Project
+                  type: string 
+                  ui:help: "Bitbucket Project"
                 ciType:
                   title: CI Provider
                   type: string
@@ -105,7 +155,7 @@ spec:
                     - jenkins 
                   enumNames:
                     - Tekton (SLSA 3)
-                    - Jenkins (SLSA 2) 
+                    - Jenkins (SLSA 2)   
     - title: Deployment information
       required:
         - imageRegistry
@@ -151,8 +201,8 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
           
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
@@ -165,11 +215,11 @@ spec:
           namespace: ${{ parameters.namespace }}
           description: sed.edit.CATALOG_DESCRIPTION 
           dockerfile: sed.edit.DOCKERFILE
-          buildContext: sed.edit.BUILDCONTEXT
-          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
+          buildContext: sed.edit.BUILDCONTEXT  
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}} 
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: 'sed.edit.APPTAGS'
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops  
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops  
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -179,17 +229,19 @@ spec:
       name: Fetch CI Components
       action: fetch:template
       input:
-        url: ../../skeleton/ci/source-repo/${{ parameters.ciType}} 
+        url: ../../skeleton/ci/source-repo/${{ parameters.ciType}}  
+        copyWithoutRender:
+          - .github/workflows/*
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
           description: sed.edit.CATALOG_DESCRIPTION 
           dockerfile: sed.edit.DOCKERFILE
           buildContext: sed.edit.BUILDCONTEXT
-          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}} 
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: 'sed.edit.APPTAGS'
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops  
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops  
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }}  
@@ -199,9 +251,9 @@ spec:
       action: publish:github
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
-        allowedHosts: [ '${{ parameters.githubServer}}' ]
+        allowedHosts: [ '${{ parameters.ghHost}}' ]
         description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        repoUrl: ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -211,12 +263,24 @@ spec:
       action: publish:gitlab
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
-        allowedHosts: [ '${{ parameters.gitlabServer }}' ]
+        allowedHosts: [ '${{ parameters.glHost }}' ]
         description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+    - id: publish-bitbucket
+      name: Publish Repository to BitBucket
+      action: publish:bitbucketCloud
+      if: ${{ parameters.hostType === 'Bitbucket' }}
+      input:
+        allowedHosts: [ '${{ parameters.bbHost }}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+
     # The final step is to register our new component in the catalog.
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
@@ -232,8 +296,8 @@ spec:
           rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
           defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }} 
@@ -243,10 +307,12 @@ spec:
           port: sed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
-          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          hostType: ${{ parameters.hostType }} 
+          username: ${{ parameters.bbOwner }} 
+          secretRef: ${{ parameters.hostType != 'GitHub' }} 
           isTekton: ${{ parameters.ciType === 'tekton' }} 
           isJenkins: ${{ parameters.ciType === 'jenkins' }} 
-          gitSecret: ${GIT__SECRET__DEFAULT__NAME}
+          gitSecret: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
@@ -266,8 +332,8 @@ spec:
           rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
           defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }} 
@@ -277,10 +343,12 @@ spec:
           port: sed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
-          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          hostType: ${{ parameters.hostType }} 
+          username: ${{ parameters.bbOwner }} 
+          secretRef: ${{ parameters.hostType != 'GitHub' }}  
           isTekton: ${{ parameters.ciType === 'tekton' }} 
-          isJenkins: ${{ parameters.ciType === 'jenkins' }} 
-          gitSecret: ${GIT__SECRET__DEFAULT__NAME}
+          isJenkins: ${{ parameters.ciType === 'jenkins' }}  
+          gitSecret: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
@@ -299,9 +367,9 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.githubServer }}']
+        allowedHosts: ['${{ parameters.ghHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl:  ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -312,12 +380,25 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.gitlabServer }}']
+        allowedHosts: ['${{ parameters.glHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
+    - id: publish-bitbucket-gitops
+      name: Publish Gitops Repository to Bitbucket
+      action: publish:bitbucketCloud
+      if: ${{ parameters.hostType === 'Bitbucket' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['${{ parameters.bbHost }}']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl:  ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}-gitops&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+                
     - id: wait-for-github-repository
       name: Waiting for repository availability
       action: 'debug:wait'
@@ -327,13 +408,13 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.repoContentsUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.repoContentsUrl) }}
         catalogInfoPath: '/catalog-info.yaml'
     - id: register-gitops
       name: Register Gitops
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
+        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.repoContentsUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.repoContentsUrl) }}  
         catalogInfoPath: '/catalog-info.yaml'
     - id: create-argocd-resources
       name: Create ArgoCD Resources
@@ -343,15 +424,15 @@ spec:
         # name set in rhdh config
         argoInstance: ${ARGOCD__DEFAULT__INSTANCE}
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
-        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
+        repoUrl: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Source Repository
-        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.remoteUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.remoteUrl) }}
       - title: GitOps Repository
-        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.remoteUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.remoteUrl) }}
       - title: Open Component in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}

@@ -1,15 +1,19 @@
 # PE can replace these values with on-prem host
 export GITHUB__DEFAULT__HOST=github.com
 export GITLAB__DEFAULT__HOST=gitlab.com
+export BITBUCKET__DEFAULT__HOST=bitbucket.org 
+
 export QUAY__DEFAULT__HOST=quay.io
 
 # leave empty if you don't want to set defaults for your git or quay org 
 export GITHUB__DEFAULT__ORG=""
+export GITLAB__DEFAULT__ORG=""
+export BITBUCKET__DEFAULT__ORG=""
 export QUAY__DEFAULT__ORG=""
 
 # PE can replace these values with own pipeline fork
 export PIPELINE__REPO__URL=https://github.com/redhat-appstudio/tssc-sample-pipelines
-export PIPELINE__REPO__BRANCH=main
+export PIPELINE__REPO__BRANCH=v1.2.x
 
 export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
 
@@ -19,8 +23,9 @@ export ARGOCD__DEFAULT__INSTANCE=default
 export ARGOCD__DEFAULT__PROJECT=default
 
 
-# For secret reference in Repositroy CRs
-export GIT__SECRET__DEFAULT__NAME=gitlab-auth-secret
+# For secret reference in Repository CRs
+# Secret will be prefixed by CI name, gitops (for github), or gitlab, or bitbucket in template
+# export GIT__SECRET__DEFAULT__NAME=auth-secret
 export GIT__SECRET__DEFAULT__KEY=password
 export WEBHOOK__SECRET__DEFAULT__NAME=pipelines-secret
 export WEBHOOK__SECRET__DEFAULT__KEY=webhook.secret
@@ -28,6 +33,12 @@ export WEBHOOK__SECRET__DEFAULT__KEY=webhook.secret
 # compute the template tag to set defaults, leave empty if not set
 if [ ! -z "${GITHUB__DEFAULT__ORG}" ]; then
 export DEFAULT_ORG_FOR_GITHUB="default: $GITHUB__DEFAULT__ORG"
+fi
+if [ ! -z "${GITLAB__DEFAULT__ORG}" ]; then
+export DEFAULT_ORG_FOR_GITLAB="default: $GITLAB__DEFAULT__ORG"
+fi
+if [ ! -z "${BITBUCKET__DEFAULT__ORG}" ]; then
+export DEFAULT_ORG_FOR_BITBUCKET="default: $BITBUCKET__DEFAULT__ORG"
 fi
 if [ ! -z "${QUAY__DEFAULT__ORG}" ]; then
 export DEFAULT_ORG_FOR_QUAY="default: $QUAY__DEFAULT__ORG"

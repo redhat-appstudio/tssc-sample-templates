@@ -9,4 +9,4 @@ $ROOTDIR/scripts/update-tekton-definition
 $ROOTDIR/scripts/import-repo
 
 # get gitops templates
-$ROOTDIR/scripts/import-gitops-template
+echo SKIP $ROOTDIR/scripts/import-gitops-template
