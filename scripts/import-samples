@@ -12,7 +12,7 @@ if [ -d $SAMPLE_DIR ]; then
 else 
     (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
 fi
- 
+
 APP_NAME=$(yq ".metadata.name" $SAMPLE_DIR/devfile.yaml)
 APP_DISPLAY_NAME=$(yq ".metadata.displayName" $SAMPLE_DIR/devfile.yaml)
 APP_DESC=$(yq ".metadata.description" $SAMPLE_DIR/devfile.yaml)
@@ -37,7 +37,7 @@ cp -r $ROOT_DIR/skeleton/backstage/mkdocs.yml  $DEST/content/mkdocs.yml
 
 # get readme to source component doc
 cp -r $DEST/content/README.md  $DEST/content/docs/source-component.md
- 
+
 sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
 sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
