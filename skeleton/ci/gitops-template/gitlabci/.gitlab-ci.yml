@@ -1,0 +1,55 @@
+
+image: alpine
+
+before_script:
+  - echo "RHTAP before_script"
+  - apk upgrade
+  - apk add git bash jq yq curl python3 buildah cosign syft podman fuse-overlayfs
+  - export CI_TYPE=gitlab    
+
+after_script:
+  - echo "RHTAP after_script"
+
+build:
+  stage: build
+  script:
+    - echo "WARNING Cloning pre-1.3 of https://github.com/jduimovich/tssc-sample-jenkins"
+    - git clone -b pre-1.3  https://github.com/jduimovich/tssc-sample-jenkins.git   
+    - cp rhtap/env.sh tssc-sample-jenkins/resources/env.sh
+    - echo "Init" 
+    - bash tssc-sample-jenkins/resources/init.sh  
+    - echo "Build" 
+    - bash tssc-sample-jenkins/resources/buildah-rhtap.sh  
+    - bash tssc-sample-jenkins/resources/cosign-sign-attest.sh 
+  artifacts:
+    paths:
+      - results/
+      - tssc-sample-jenkins/
+
+scan:
+  stage: test
+  script:  
+    - echo "Scan"   
+    - bash tssc-sample-jenkins/resources/acs-deploy-check.sh 
+    - bash tssc-sample-jenkins/resources/acs-image-check.sh 
+    - bash tssc-sample-jenkins/resources/acs-image-scan.sh    
+  artifacts:
+    paths:
+      - results/
+      - tssc-sample-jenkins/
+
+summary:
+  stage: deploy
+  script:    
+    - echo "Summary"  
+    - bash tssc-sample-jenkins/resources/update-deployment.sh 
+    - bash tssc-sample-jenkins/resources/show-sbom-rhdh.sh 
+    - bash tssc-sample-jenkins/resources/summary.sh  
+  artifacts:
+    paths:
+      - results/
+      - tssc-sample-jenkins/
+
+
+ 
+  

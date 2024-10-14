@@ -47,8 +47,3 @@ function iterate() {
 iterate $DEST/components
 iterate $DEST/app-of-apps
 
-echo "----------------------"
-echo 
-echo "CHECK WARNINGS TO UNDO DEV URLS and temp fixes" 
-echo 
-echo "----------------------"

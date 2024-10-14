@@ -2,9 +2,11 @@
 export REBUILD=true
 export SKIP_CHECKS=true
 
+CI_TYPE=${CI_TYPE:-jenkins}  
+
 # from buildah-rhtap
 TAG=$(git rev-parse HEAD)
-export IMAGE_URL=${{ values.image }}:jenkins-$TAG
+export IMAGE_URL=${{ values.image }}:$CI_TYPE-$TAG
 export IMAGE=$IMAGE_URL
 export RESULT_PATH=$DIR/results/temp/files/sbom-url
 
@@ -15,7 +17,7 @@ export BUILD_ARGS=""
 export BUILD_ARGS_FILE=""
 
 # from ACS_*.*
-export DISABLE_ACS=true
+export DISABLE_ACS=false
 # Optionally set ROX_CENTRAL_ENDPOINT here instead of configuring a Jenkins secret
 # export ROX_CENTRAL_ENDPOINT=central-acs.apps.user.cluster.domain.com:443
 export INSECURE_SKIP_TLS_VERIFY=true

@@ -6,10 +6,15 @@ spec:
   url: ${{ values.srcRepoURL }}
   {%- if values.secretRef %}
   git_provider:
+    {%- if values.hostType == 'Bitbucket' %}
+    user: ${{ values.username }}
+    {%- endif %}
     secret:
         name: ${{ values.gitSecret }}
         key: ${{ values.gitSecretKey }}
+    {%- if values.hostType == 'Gitlab' %}
     webhook_secret:
         name: ${{ values.webhookSecret }}
         key:  ${{ values.webhookSecretKey }}
+    {%- endif %}
   {%- endif %}

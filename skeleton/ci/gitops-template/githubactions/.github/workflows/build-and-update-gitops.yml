@@ -1,0 +1,134 @@
+
+# 💁 The Gitops Starter workflow will:
+# - Checkout your repository
+# - Perform a TSSC container image build
+# - Push the built image to the users provided registry
+# - Update the deployment yaml
+
+name: TSSC-Build-Attest-Scan-Deploy
+env:
+  # 🖊️ EDIT to change the image registry settings.
+  # Registries such as GHCR, Quay.io, and Docker Hub are supported.
+  IMAGE_REGISTRY: quay.io/jduimovich0   # ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY_USER: jduimovich0    # ${{ secrets.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+ 
+  ROX_CENTRAL_ENDPOINT: ${{ secrets.ROX_CENTRAL_ENDPOINT }}
+  ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
+
+  QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
+  QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
+  COSIGN_SECRET_PASSWORD: ${{ secrets.COSIGN_SECRET_PASSWORD }}
+  COSIGN_SECRET_KEY: ${{ secrets.COSIGN_SECRET_KEY }}
+  COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
+  GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
+
+  # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
+  IMAGE_TAGS: ""
+  IMAGE_TAG: ""
+  DEFAULT_UPDATE_VIA_PUSH: "true"
+  # 🖊️ EDIT to set a name for your OpenShift app, or a default one will be generated below.
+  APP_NAME: "" 
+on: [ push, workflow_dispatch] 
+
+jobs:
+  tssc-ci-cd:
+    name: Build and send Image Update PR
+    # ubuntu-20.04 can also be used.
+    runs-on: ubuntu-24.04 
+    environment: production
+
+    steps:
+    - name: Check for required secrets
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const secrets = { 
+            IMAGE_REGISTRY: `${{ secrets.IMAGE_REGISTRY }}`,
+            IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`,
+            IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
+
+            
+            ROX_CENTRAL_ENDPOINT: `${{ secrets.ROX_CENTRAL_ENDPOINT }}`,
+            ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`,
+            
+            QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`,
+            QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`,
+
+            COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`,
+            COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`,
+            COSIGN_PUBLIC_KEY: `${{ secrets.COSIGN_PUBLIC_KEY }}`,
+
+            GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`,
+
+          }; 
+          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+            if (value.length === 0) {
+              core.error(`Secret "${name}" is not set`);
+              return true;
+            }
+            core.info(`✔️ Secret "${name}" is set`);
+            return false;
+          });
+          if (missingSecrets.length > 0) {
+            core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+              "You can add it using:\n" +
+              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+          }
+          else {
+            core.info(`✅ All the required secrets are set`);
+          }
+    - name: Check out repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '2'
+    - name: Init 
+      run: |
+        echo "WARNING Cloning pre-1.3 of https://github.com/jduimovich/tssc-sample-jenkins"
+        git clone -b pre-1.3  https://github.com/jduimovich/tssc-sample-jenkins.git tssc-sample-jenkins
+        echo "export CI_TYPE=github " > tssc-sample-jenkins/resources/env.sh 
+        cat rhtap/env.sh >> tssc-sample-jenkins/resources/env.sh 
+        cat tssc-sample-jenkins/resources/env.sh  
+        # syft and cosign install 
+        mkdir -p local-bin
+        pushd local-bin
+        wget -q https://github.com/sigstore/cosign/releases/download/v2.4.0/cosign-linux-amd64 
+        wget -q https://github.com/anchore/syft/releases/download/v1.13.0/syft_1.13.0_linux_amd64.tar.gz
+        tar zxvf syft_1.13.0_linux_amd64.tar.gz
+        ls -al
+        sudo mv cosign-linux-amd64 /usr/bin/cosign
+        sudo chmod +x /usr/bin/cosign
+        sudo mv syft /usr/bin/syft
+        sudo chmod +x /usr/bin/syft
+        syft --version 
+        cosign version
+        buildah --version
+        popd
+        
+        echo "Init" 
+        bash tssc-sample-jenkins/resources/init.sh 
+    - name: Build 
+      run: | 
+        echo "Build" 
+        bash tssc-sample-jenkins/resources/buildah-rhtap.sh  
+        bash tssc-sample-jenkins/resources/cosign-sign-attest.sh 
+    - name: Scan 
+      run: | 
+        echo "Scan"  
+        bash tssc-sample-jenkins/resources/acs-deploy-check.sh 
+        bash tssc-sample-jenkins/resources/acs-image-check.sh 
+        bash tssc-sample-jenkins/resources/acs-image-scan.sh   
+    - name: Deploy 
+      run: | 
+        echo "Deploy"  
+        bash tssc-sample-jenkins/resources/update-deployment.sh 
+    - name: Summary 
+      run: | 
+        echo "Summary"   
+        bash tssc-sample-jenkins/resources/show-sbom-rhdh.sh 
+        bash tssc-sample-jenkins/resources/summary.sh  
+    - name: Done 
+      run: | 
+        echo "Done"   
