@@ -7,7 +7,14 @@ source $ROOTDIR/properties
 
 REPO="${1:-$PIPELINE__REPO__URL}"
 BRANCH="${2:-$PIPELINE__REPO__BRANCH}"
+
+# If the repo is still in a github.com repo, then use the raw format which works in Github, Gitlab pipelines
+# For non github.com URLs, like the pipelines forked to GHE, use the blob format
+if [[ $REPO == https://github.com* ]] ; then 
+RAW_BASE=$(echo $REPO/$BRANCH | sed "s/github.com/raw.githubusercontent.com/")  
+else
 RAW_BASE="$REPO/blob/$(echo $BRANCH | sed "s|/|%2F|g")"
+fi
 REPONAME="$(basename $REPO)"
 
 TEMPDIR=$ROOTDIR/temp
