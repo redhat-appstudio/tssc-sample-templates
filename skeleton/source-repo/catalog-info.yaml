@@ -19,10 +19,10 @@ metadata:
   {%- endif %}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:. 
-  {%- if values.image contains "quay.io" %}
+  {%- if values.image contains "quay" %}
     quay.io/repository-slug: ${{ values.repoSlug }}
   {%- elif values.image contains "jfrog" %}
-    jfrog-artifactory/image-name: ${{ values.repoSlug }}
+    jfrog-artifactory/image-name: ${{ values.imageName }}
   {%- elif values.image contains "nexus" %}
     nexus-repository-manager/docker.image-name: ${{ values.repoSlug }}
   {%- endif %}  
