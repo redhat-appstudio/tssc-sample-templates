@@ -18,14 +18,14 @@ metadata:
     jenkins.io/job-full-name: ${{ values.name }} 
   {%- endif %}
     backstage.io/kubernetes-id: ${{ values.name }} 
-    backstage.io/techdocs-ref: dir:. 
-  {%- if values.image contains "quay" %}
+    backstage.io/techdocs-ref: dir:.
+  {%- if "quay" in values.image %}
     quay.io/repository-slug: ${{ values.repoSlug }}
-  {%- elif values.image contains "jfrog" %}
+  {%- elif "jfrog" in values.image %}
     jfrog-artifactory/image-name: ${{ values.imageName }}
-  {%- elif values.image contains "nexus" %}
+  {%- elif "nexus" in values.image %}
     nexus-repository-manager/docker.image-name: ${{ values.repoSlug }}
-  {%- endif %}  
+  {%- endif %}
   tags: ${{ values.tags }} 
 spec:
   type: service
