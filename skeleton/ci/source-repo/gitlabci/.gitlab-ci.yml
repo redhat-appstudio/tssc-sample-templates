@@ -1,55 +1,97 @@
+# Generated from templates/.gitlab-ci.yml.njk. Do not edit directly.
 
-image: alpine
+image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-gitlab
 
-before_script:
-  - echo "RHTAP before_script"
-  - apk upgrade
-  - apk add git bash jq yq curl python3 buildah cosign syft podman fuse-overlayfs
-  - export CI_TYPE=gitlab    
+variables:
+  CI_TYPE: gitlab
 
-after_script:
-  - echo "RHTAP after_script"
+stages:
+  - init
+  - build
+  - scan
+  - deploy
+  - summary
 
-build:
+init:
+  stage: init
+  script:
+    - echo "init"
+    - bash /work/rhtap/init.sh
+  artifacts:
+    paths:
+      - results/
+
+buildah-rhtap:
   stage: build
   script:
-    - echo "WARNING Cloning pre-1.3 of https://github.com/jduimovich/tssc-sample-jenkins"
-    - git clone -b pre-1.3  https://github.com/jduimovich/tssc-sample-jenkins.git   
-    - cp rhtap/env.sh tssc-sample-jenkins/resources/env.sh
-    - echo "Init" 
-    - bash tssc-sample-jenkins/resources/init.sh  
-    - echo "Build" 
-    - bash tssc-sample-jenkins/resources/buildah-rhtap.sh  
-    - bash tssc-sample-jenkins/resources/cosign-sign-attest.sh 
+    - echo "buildah-rhtap"
+    - bash /work/rhtap/buildah-rhtap.sh
   artifacts:
     paths:
       - results/
-      - tssc-sample-jenkins/
 
-scan:
-  stage: test
-  script:  
-    - echo "Scan"   
-    - bash tssc-sample-jenkins/resources/acs-deploy-check.sh 
-    - bash tssc-sample-jenkins/resources/acs-image-check.sh 
-    - bash tssc-sample-jenkins/resources/acs-image-scan.sh    
+cosign-sign-attest:
+  stage: build
+  needs: [buildah-rhtap]
+  script:
+    - echo "cosign-sign-attest"
+    - bash /work/rhtap/cosign-sign-attest.sh
   artifacts:
     paths:
       - results/
-      - tssc-sample-jenkins/
+
+acs-deploy-check:
+  stage: scan
+  script:
+    - echo "acs-deploy-check"
+    - bash /work/rhtap/acs-deploy-check.sh
+  artifacts:
+    paths:
+      - results/
+
+acs-image-check:
+  stage: scan
+  script:
+    - echo "acs-image-check"
+    - bash /work/rhtap/acs-image-check.sh
+  artifacts:
+    paths:
+      - results/
+
+acs-image-scan:
+  stage: scan
+  script:
+    - echo "acs-image-scan"
+    - bash /work/rhtap/acs-image-scan.sh
+  artifacts:
+    paths:
+      - results/
+
+update-deployment:
+  stage: deploy
+  script:
+    - echo "update-deployment"
+    - bash /work/rhtap/update-deployment.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+
+show-sbom-rhdh:
+  stage: summary
+  script:
+    - echo "show-sbom-rhdh"
+    - bash /work/rhtap/show-sbom-rhdh.sh
+  artifacts:
+    paths:
+      - results/
 
 summary:
-  stage: deploy
-  script:    
-    - echo "Summary"  
-    - bash tssc-sample-jenkins/resources/update-deployment.sh 
-    - bash tssc-sample-jenkins/resources/show-sbom-rhdh.sh 
-    - bash tssc-sample-jenkins/resources/summary.sh  
+  stage: summary
+  script:
+    - echo "summary"
+    - bash /work/rhtap/summary.sh
   artifacts:
     paths:
       - results/
-      - tssc-sample-jenkins/
-
-
- 
-  
