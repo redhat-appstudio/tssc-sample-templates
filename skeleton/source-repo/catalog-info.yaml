@@ -10,15 +10,18 @@ metadata:
       type: admin-dashboard
   annotations:
     # ArgoCD apps from this template used rhtap-gitops as the grouping
-    argocd/app-selector: rhtap/gitops=${{  values.name  }}  
+    argocd/app-selector: rhtap/gitops=${{  values.name  }}
+    backstage.io/kubernetes-id: ${{ values.name }} 
+    backstage.io/techdocs-ref: dir:.  
+  {%- if values.hostType == 'GitHub' %} 
+    github.com/project-slug: ${{ values.gitRepoSlug }} 
+  {%- endif %} 
   {%- if values.isTekton %}
     janus-idp.io/tekton: ${{ values.name }} 
   {%- endif %}
   {%- if values.isJenkins %}
     jenkins.io/job-full-name: ${{ values.name }} 
   {%- endif %}
-    backstage.io/kubernetes-id: ${{ values.name }} 
-    backstage.io/techdocs-ref: dir:.
   {%- if "quay" in values.image %}
     quay.io/repository-slug: ${{ values.repoSlug }}
   {%- elif "jfrog" in values.image %}

@@ -10,14 +10,17 @@ metadata:
       type: admin-dashboard
   annotations:    
     argocd/app-name: ${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }} 
+    backstage.io/techdocs-ref: dir:.  
   {%- if values.isTekton %}
     janus-idp.io/tekton: ${{ values.name }} 
   {%- endif %}
   {%- if values.isJenkins %}
     jenkins.io/job-full-name: ${{ values.appName }} 
-  {%- endif %}
-    backstage.io/kubernetes-id: ${{ values.name }} 
-    backstage.io/techdocs-ref: dir:. 
+  {%- endif %} 
+  {%- if values.hostType == 'GitHub' %} 
+    github.com/project-slug: ${{ values.gitRepoSlug }} 
+  {%- endif %} 
 spec:
   type: gitops
   owner: ${{ values.owner }} 
