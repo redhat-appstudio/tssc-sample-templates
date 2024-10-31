@@ -221,6 +221,8 @@ spec:
           imageName: ${{ parameters.imageName }}
           tags: 'sed.edit.APPTAGS'
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops  
+          hostType: ${{ parameters.hostType }} 
+          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}  
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -307,7 +309,8 @@ spec:
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: sed.edit.IMAGEPORT
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
-          argoProject: ${ARGOCD__DEFAULT__PROJECT}
+          argoProject: ${ARGOCD__DEFAULT__PROJECT} 
+          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops         
           hostType: ${{ parameters.hostType }} 
           username: ${{ parameters.bbOwner }} 
           secretRef: ${{ parameters.hostType != 'GitHub' }} 
