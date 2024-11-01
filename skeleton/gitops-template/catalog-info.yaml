@@ -11,16 +11,19 @@ metadata:
   annotations:    
     argocd/app-name: ${{ values.name }}
     backstage.io/kubernetes-id: ${{ values.name }} 
-    backstage.io/techdocs-ref: dir:.  
-  {%- if values.isTekton %}
+    backstage.io/techdocs-ref: dir:.   
+  {%- if values.ciType == 'tekton' %} 
     janus-idp.io/tekton: ${{ values.name }} 
-  {%- endif %}
-  {%- if values.isJenkins %}
+  {%- endif %} 
+  {%- if values.ciType == 'jenkins' %} 
     jenkins.io/job-full-name: ${{ values.appName }} 
   {%- endif %} 
-  {%- if values.hostType == 'GitHub' %} 
+  {%- if values.ciType == 'githubactions' %} 
     github.com/project-slug: ${{ values.gitRepoSlug }} 
   {%- endif %} 
+  {%- if values.ciType == 'gitlabci' %} 
+    gitlab.com/project-slug: '${{ values.gitRepoSlug }}'
+  {%- endif %}   
 spec:
   type: gitops
   owner: ${{ values.owner }} 

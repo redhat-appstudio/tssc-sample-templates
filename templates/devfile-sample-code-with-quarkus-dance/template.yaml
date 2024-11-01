@@ -222,6 +222,7 @@ spec:
           tags: '["java", "quarkus", "sscs", "sbom", "acs"]'
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops  
           hostType: ${{ parameters.hostType }} 
+          ciType: ${{ parameters.ciType }} 
           gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}  
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
@@ -310,6 +311,7 @@ spec:
           port: 8081
           argoNS: rhtap
           argoProject: default 
+          ciType: ${{ parameters.ciType }} 
           gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops         
           hostType: ${{ parameters.hostType }} 
           username: ${{ parameters.bbOwner }} 

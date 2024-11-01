@@ -13,13 +13,16 @@ metadata:
     argocd/app-selector: rhtap/gitops=${{  values.name  }}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:.  
-  {%- if values.hostType == 'GitHub' %} 
+  {%- if values.ciType == 'githubactions' %} 
     github.com/project-slug: ${{ values.gitRepoSlug }} 
   {%- endif %} 
-  {%- if values.isTekton %}
+  {%- if values.ciType == 'gitlabci' %} 
+    gitlab.com/project-slug: '${{ values.gitRepoSlug }}'
+  {%- endif %}    
+  {%- if values.ciType == 'tekton' %} 
     janus-idp.io/tekton: ${{ values.name }} 
-  {%- endif %}
-  {%- if values.isJenkins %}
+  {%- endif %} 
+  {%- if values.ciType == 'jenkins' %} 
     jenkins.io/job-full-name: ${{ values.name }} 
   {%- endif %}
   {%- if "quay" in values.image %}
