@@ -1,12 +1,12 @@
-# Generated from templates/build-and-update-gitops.yml.njk. Do not edit directly.
+# Generated from templates/gitops-promotion.yml.njk. Do not edit directly.
 
-# 💁 The Gitops Starter workflow will:
+# 💁 The Promotion Pipeline will:
 # - Checkout your repository
-# - Perform a TSSC container image build
-# - Push the built image to the users provided registry
-# - Update the deployment yaml
+# - Compute Promoted Images to Validate
+# - Perform Image EC Validations 
+# - Optionally update SBOMS
 
-name: TSSC-Build-Attest-Scan-Deploy
+name: TSSC-Promotion-Pipeline
 env:
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
@@ -30,7 +30,7 @@ env:
   DEFAULT_UPDATE_VIA_PUSH: "true"
   # 🖊️ EDIT to set a name for your OpenShift app, or a default one will be generated below.
   APP_NAME: ""
-on: [push, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   tssc-ci-cd:
@@ -99,30 +99,14 @@ jobs:
         cosign version
         buildah --version
         ec version
-    - name: Init
+    - name: Compute Image Changes
       run: |
-        echo "Init"
-        bash rhtap/init.sh
-    - name: Build
+        echo "Compute Image Changes"
+        bash rhtap/gather-deploy-images.sh
+    - name: Verify Ec
       run: |
-        echo "Build"
-        bash rhtap/buildah-rhtap.sh
-        bash rhtap/cosign-sign-attest.sh
-    - name: Scan
-      run: |
-        echo "Scan"
-        bash rhtap/acs-deploy-check.sh
-        bash rhtap/acs-image-check.sh
-        bash rhtap/acs-image-scan.sh
-    - name: Deploy
-      run: |
-        echo "Deploy"
-        bash rhtap/update-deployment.sh
-    - name: Summary
-      run: |
-        echo "Summary"
-        bash rhtap/show-sbom-rhdh.sh
-        bash rhtap/summary.sh
+        echo "Verify Ec"
+        bash rhtap/verify-enterprise-contract.sh
     - name: Done
       run: |
         echo "Done"
