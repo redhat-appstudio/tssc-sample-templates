@@ -1,4 +1,4 @@
-# Generated from templates/build-and-update-gitops.yml.njk. Do not edit directly.
+# Generated from templates/source-repo/build-and-update-gitops.yml.njk. Do not edit directly.
 
 # 💁 The Gitops Starter workflow will:
 # - Checkout your repository
@@ -8,6 +8,8 @@
 
 name: TSSC-Build-Attest-Scan-Deploy
 env:
+  CI_TYPE: github
+
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
   IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
@@ -86,14 +88,13 @@ jobs:
         fetch-depth: '2'
     - name: Pre-init
       run: | 
-        echo "Using  quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-github"
+        echo "Using quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner"
         mkdir -p out
-        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-github bash /work/copy-scripts.sh
+        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner bash /work/copy-scripts.sh
         tree out 
         sudo chmod +x out/binaries/*
         sudo mv out/binaries/* /usr/bin
         cp out/rhtap/* rhtap
-        export CI_TYPE=github   
         cat  rhtap/env.sh 
         syft --version
         cosign version
