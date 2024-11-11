@@ -1,16 +1,16 @@
-# Generated from templates/.gitlab-ci.gitops.yml.njk. Do not edit directly.
+# Generated from templates/gitops-template/.gitlab-ci.yml.njk. Do not edit directly.
 
-image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-gitlab
+image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner
 
 variables:
   CI_TYPE: gitlab
 
 stages:
-  - Compute Image Changes
   - Verify EC
+  - Upload SBOM
 
 gather-deploy-images:
-  stage: Compute Image Changes
+  stage: Verify EC
   script:
     - echo "gather-deploy-images"
     - bash /work/rhtap/gather-deploy-images.sh
@@ -22,9 +22,33 @@ gather-deploy-images:
 
 verify-enterprise-contract:
   stage: Verify EC
+  needs: [gather-deploy-images]
   script:
     - echo "verify-enterprise-contract"
     - bash /work/rhtap/verify-enterprise-contract.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+gather-images-to-upload-sbom:
+  stage: Upload SBOM
+  script:
+    - echo "gather-images-to-upload-sbom"
+    - bash /work/rhtap/gather-images-to-upload-sbom.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+download-sbom-from-url-in-attestation:
+  stage: Upload SBOM
+  needs: [gather-images-to-upload-sbom]
+  script:
+    - echo "download-sbom-from-url-in-attestation"
+    - bash /work/rhtap/download-sbom-from-url-in-attestation.sh
   artifacts:
     paths:
       - results/

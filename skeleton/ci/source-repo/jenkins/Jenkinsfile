@@ -1,4 +1,4 @@
-/* Generated from templates/Jenkinsfile.njk. Do not edit directly. */
+/* Generated from templates/source-repo/Jenkinsfile.njk. Do not edit directly. */
 
 library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
   [$class: 'GitSCMSource',
