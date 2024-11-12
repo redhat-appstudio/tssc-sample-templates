@@ -39,7 +39,7 @@ export SOURCE_BUILD_RESULT_FILE=${SOURCE_BUILD_RESULT_FILE-""}
 
 export TARGET_BRANCH=${TARGET_BRANCH-""}
 # enterprise contract
-export POLICY_CONFIGURATION=${POLICY_CONFIGURATION-"github.com/enterprise-contract/config//rhtap-jenkins"}
+export POLICY_CONFIGURATION=${POLICY_CONFIGURATION-"github.com/enterprise-contract/config//rhtap-${CI_TYPE}"}
 #internal, assumes jenkins is local openshift
 export REKOR_HOST=${REKOR_HOST-http://rekor-server.rhtap-tas.svc}
 export IGNORE_REKOR=${IGNORE_REKOR-false}
