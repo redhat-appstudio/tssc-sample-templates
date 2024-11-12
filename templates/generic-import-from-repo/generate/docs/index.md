@@ -2,7 +2,7 @@
 
 This application, **${{ values.name }}**, was created from a Trusted Application Pipeline Software Template.
 
-The software templates create a new source and gitops deployment repositories with a sample source application. 
+The software templates create a new source and gitops deployment repositories with the users source code as part of an import flow. 
 
 ## Repositories
 

@@ -9,7 +9,7 @@ spec:
   source:
     path: ./app-of-apps
     repoURL: ${{ values.repoURL }}.git
-    targetRevision: main
+    targetRevision: ${{ values.defaultBranch }}
   destination:
     namespace: ${{ values.namespace }}
     server: https://kubernetes.default.svc

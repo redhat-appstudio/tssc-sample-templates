@@ -1,4 +1,4 @@
-# Generated from templates/gitops-promotion.yml.njk. Do not edit directly.
+# Generated from templates/gitops-template/gitops-promotion.yml.njk. Do not edit directly.
 
 # 💁 The Promotion Pipeline will:
 # - Checkout your repository
@@ -8,6 +8,8 @@
 
 name: TSSC-Promotion-Pipeline
 env:
+  CI_TYPE: github
+
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
   IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
@@ -86,27 +88,28 @@ jobs:
         fetch-depth: '2'
     - name: Pre-init
       run: | 
-        echo "Using  quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-github"
+        echo "Using quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner"
         mkdir -p out
-        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner-github bash /work/copy-scripts.sh
+        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner bash /work/copy-scripts.sh
         tree out 
         sudo chmod +x out/binaries/*
         sudo mv out/binaries/* /usr/bin
         cp out/rhtap/* rhtap
-        export CI_TYPE=github   
         cat  rhtap/env.sh 
         syft --version
         cosign version
         buildah --version
         ec version
-    - name: Compute Image Changes
-      run: |
-        echo "Compute Image Changes"
-        bash rhtap/gather-deploy-images.sh
     - name: Verify Ec
       run: |
         echo "Verify Ec"
+        bash rhtap/gather-deploy-images.sh
         bash rhtap/verify-enterprise-contract.sh
+    - name: Upload Sbom
+      run: |
+        echo "Upload Sbom"
+        bash rhtap/gather-images-to-upload-sbom.sh
+        bash rhtap/download-sbom-from-url-in-attestation.sh
     - name: Done
       run: |
         echo "Done"
