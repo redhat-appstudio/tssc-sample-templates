@@ -9,7 +9,7 @@ spec:
   source:
     path: ${{ values.argoComponentOverlays }}/stage
     repoURL: ${{ values.repoURL }}.git
-    targetRevision: main
+    targetRevision: ${{ values.defaultBranch }}
   destination:
     namespace: ${{ values.namespace }}-stage
     server: https://kubernetes.default.svc

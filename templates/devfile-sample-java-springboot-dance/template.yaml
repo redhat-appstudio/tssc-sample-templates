@@ -322,7 +322,7 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
-          defaultBranch: main
+          defaultBranch: ${{ parameters.branch }} 
     # Fetch CI which will be in a folder ci/gitops/type
     - id: fetch-gitops-ci-skeleton
       name: Fetch Gitops CI Components
@@ -358,7 +358,7 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
-          defaultBranch: main
+          defaultBranch: ${{ parameters.branch }} 
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
@@ -376,7 +376,7 @@ spec:
         allowedHosts: ['${{ parameters.ghHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}-gitops
-        defaultBranch: "main"
+        defaultBranch: ${{ parameters.branch }} 
         protectDefaultBranch: false
         repoVisibility: "public"
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
@@ -389,7 +389,7 @@ spec:
         allowedHosts: ['${{ parameters.glHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
-        defaultBranch: "main"
+        defaultBranch: ${{ parameters.branch }} 
         protectDefaultBranch: false
         repoVisibility: "public"
     - id: publish-bitbucket-gitops
@@ -401,7 +401,7 @@ spec:
         allowedHosts: ['${{ parameters.bbHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}-gitops&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
-        defaultBranch: "main"
+        defaultBranch: ${{ parameters.branch }} 
         protectDefaultBranch: false
         repoVisibility: "public"
                 
