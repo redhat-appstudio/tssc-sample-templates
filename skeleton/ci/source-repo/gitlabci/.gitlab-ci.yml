@@ -15,7 +15,7 @@ stages:
 init:
   stage: init
   script:
-    - echo "init"
+    - echo "• init"
     - bash /work/rhtap/init.sh
   artifacts:
     paths:
@@ -24,7 +24,7 @@ init:
 buildah-rhtap:
   stage: build
   script:
-    - echo "buildah-rhtap"
+    - echo "• buildah-rhtap"
     - bash /work/rhtap/buildah-rhtap.sh
   artifacts:
     paths:
@@ -34,7 +34,7 @@ cosign-sign-attest:
   stage: build
   needs: [buildah-rhtap]
   script:
-    - echo "cosign-sign-attest"
+    - echo "• cosign-sign-attest"
     - bash /work/rhtap/cosign-sign-attest.sh
   artifacts:
     paths:
@@ -43,7 +43,7 @@ cosign-sign-attest:
 acs-deploy-check:
   stage: scan
   script:
-    - echo "acs-deploy-check"
+    - echo "• acs-deploy-check"
     - bash /work/rhtap/acs-deploy-check.sh
   artifacts:
     paths:
@@ -52,7 +52,7 @@ acs-deploy-check:
 acs-image-check:
   stage: scan
   script:
-    - echo "acs-image-check"
+    - echo "• acs-image-check"
     - bash /work/rhtap/acs-image-check.sh
   artifacts:
     paths:
@@ -61,7 +61,7 @@ acs-image-check:
 acs-image-scan:
   stage: scan
   script:
-    - echo "acs-image-scan"
+    - echo "• acs-image-scan"
     - bash /work/rhtap/acs-image-scan.sh
   artifacts:
     paths:
@@ -70,7 +70,7 @@ acs-image-scan:
 update-deployment:
   stage: deploy
   script:
-    - echo "update-deployment"
+    - echo "• update-deployment"
     - bash /work/rhtap/update-deployment.sh
   artifacts:
     paths:
@@ -81,7 +81,7 @@ update-deployment:
 show-sbom-rhdh:
   stage: summary
   script:
-    - echo "show-sbom-rhdh"
+    - echo "• show-sbom-rhdh"
     - bash /work/rhtap/show-sbom-rhdh.sh
   artifacts:
     paths:
@@ -90,7 +90,7 @@ show-sbom-rhdh:
 summary:
   stage: summary
   script:
-    - echo "summary"
+    - echo "• summary"
     - bash /work/rhtap/summary.sh
   artifacts:
     paths:

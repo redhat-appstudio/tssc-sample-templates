@@ -12,7 +12,7 @@ stages:
 gather-deploy-images:
   stage: Verify EC
   script:
-    - echo "gather-deploy-images"
+    - echo "• gather-deploy-images"
     - bash /work/rhtap/gather-deploy-images.sh
   artifacts:
     paths:
@@ -24,7 +24,7 @@ verify-enterprise-contract:
   stage: Verify EC
   needs: [gather-deploy-images]
   script:
-    - echo "verify-enterprise-contract"
+    - echo "• verify-enterprise-contract"
     - bash /work/rhtap/verify-enterprise-contract.sh
   artifacts:
     paths:
@@ -35,7 +35,7 @@ verify-enterprise-contract:
 gather-images-to-upload-sbom:
   stage: Upload SBOM
   script:
-    - echo "gather-images-to-upload-sbom"
+    - echo "• gather-images-to-upload-sbom"
     - bash /work/rhtap/gather-images-to-upload-sbom.sh
   artifacts:
     paths:
@@ -47,7 +47,7 @@ download-sbom-from-url-in-attestation:
   stage: Upload SBOM
   needs: [gather-images-to-upload-sbom]
   script:
-    - echo "download-sbom-from-url-in-attestation"
+    - echo "• download-sbom-from-url-in-attestation"
     - bash /work/rhtap/download-sbom-from-url-in-attestation.sh
   artifacts:
     paths:

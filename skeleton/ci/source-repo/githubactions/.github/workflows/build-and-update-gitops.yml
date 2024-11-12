@@ -39,6 +39,9 @@ jobs:
     name: Build and send Image Update PR
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-24.04
+    container:
+      image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner
+      options: --privileged
     environment: production
 
     steps:
@@ -87,43 +90,41 @@ jobs:
       with:
         fetch-depth: '2'
     - name: Pre-init
-      run: | 
-        echo "Using quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner"
-        mkdir -p out
-        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner bash /work/copy-scripts.sh
-        tree out 
-        sudo chmod +x out/binaries/*
-        sudo mv out/binaries/* /usr/bin
-        cp out/rhtap/* rhtap
-        cat  rhtap/env.sh 
+      run: |
+        buildah --version
         syft --version
         cosign version
-        buildah --version
         ec version
+        git config --global --add safe.directory $(pwd)
+        cat rhtap/env.sh
     - name: Init
       run: |
-        echo "Init"
-        bash rhtap/init.sh
+        echo "• init"
+        bash /work/rhtap/init.sh
     - name: Build
       run: |
-        echo "Build"
-        bash rhtap/buildah-rhtap.sh
-        bash rhtap/cosign-sign-attest.sh
+        echo "• buildah-rhtap"
+        bash /work/rhtap/buildah-rhtap.sh
+        echo "• cosign-sign-attest"
+        bash /work/rhtap/cosign-sign-attest.sh
     - name: Scan
       run: |
-        echo "Scan"
-        bash rhtap/acs-deploy-check.sh
-        bash rhtap/acs-image-check.sh
-        bash rhtap/acs-image-scan.sh
+        echo "• acs-deploy-check"
+        bash /work/rhtap/acs-deploy-check.sh
+        echo "• acs-image-check"
+        bash /work/rhtap/acs-image-check.sh
+        echo "• acs-image-scan"
+        bash /work/rhtap/acs-image-scan.sh
     - name: Deploy
       run: |
-        echo "Deploy"
-        bash rhtap/update-deployment.sh
+        echo "• update-deployment"
+        bash /work/rhtap/update-deployment.sh
     - name: Summary
       run: |
-        echo "Summary"
-        bash rhtap/show-sbom-rhdh.sh
-        bash rhtap/summary.sh
+        echo "• show-sbom-rhdh"
+        bash /work/rhtap/show-sbom-rhdh.sh
+        echo "• summary"
+        bash /work/rhtap/summary.sh
     - name: Done
       run: |
         echo "Done"
