@@ -39,6 +39,8 @@ jobs:
     name: Build and send Image Update PR
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-24.04
+    container:
+      image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner
     environment: production
 
     steps:
@@ -87,29 +89,25 @@ jobs:
       with:
         fetch-depth: '2'
     - name: Pre-init
-      run: | 
-        echo "Using quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner"
-        mkdir -p out
-        docker run -v $(pwd)/out:/out quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner bash /work/copy-scripts.sh
-        tree out 
-        sudo chmod +x out/binaries/*
-        sudo mv out/binaries/* /usr/bin
-        cp out/rhtap/* rhtap
-        cat  rhtap/env.sh 
+      run: |
+        buildah --version
         syft --version
         cosign version
-        buildah --version
         ec version
+        git config --global --add safe.directory $(pwd)
+        cat rhtap/env.sh
     - name: Verify Ec
       run: |
-        echo "Verify Ec"
-        bash rhtap/gather-deploy-images.sh
-        bash rhtap/verify-enterprise-contract.sh
+        echo "• gather-deploy-images"
+        bash /work/rhtap/gather-deploy-images.sh
+        echo "• verify-enterprise-contract"
+        bash /work/rhtap/verify-enterprise-contract.sh
     - name: Upload Sbom
       run: |
-        echo "Upload Sbom"
-        bash rhtap/gather-images-to-upload-sbom.sh
-        bash rhtap/download-sbom-from-url-in-attestation.sh
+        echo "• gather-images-to-upload-sbom"
+        bash /work/rhtap/gather-images-to-upload-sbom.sh
+        echo "• download-sbom-from-url-in-attestation"
+        bash /work/rhtap/download-sbom-from-url-in-attestation.sh
     - name: Done
       run: |
         echo "Done"
