@@ -12,6 +12,13 @@ pipeline {
         COSIGN_SECRET_KEY = 'dummy'
         /* Used to verify the image signature and attestation */
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        /* URL of the BOMbastic api host (e.g. https://sbom.trustification.dev) */
+        TRUSTIFICATION_BOMBASTIC_API_URL = credentials('TRUSTIFICATION_BOMBASTIC_API_URL')
+        /* URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken) */
+        TRUSTIFICATION_OIDC_ISSUER_URL = credentials('TRUSTIFICATION_OIDC_ISSUER_URL')
+        TRUSTIFICATION_OIDC_CLIENT_ID = credentials('TRUSTIFICATION_OIDC_CLIENT_ID')
+        TRUSTIFICATION_OIDC_CLIENT_SECRET = credentials('TRUSTIFICATION_OIDC_CLIENT_SECRET')
+        TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION = credentials('TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION')
     }
     stages {
         stage('Verify EC') {
@@ -32,6 +39,8 @@ pipeline {
                     rhtap.gather_images_to_upload_sbom()
                     rhtap.info('download_sbom_from_url_in_attestation')
                     rhtap.download_sbom_from_url_in_attestation()
+                    rhtap.info('upload_sbom_to_trustification')
+                    rhtap.upload_sbom_to_trustification()
                 }
             }
         }
