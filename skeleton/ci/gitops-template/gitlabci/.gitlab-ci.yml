@@ -54,3 +54,15 @@ download-sbom-from-url-in-attestation:
       - results/
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+upload-sbom-to-trustification:
+  stage: Upload SBOM
+  needs: [download-sbom-from-url-in-attestation]
+  script:
+    - echo "• upload-sbom-to-trustification"
+    - bash /work/rhtap/upload-sbom-to-trustification.sh
+  artifacts:
+    paths:
+      - results/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"

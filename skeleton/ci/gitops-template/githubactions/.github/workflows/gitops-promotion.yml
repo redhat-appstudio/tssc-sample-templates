@@ -108,6 +108,8 @@ jobs:
         bash /work/rhtap/gather-images-to-upload-sbom.sh
         echo "• download-sbom-from-url-in-attestation"
         bash /work/rhtap/download-sbom-from-url-in-attestation.sh
+        echo "• upload-sbom-to-trustification"
+        bash /work/rhtap/upload-sbom-to-trustification.sh
     - name: Done
       run: |
         echo "Done"
