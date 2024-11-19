@@ -16,20 +16,15 @@ env:
   IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
   IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
 
-  ROX_CENTRAL_ENDPOINT: ${{ secrets.ROX_CENTRAL_ENDPOINT }}
-  ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
-
-  QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
-  QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
-  COSIGN_SECRET_PASSWORD: ${{ secrets.COSIGN_SECRET_PASSWORD }}
-  COSIGN_SECRET_KEY: ${{ secrets.COSIGN_SECRET_KEY }}
+  # Used to verify the image signature and attestation
   COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
-  GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
-
+  # URL of the BOMbastic api host (e.g. https://sbom.trustification.dev)
   TRUSTIFICATION_BOMBASTIC_API_URL: ${{ secrets.TRUSTIFICATION_BOMBASTIC_API_URL }}
+  # URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken)
   TRUSTIFICATION_OIDC_ISSUER_URL: ${{ secrets.TRUSTIFICATION_OIDC_ISSUER_URL }}
   TRUSTIFICATION_OIDC_CLIENT_ID: ${{ secrets.TRUSTIFICATION_OIDC_CLIENT_ID }}
-  TRUSTIFICATION_OIDC_CLIENT_SECRET: ${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }} 
+  TRUSTIFICATION_OIDC_CLIENT_SECRET: ${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}
+  TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: ${{ secrets.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -58,18 +53,12 @@ jobs:
             IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`,
             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
 
-            ROX_CENTRAL_ENDPOINT: `${{ secrets.ROX_CENTRAL_ENDPOINT }}`,
-            ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`,
-
-            QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`,
-            QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`,
-
-            COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`,
-            COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`,
             COSIGN_PUBLIC_KEY: `${{ secrets.COSIGN_PUBLIC_KEY }}`,
-
-            GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`,
-
+            TRUSTIFICATION_BOMBASTIC_API_URL: `${{ secrets.TRUSTIFICATION_BOMBASTIC_API_URL }}`,
+            TRUSTIFICATION_OIDC_ISSUER_URL: `${{ secrets.TRUSTIFICATION_OIDC_ISSUER_URL }}`,
+            TRUSTIFICATION_OIDC_CLIENT_ID: `${{ secrets.TRUSTIFICATION_OIDC_CLIENT_ID }}`,
+            TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`,
+            TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: `${{ secrets.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}`,
           };
           const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
             if (value.length === 0) {
