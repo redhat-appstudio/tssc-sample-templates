@@ -75,8 +75,8 @@ update-deployment:
   artifacts:
     paths:
       - results/
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 show-sbom-rhdh:
   stage: summary
