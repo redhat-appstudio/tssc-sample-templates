@@ -27,7 +27,7 @@ metadata:
   {%- endif %}
   {%- if "quay" in values.image %}
     quay.io/repository-slug: ${{ values.repoSlug }}
-  {%- elif "jfrog" in values.image %}
+  {%- elif "jfrog" in values.image or "artifactory" in values.image %}
     jfrog-artifactory/image-name: ${{ values.imageName }}
   {%- elif "nexus" in values.image %}
     nexus-repository-manager/docker.image-name: ${{ values.repoSlug }}
