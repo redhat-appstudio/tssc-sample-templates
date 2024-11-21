@@ -45,7 +45,7 @@ jobs:
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-24.04
     container:
-      image: quay.io/redhat-appstudio/dance-bootstrap-app:rhtap-runner
+      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
       options: --privileged
     environment: production
 
