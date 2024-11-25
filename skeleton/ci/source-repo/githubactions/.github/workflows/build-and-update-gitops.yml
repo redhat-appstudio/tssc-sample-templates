@@ -13,14 +13,22 @@ env:
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
   IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
-  IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
-  IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
 
   ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
   ROX_CENTRAL_ENDPOINT: ${{ secrets.ROX_CENTRAL_ENDPOINT }}
   GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
-  QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
-  QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
+  # Uncomment this when using Gitlab
+  # GITOPS_AUTH_USERNAME: ${{ secrets.GITOPS_AUTH_USERNAME }}
+  # Set this to the user for your specific registry
+  IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
+  # Set this password for your specific registry
+  IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+  # QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
+  # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
+  # ARTIFACTORY_IO_CREDS_USR: ${{ secrets.ARTIFACTORY_IO_CREDS_USR }}
+  # ARTIFACTORY_IO_CREDS_PSW: ${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}
+  # NEXUS_IO_CREDS_USR: ${{ secrets.NEXUS_IO_CREDS_USR }}
+  # NEXUS_IO_CREDS_PSW: ${{ secrets.NEXUS_IO_CREDS_PSW }}
   COSIGN_SECRET_PASSWORD: ${{ secrets.COSIGN_SECRET_PASSWORD }}
   COSIGN_SECRET_KEY: ${{ secrets.COSIGN_SECRET_KEY }}
   COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
@@ -56,17 +64,25 @@ jobs:
         script: |
           const secrets = {
             IMAGE_REGISTRY: `${{ secrets.IMAGE_REGISTRY }}`,
-            IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`,
-            IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
 
-            ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`,
-            ROX_CENTRAL_ENDPOINT: `${{ secrets.ROX_CENTRAL_ENDPOINT }}`,
-            GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`,
-            QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`,
-            QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`,
-            COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`,
-            COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`,
-            COSIGN_PUBLIC_KEY: `${{ secrets.COSIGN_PUBLIC_KEY }}`,
+            ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`, 
+            ROX_CENTRAL_ENDPOINT: `${{ secrets.ROX_CENTRAL_ENDPOINT }}`, 
+            GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`, 
+            /* Uncomment this when using Gitlab */
+            /*GITOPS_AUTH_USERNAME: `${{ secrets.GITOPS_AUTH_USERNAME }}`, */
+            /* Set this to the user for your specific registry */
+            IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`, 
+            /* Set this password for your specific registry */
+            IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`, 
+            /*QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`, */
+            /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`, */
+            /*ARTIFACTORY_IO_CREDS_USR: `${{ secrets.ARTIFACTORY_IO_CREDS_USR }}`, */
+            /*ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`, */
+            /*NEXUS_IO_CREDS_USR: `${{ secrets.NEXUS_IO_CREDS_USR }}`, */
+            /*NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`, */
+            COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`, 
+            COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`, 
+            COSIGN_PUBLIC_KEY: `${{ secrets.COSIGN_PUBLIC_KEY }}`, 
 
           };
           const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
