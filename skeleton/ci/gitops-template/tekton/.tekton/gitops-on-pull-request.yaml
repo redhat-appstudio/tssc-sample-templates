@@ -5,13 +5,13 @@ metadata:
   annotations:
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-target-branch: "[${{ values.defaultBranch }}]"
-    pipelinesascode.tekton.dev/pipeline: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/pipelines/gitops-pull-request-rhtap.yaml"
-    pipelinesascode.tekton.dev/task-0: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/git-clone.yaml"
-    pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/gather-deploy-images.yaml"
-    pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/verify-enterprise-contract.yaml"
-    pipelinesascode.tekton.dev/task-3: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/gather-deploy-images.yaml"
-    pipelinesascode.tekton.dev/task-4: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/download-sbom-from-url-in-attestation.yaml"
-    pipelinesascode.tekton.dev/task-5: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/main/pac/tasks/upload-sbom-to-trustification.yaml"
+    pipelinesascode.tekton.dev/pipeline: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/pipelines/gitops-pull-request-rhtap.yaml"
+    pipelinesascode.tekton.dev/task-0: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/git-clone.yaml"
+    pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/gather-deploy-images.yaml"
+    pipelinesascode.tekton.dev/task-2: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/verify-enterprise-contract.yaml"
+    pipelinesascode.tekton.dev/task-3: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/gather-deploy-images.yaml"
+    pipelinesascode.tekton.dev/task-4: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/download-sbom-from-url-in-attestation.yaml"
+    pipelinesascode.tekton.dev/task-5: "https://raw.githubusercontent.com/redhat-appstudio/tssc-sample-pipelines/v1.3.x/pac/tasks/upload-sbom-to-trustification.yaml"
   labels:
     argocd/app-name: ${{ values.name }}
     janus-idp.io/tekton: ${{ values.name }}
