@@ -23,6 +23,10 @@ pipeline {
         COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
         COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        /* Set when using Jenkins on non-local cluster and using an external Rekor instance */
+        /* REKOR_HOST = credentials('REKOR_HOST') */
+        /* Set when using Jenkins on non-local cluster and using an external TUF instance */
+        /* TUF_MIRROR = credentials('TUF_MIRROR') */
     }
     stages {
         stage('init') {

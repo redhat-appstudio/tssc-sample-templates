@@ -27,6 +27,10 @@ env:
   IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
   # Set this password for your specific registry
   IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+  # Set this only when using an external Rekor instance
+  REKOR_HOST: ${{ secrets.REKOR_HOST }}
+  # Set this only when using an external TUF instance
+  TUF_MIRROR: ${{ secrets.TUF_MIRROR }}
   # QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
   # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
   # ARTIFACTORY_IO_CREDS_USR: ${{ secrets.ARTIFACTORY_IO_CREDS_USR }}
@@ -73,6 +77,10 @@ jobs:
             IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`, 
             /* Set this password for your specific registry */
             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`, 
+            /* Set this only when using an external Rekor instance */
+            REKOR_HOST: `${{ secrets.REKOR_HOST }}`, 
+            /* Set this only when using an external TUF instance */
+            TUF_MIRROR: `${{ secrets.TUF_MIRROR }}`, 
             /*QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`, */
             /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`, */
             /*ARTIFACTORY_IO_CREDS_USR: `${{ secrets.ARTIFACTORY_IO_CREDS_USR }}`, */
