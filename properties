@@ -1,11 +1,11 @@
 # PE can replace these values with on-prem host
 export GITHUB__DEFAULT__HOST=github.com
 export GITLAB__DEFAULT__HOST=gitlab.com
-export BITBUCKET__DEFAULT__HOST=bitbucket.org 
+export BITBUCKET__DEFAULT__HOST=bitbucket.org
 
 export QUAY__DEFAULT__HOST=quay.io
 
-# leave empty if you don't want to set defaults for your git or quay org 
+# leave empty if you don't want to set defaults for your git or quay org
 export GITHUB__DEFAULT__ORG=""
 export GITLAB__DEFAULT__ORG=""
 export BITBUCKET__DEFAULT__ORG=""
@@ -13,7 +13,7 @@ export QUAY__DEFAULT__ORG=""
 
 # PE can replace these values with own pipeline fork
 export PIPELINE__REPO__URL=https://github.com/redhat-appstudio/tssc-sample-pipelines
-export PIPELINE__REPO__BRANCH=main
+export PIPELINE__REPO__BRANCH=v1.4.x
 
 export DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX=rhtap-app
 
