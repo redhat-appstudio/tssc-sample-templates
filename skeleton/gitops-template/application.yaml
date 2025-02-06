@@ -11,7 +11,7 @@ spec:
     repoURL: ${{ values.repoURL }}.git
     targetRevision: ${{ values.defaultBranch }}
   destination:
-    namespace: ${{ values.namespace }}
+    namespace: ${{ values.argoNS }}
     server: https://kubernetes.default.svc
   syncPolicy:
     managedNamespaceMetadata:
