@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ${{ values.name }}-ci
+  namespace: ${{ values.argoNS }}
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
+spec:
+  project: ${{ values.argoProject }}
+  source:
+    path: ${{ values.argoComponentOverlays }}/ci
+    repoURL: ${{ values.repoURL }}.git
+    targetRevision: ${{ values.defaultBranch }}
+  destination:
+    namespace: ${{ values.namespace }}-ci
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: ${{ values.argoNS }}
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
