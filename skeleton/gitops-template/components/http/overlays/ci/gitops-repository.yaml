@@ -1,20 +1,20 @@
 apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
 kind: Repository
 metadata:
-  name: ${{ values.name }}-repository
+  name: ${{ values.appName }}-repository
 spec:
-  url: ${{ values.srcRepoURL }}
+  url: ${{ values.repoURL }}
   {%- if values.secretRef %}
   git_provider:
     {%- if values.hostType == 'Bitbucket' %}
     user: ${{ values.username }}
     {%- endif %}
     secret:
-        name: ${{ values.gitSecret }}
-        key: ${{ values.gitSecretKey }}
+      name: ${{ values.gitSecret }}
+      key: ${{ values.gitSecretKey }}
     {%- if values.hostType == 'Gitlab' %}
     webhook_secret:
-        name: ${{ values.webhookSecret }}
-        key:  ${{ values.webhookSecretKey }}
+      name: ${{ values.webhookSecret }}
+      key:  ${{ values.webhookSecretKey }}
     {%- endif %}
   {%- endif %}
