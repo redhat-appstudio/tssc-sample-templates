@@ -3,7 +3,7 @@
 # 💁 The Promotion Pipeline will:
 # - Checkout your repository
 # - Compute Promoted Images to Validate
-# - Perform Image EC Validations 
+# - Perform Image EC Validations
 # - Optionally update SBOMS
 
 name: TSSC-Promotion-Pipeline
@@ -49,7 +49,6 @@ on: [pull_request, workflow_dispatch]
 jobs:
   tssc-ci-cd:
     name: Build and send Image Update PR
-    # ubuntu-20.04 can also be used.
     runs-on: ubuntu-24.04
     container:
       image: quay.io/redhat-appstudio/rhtap-task-runner:latest
