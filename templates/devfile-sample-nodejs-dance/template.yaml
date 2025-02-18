@@ -436,9 +436,9 @@ spec:
   output:
     links:
       - title: Source Repository
-        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.remoteUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.remoteUrl) }}
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.remoteUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.repoContentsUrl) }}
       - title: GitOps Repository
-        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.remoteUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.remoteUrl) }}
+        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.remoteUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.repoContentsUrl) }}
       - title: Open Component in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
