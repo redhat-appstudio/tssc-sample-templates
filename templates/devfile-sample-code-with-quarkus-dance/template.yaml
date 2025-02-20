@@ -329,6 +329,8 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton/ci/gitops-template/${{ parameters.ciType}}
+        copyWithoutRender:
+          - .github/workflows/*
         targetPath: gitops
         values:
           name: ${{ parameters.name }}
