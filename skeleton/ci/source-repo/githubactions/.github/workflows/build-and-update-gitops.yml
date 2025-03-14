@@ -132,6 +132,10 @@ jobs:
         bash /work/rhtap/buildah-rhtap.sh
         echo "• cosign-sign-attest"
         bash /work/rhtap/cosign-sign-attest.sh
+    - name: Deploy
+      run: |
+        echo "• update-deployment"
+        bash /work/rhtap/update-deployment.sh
     - name: Scan
       run: |
         echo "• acs-deploy-check"
@@ -140,10 +144,6 @@ jobs:
         bash /work/rhtap/acs-image-check.sh
         echo "• acs-image-scan"
         bash /work/rhtap/acs-image-scan.sh
-    - name: Deploy
-      run: |
-        echo "• update-deployment"
-        bash /work/rhtap/update-deployment.sh
     - name: Summary
       run: |
         echo "• show-sbom-rhdh"
