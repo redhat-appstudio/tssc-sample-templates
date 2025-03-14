@@ -168,6 +168,7 @@ spec:
           type: string
           description: The image registry host
           default: quay.io
+          ui:autofocus: true
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
@@ -177,14 +178,12 @@ spec:
         imageName:
           title: Image Name
           type: string
-          ui:autofocus: true
           ui:options:
             rows: 5
         namespace:
           title: Deployment Namespace
           type: string
           default: rhtap-app
-          ui:autofocus: true
           ui:options:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
@@ -192,100 +191,12 @@ spec:
   # via the parameters above.
   steps:
     # Each step executes an action, in this case one templates files into the workspace.
-    # Get the sample source code
-    - id: fetch-base
-      name: Fetch Base
-      action: fetch:template
-      input:
-        url: ./content
-        values:
-          name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
-          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
-          srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
 
-    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
-    - id: fetch-skeleton
-      name: Fetch Skeleton
-      action: fetch:template
-      input:
-        url: ../../skeleton/source-repo
-        values:
-          name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
-          dockerfile: docker/Dockerfile
-          buildContext: .
-          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
-          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          imageName: ${{ parameters.imageName }}
-          tags: '["python", "pip", "flask", "sscs", "sbom", "acs"]'
-          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
-          hostType: ${{ parameters.hostType }}
-          ciType: ${{ parameters.ciType }}
-          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }}
-          isTekton: ${{ parameters.ciType === 'tekton' }}
-          isJenkins: ${{ parameters.ciType === 'jenkins' }}
-    - id: fetch-ci-skeleton
-      name: Fetch CI Components
-      action: fetch:template
-      input:
-        url: ../../skeleton/ci/source-repo/${{ parameters.ciType}}
-        copyWithoutRender:
-          - .github/workflows/*
-        values:
-          name: ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
-          dockerfile: docker/Dockerfile
-          buildContext: .
-          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
-          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["python", "pip", "flask", "sscs", "sbom", "acs"]'
-          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
-          owner: ${{ parameters.owner }}
-          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }}
-    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
-    - id: publish-github
-      name: Publish Repository to GitHub
-      action: publish:github
-      if: ${{ parameters.hostType === 'GitHub' }}
-      input:
-        allowedHosts: [ '${{ parameters.ghHost}}' ]
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}
-        defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
-        repoVisibility: "public"
-    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
-    - id: publish-gitlab
-      name: Publish Repository to GitLab
-      action: publish:gitlab
-      if: ${{ parameters.hostType === 'GitLab' }}
-      input:
-        allowedHosts: [ '${{ parameters.glHost }}' ]
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
-        defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
-        repoVisibility: "public"
-    - id: publish-bitbucket
-      name: Publish Repository to BitBucket
-      action: publish:bitbucketCloud
-      if: ${{ parameters.hostType === 'Bitbucket' }}
-      input:
-        allowedHosts: [ '${{ parameters.bbHost }}' ]
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
-        defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
-        repoVisibility: "public"
+    #
+    # Create gitops repository
+    #
 
-    # The final step is to register our new component in the catalog.
+    # Get gitops source code.
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
       action: fetch:template
@@ -306,7 +217,7 @@ spec:
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
-          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
+          # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: 8081
           argoNS: rhtap-gitops
@@ -323,9 +234,10 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: ${{ parameters.branch }}
+
     # Fetch CI which will be in a folder ci/gitops/type
     - id: fetch-gitops-ci-skeleton
-      name: Fetch Gitops CI Components
+      name: Fetch Gitops CI
       action: fetch:template
       input:
         url: ../../skeleton/ci/gitops-template/${{ parameters.ciType}}
@@ -346,7 +258,7 @@ spec:
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
-          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
+          # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: 8081
           argoNS: rhtap-gitops
@@ -369,6 +281,12 @@ spec:
           - from: gitops/components/http
             to: gitops/components/${{ parameters.name }}
             overwrite: true
+
+    #
+    # Publish gitops repository
+    #
+
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github-gitops
       name: Publish GitOps Repository to Github
       action: publish:github
@@ -394,6 +312,7 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+    # This action creates a new Bitbucket repository and publishes the files in the workspace directory to the repository.
     - id: publish-bitbucket-gitops
       name: Publish Gitops Repository to Bitbucket
       action: publish:bitbucketCloud
@@ -406,24 +325,13 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
-
-    - id: wait-for-github-repository
-      name: Waiting for repository availability
+    # The git service may not serve the new repository immediately.
+    - id: wait-for-repository
+      name: Waiting for Repository Availability
       action: 'debug:wait'
       input:
         seconds: 3
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.repoContentsUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.repoContentsUrl) }}
-        catalogInfoPath: '/catalog-info.yaml'
-    - id: register-gitops
-      name: Register Gitops
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.repoContentsUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.repoContentsUrl) }}
-        catalogInfoPath: '/catalog-info.yaml'
+    # Register repository in ArgoCD
     - id: create-argocd-resources
       name: Create ArgoCD Resources
       action: argocd:create-resources
@@ -434,16 +342,147 @@ spec:
         namespace: rhtap-gitops
         repoUrl: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
+    # The wait for Repository CRs to be created, so the creation of the source repository triggers the first build.
+    - id: wait-for-sync
+      name: Waiting for ArgoCD Sync
+      action: 'debug:wait'
+      if: ${{ parameters.ciType === 'tekton' }}
+      input:
+        seconds: 3
+
+    #
+    # Create source repository
+    #
+
+    # Get the sample source code
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
+    - id: fetch-source-skeleton
+      name: Fetch Source Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/source-repo
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          description: Secure Supply Chain Example for Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
+          dockerfile: docker/Dockerfile
+          buildContext: .
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          imageName: ${{ parameters.imageName }}
+          tags: '["python", "pip", "flask", "sscs", "sbom", "acs"]'
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          hostType: ${{ parameters.hostType }}
+          ciType: ${{ parameters.ciType }}
+          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
+          owner: ${{ parameters.owner }}
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }}
+          isTekton: ${{ parameters.ciType === 'tekton' }}
+          isJenkins: ${{ parameters.ciType === 'jenkins' }}
+    - id: fetch-source-ci-skeleton
+      name: Fetch Source CI
+      action: fetch:template
+      input:
+        url: ../../skeleton/ci/source-repo/${{ parameters.ciType}}
+        copyWithoutRender:
+          - .github/workflows/*
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          description: Secure Supply Chain Example for Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
+          dockerfile: docker/Dockerfile
+          buildContext: .
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          tags: '["python", "pip", "flask", "sscs", "sbom", "acs"]'
+          repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          owner: ${{ parameters.owner }}
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }}
+
+    #
+    # Publish source repository
+    #
+
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
+    - id: publish-github-source
+      name: Publish Repository to GitHub
+      action: publish:github
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        allowedHosts: [ '${{ parameters.ghHost}}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab-source
+      name: Publish Repository to GitLab
+      action: publish:gitlab
+      if: ${{ parameters.hostType === 'GitLab' }}
+      input:
+        allowedHosts: [ '${{ parameters.glHost }}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new Bitbucket Cloud repository and publishes the files in the workspace directory to the repository.
+    - id: publish-bitbucket-source
+      name: Publish Repository to Bitbucket
+      action: publish:bitbucketCloud
+      if: ${{ parameters.hostType === 'Bitbucket' }}
+      input:
+        allowedHosts: [ '${{ parameters.bbHost }}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+
+    #
+    # Register objects in Backstage
+    #
+
+    - id: register-source
+      name: Register Source
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github-source'].output.repoContentsUrl if steps['publish-github-source'].output else (steps['publish-gitlab-source'].output.repoContentsUrl  if steps['publish-gitlab-source'].output else steps['publish-bitbucket-source'].output.repoContentsUrl) }}
+        catalogInfoPath: '/catalog-info.yaml'
+    - id: register-gitops
+      name: Register Gitops
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.repoContentsUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.repoContentsUrl) }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  #
+  # Finally
+  #
+
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Source Repository
-        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else (steps['publish-gitlab'].output.remoteUrl  if steps['publish-gitlab'].output else steps['publish-bitbucket'].output.repoContentsUrl) }}
+        url: ${{ steps['publish-github-source'].output.remoteUrl if steps['publish-github-source'].output else (steps['publish-gitlab-source'].output.remoteUrl  if steps['publish-gitlab-source'].output else steps['publish-bitbucket-source'].output.repoContentsUrl) }}
       - title: GitOps Repository
         url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else (steps['publish-gitlab-gitops'].output.remoteUrl  if steps['publish-gitlab-gitops'].output else steps['publish-bitbucket-gitops'].output.repoContentsUrl) }}
       - title: Open Component in catalog
         icon: catalog
-        entityRef: ${{ steps['register'].output.entityRef }}
+        entityRef: ${{ steps['register-source'].output.entityRef }}
       - title: Open GitOps Resource in catalog
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
