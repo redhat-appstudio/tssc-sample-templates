@@ -49,6 +49,15 @@ pipeline {
             }
         }
 
+        stage('deploy') {
+            steps {
+                script {
+                    rhtap.info('update_deployment')
+                    rhtap.update_deployment()
+                }
+            }
+        }
+
         stage('scan') {
             steps {
                 script {
@@ -58,15 +67,6 @@ pipeline {
                     rhtap.acs_image_check()
                     rhtap.info('acs_image_scan')
                     rhtap.acs_image_scan()
-                }
-            }
-        }
-
-        stage('deploy') {
-            steps {
-                script {
-                    rhtap.info('update_deployment')
-                    rhtap.update_deployment()
                 }
             }
         }

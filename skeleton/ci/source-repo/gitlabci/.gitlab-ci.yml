@@ -8,8 +8,8 @@ variables:
 stages:
   - init
   - build
-  - scan
   - deploy
+  - scan
   - summary
 
 init:
@@ -40,6 +40,17 @@ cosign-sign-attest:
     paths:
       - results/
 
+update-deployment:
+  stage: deploy
+  script:
+    - echo "• update-deployment"
+    - bash /work/rhtap/update-deployment.sh
+  artifacts:
+    paths:
+      - results/
+  rules: 
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 acs-deploy-check:
   stage: scan
   script:
@@ -66,17 +77,6 @@ acs-image-scan:
   artifacts:
     paths:
       - results/
-
-update-deployment:
-  stage: deploy
-  script:
-    - echo "• update-deployment"
-    - bash /work/rhtap/update-deployment.sh
-  artifacts:
-    paths:
-      - results/
-  rules: 
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 show-sbom-rhdh:
   stage: summary
