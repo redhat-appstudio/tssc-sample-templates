@@ -83,10 +83,12 @@ spec:
                   enum:
                     - tekton
                     - jenkins
+                    - azure
                     - githubactions
                   enumNames:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2)
+                    - Azure Pipelines (SLSA 2)
                     - Github Actions (SLSA 2)
             - required:
                 - glHost
@@ -113,10 +115,12 @@ spec:
                   enum:
                     - tekton
                     - jenkins
+                    - azure
                     - gitlabci
                   enumNames:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2)
+                    - Azure Pipelines (SLSA 2)
                     - Gitlab CI (SLSA 2)
             - required:
                 - bbHost
@@ -153,9 +157,11 @@ spec:
                   enum:
                     - tekton
                     - jenkins
+                    - azure
                   enumNames:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2)
+                    - Azure Pipelines (SLSA 2)
     - title: Deployment information
       required:
         - imageRegistry
