@@ -11,31 +11,36 @@ env:
   CI_TYPE: github
 
   # 🖊️ EDIT to change the image registry settings.
-  # Registries such as GHCR, Quay.io, and Docker Hub are supported.
-  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
 
-  ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
-  ROX_CENTRAL_ENDPOINT: ${{ secrets.ROX_CENTRAL_ENDPOINT }}
-  GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
-  # Uncomment this when using Gitlab
-  # GITOPS_AUTH_USERNAME: ${{ secrets.GITOPS_AUTH_USERNAME }}
+  # Vars
+
+
+  ROX_CENTRAL_ENDPOINT: ${{ vars.ROX_CENTRAL_ENDPOINT }}
+  # GITOPS_AUTH_USERNAME: ${{ vars.GITOPS_AUTH_USERNAME }}
   # Set this to the user for your specific registry
-  IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_USER: ${{ vars.IMAGE_REGISTRY_USER }}
+  # Set this only when using an external Rekor instance
+  REKOR_HOST: ${{ vars.REKOR_HOST }}
+  # Set this only when using an external TUF instance
+  TUF_MIRROR: ${{ vars.TUF_MIRROR }}
+  # QUAY_IO_CREDS_USR: ${{ vars.QUAY_IO_CREDS_USR }}
+  # ARTIFACTORY_IO_CREDS_USR: ${{ vars.ARTIFACTORY_IO_CREDS_USR }}
+  # NEXUS_IO_CREDS_USR: ${{ vars.NEXUS_IO_CREDS_USR }}
+  COSIGN_PUBLIC_KEY: ${{ vars.COSIGN_PUBLIC_KEY }}
+  # Secrets
+  ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
+  GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
   # Set this password for your specific registry
   IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-  # Set this only when using an external Rekor instance
-  # REKOR_HOST: ${{ secrets.REKOR_HOST }}
-  # Set this only when using an external TUF instance
-  # TUF_MIRROR: ${{ secrets.TUF_MIRROR }}
-  # QUAY_IO_CREDS_USR: ${{ secrets.QUAY_IO_CREDS_USR }}
   # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
-  # ARTIFACTORY_IO_CREDS_USR: ${{ secrets.ARTIFACTORY_IO_CREDS_USR }}
   # ARTIFACTORY_IO_CREDS_PSW: ${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}
-  # NEXUS_IO_CREDS_USR: ${{ secrets.NEXUS_IO_CREDS_USR }}
   # NEXUS_IO_CREDS_PSW: ${{ secrets.NEXUS_IO_CREDS_PSW }}
   COSIGN_SECRET_PASSWORD: ${{ secrets.COSIGN_SECRET_PASSWORD }}
   COSIGN_SECRET_KEY: ${{ secrets.COSIGN_SECRET_KEY }}
-  COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
+  
+
+  # Registries such as GHCR, Quay.io, and Docker Hub are supported.
+  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -65,33 +70,45 @@ jobs:
       uses: actions/github-script@v7
       with:
         script: |
+          const vars = {
+            IMAGE_REGISTRY: `${{ vars.IMAGE_REGISTRY }}`,
+
+            ROX_CENTRAL_ENDPOINT: `${{ vars.ROX_CENTRAL_ENDPOINT }}`, 
+            /*GITOPS_AUTH_USERNAME: `${{ vars.GITOPS_AUTH_USERNAME }}`, */
+            /* Set this to the user for your specific registry */
+            IMAGE_REGISTRY_USER: `${{ vars.IMAGE_REGISTRY_USER }}`, 
+            /* Set this only when using an external Rekor instance */
+            REKOR_HOST: `${{ vars.REKOR_HOST }}`, 
+            /* Set this only when using an external TUF instance */
+            TUF_MIRROR: `${{ vars.TUF_MIRROR }}`, 
+            /*QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`, */
+            /*ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`, */
+            /*NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`, */
+            COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`, 
+          };
+
+          const missingVars = Object.entries(vars).filter(([ name, value ]) => {
+            if (value.length === 0) {
+              core.error(`Variable "${name}" is not set`);
+              return true;
+            }
+            core.info(`✔️ Variable "${name}" is set`);
+            return false;
+          });
+
           const secrets = {
-            IMAGE_REGISTRY: `${{ secrets.IMAGE_REGISTRY }}`,
 
             ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`, 
-            ROX_CENTRAL_ENDPOINT: `${{ secrets.ROX_CENTRAL_ENDPOINT }}`, 
             GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`, 
-            /* Uncomment this when using Gitlab */
-            /*GITOPS_AUTH_USERNAME: `${{ secrets.GITOPS_AUTH_USERNAME }}`, */
-            /* Set this to the user for your specific registry */
-            IMAGE_REGISTRY_USER: `${{ secrets.IMAGE_REGISTRY_USER }}`, 
             /* Set this password for your specific registry */
             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`, 
-            /* Set this only when using an external Rekor instance */
-            /*REKOR_HOST: `${{ secrets.REKOR_HOST }}`, */
-            /* Set this only when using an external TUF instance */
-            /*TUF_MIRROR: `${{ secrets.TUF_MIRROR }}`, */
-            /*QUAY_IO_CREDS_USR: `${{ secrets.QUAY_IO_CREDS_USR }}`, */
             /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`, */
-            /*ARTIFACTORY_IO_CREDS_USR: `${{ secrets.ARTIFACTORY_IO_CREDS_USR }}`, */
             /*ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`, */
-            /*NEXUS_IO_CREDS_USR: `${{ secrets.NEXUS_IO_CREDS_USR }}`, */
             /*NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`, */
             COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`, 
             COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`, 
-            COSIGN_PUBLIC_KEY: `${{ secrets.COSIGN_PUBLIC_KEY }}`, 
-
           };
+
           const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
             if (value.length === 0) {
               core.error(`Secret "${name}" is not set`);
@@ -100,15 +117,27 @@ jobs:
             core.info(`✔️ Secret "${name}" is set`);
             return false;
           });
+
+          if (missingVars.length > 0) {
+            core.error(`❌ At least one required variable is not set in the repository. \n` +
+              "You can add it using:\n" +
+              "GitHub UI: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository \n" +
+              "GitHub CLI: https://cli.github.com/manual/gh_variable_set \n" +
+              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+          }
+
           if (missingSecrets.length > 0) {
-            core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+            core.error(`❌ At least one required secret is not set in the repository. \n` +
               "You can add it using:\n" +
               "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
               "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
               "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
           }
-          else {
-            core.info(`✅ All the required secrets are set`);
+
+          if (missingVars.length > 0 || missingSecrets.length > 0) {
+            core.setFailed()
+          } else {
+            core.info(`✅ All the required variables and secrets are set`);
           }
     - name: Check out repository
       uses: actions/checkout@v4
