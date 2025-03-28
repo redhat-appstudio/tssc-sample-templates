@@ -268,7 +268,8 @@ spec:
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
           ciType: ${{ parameters.ciType }}
-          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          gitRepoOwner: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}
+          gitRepoName: ${{ parameters.repoName }}-gitops
           azureProject: ${{ parameters.azureProject if parameters.ciType === 'azure' else '' }}
           hostType: ${{ parameters.hostType }}
           username: ${{ parameters.bbOwner }}
@@ -430,7 +431,8 @@ spec:
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           hostType: ${{ parameters.hostType }}
           ciType: ${{ parameters.ciType }}
-          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
+          gitRepoOwner: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}
+          gitRepoName: ${{ parameters.repoName }}
           azureProject: ${{ parameters.azureProject if parameters.ciType === 'azure' else '' }}
           owner: ${{ parameters.owner }}
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
