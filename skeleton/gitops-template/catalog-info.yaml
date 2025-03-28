@@ -19,13 +19,13 @@ metadata:
     jenkins.io/job-full-name: ${{ values.appName }} 
   {%- endif %} 
   {%- if values.ciType == 'githubactions' %} 
-    github.com/project-slug: ${{ values.gitRepoSlug }} 
+    github.com/project-slug: ${{ values.gitRepoOwner }}/${{ values.gitRepoName }} 
   {%- endif %} 
   {%- if values.ciType == 'gitlabci' %} 
-    gitlab.com/project-slug: '${{ values.gitRepoSlug }}'
+    gitlab.com/project-slug: '${{ values.gitRepoOwner }}/${{ values.gitRepoName }}'
   {%- endif %}   
   {%- if values.ciType == 'azure' %}
-    dev.azure.com/project-repo: ${{ values.gitRepoSlug }}
+    dev.azure.com/project-repo: ${{ values.gitRepoOwner }}/${{ values.gitRepoName }}
     dev.azure.com/project: ${{ values.azureProject }}
   {%- endif %}
 spec:
