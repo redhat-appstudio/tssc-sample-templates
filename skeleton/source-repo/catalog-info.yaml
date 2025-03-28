@@ -21,6 +21,7 @@ metadata:
   {%- endif %}    
   {%- if values.ciType == 'azure' %}
     dev.azure.com/project-repo: ${{ values.gitRepoSlug }}
+    dev.azure.com/project: ${{ values.azureProject }}
   {%- endif %}
   {%- if values.ciType == 'tekton' %} 
     janus-idp.io/tekton: ${{ values.name }} 
