@@ -26,6 +26,7 @@ metadata:
   {%- endif %}   
   {%- if values.ciType == 'azure' %}
     dev.azure.com/project-repo: ${{ values.gitRepoSlug }}
+    dev.azure.com/project: ${{ values.azureProject }}
   {%- endif %}
 spec:
   type: gitops
