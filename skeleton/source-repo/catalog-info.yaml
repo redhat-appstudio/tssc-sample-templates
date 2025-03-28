@@ -22,6 +22,7 @@ metadata:
   {%- if values.ciType == 'azure' %}
     dev.azure.com/project-repo: ${{ values.gitRepoOwner }}/${{ values.gitRepoName }}
     dev.azure.com/project: ${{ values.azureProject }}
+    dev.azure.com/build-definition: ${{ values.gitRepoOwner }}.${{ values.gitRepoName }}
   {%- endif %}
   {%- if values.ciType == 'tekton' %} 
     janus-idp.io/tekton: ${{ values.name }} 
