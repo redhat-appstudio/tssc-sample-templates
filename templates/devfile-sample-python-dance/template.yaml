@@ -115,12 +115,10 @@ spec:
                   enum:
                     - tekton
                     - jenkins
-                    - azure
                     - gitlabci
                   enumNames:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2)
-                    - Azure Pipelines (SLSA 2)
                     - Gitlab CI (SLSA 2)
             - required:
                 - bbHost
