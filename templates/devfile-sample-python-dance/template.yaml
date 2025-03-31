@@ -108,7 +108,7 @@ spec:
                         azureProject:
                           title: Azure Project
                           type: string
-                          ui:help: The project the run the pipelines under
+                          ui:help: The project to run the pipelines under
                     - properties:
                         ciType:
                           const: githubactions
@@ -200,7 +200,7 @@ spec:
                         azureProject:
                           title: Azure Project
                           type: string
-                          ui:help: The project the run the pipelines under
+                          ui:help: The project to run the pipelines under
     - title: Deployment information
       required:
         - imageRegistry
