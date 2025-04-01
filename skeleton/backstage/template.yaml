@@ -90,6 +90,28 @@ spec:
                     - Jenkins (SLSA 2)
                     - Azure Pipelines (SLSA 2)
                     - Github Actions (SLSA 2)
+              dependencies:
+                ciType:
+                  oneOf:
+                    - properties:
+                        ciType:
+                          const: tekton
+                    - properties:
+                        ciType:
+                          const: jenkins
+                    - required: 
+                        - azureProject
+                        - ciType
+                      properties:
+                        ciType:
+                          const: azure
+                        azureProject:
+                          title: Azure Project
+                          type: string
+                          ui:help: The project to run the pipelines under
+                    - properties:
+                        ciType:
+                          const: githubactions
             - required:
                 - glHost
                 - ciType
@@ -160,6 +182,25 @@ spec:
                     - Tekton (SLSA 3)
                     - Jenkins (SLSA 2)
                     - Azure Pipelines (SLSA 2)
+              dependencies:
+                ciType:
+                  oneOf:
+                    - properties:
+                        ciType:
+                          const: tekton
+                    - properties:
+                        ciType:
+                          const: jenkins
+                    - required: 
+                        - azureProject
+                        - ciType
+                      properties:
+                        ciType:
+                          const: azure
+                        azureProject:
+                          title: Azure Project
+                          type: string
+                          ui:help: The project to run the pipelines under
     - title: Deployment information
       required:
         - imageRegistry
@@ -227,7 +268,9 @@ spec:
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
           argoProject: ${ARGOCD__DEFAULT__PROJECT}
           ciType: ${{ parameters.ciType }}
-          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
+          gitRepoOwner: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}
+          gitRepoName: ${{ parameters.repoName }}-gitops
+          azureProject: ${{ parameters.azureProject if parameters.ciType === 'azure' else '' }}
           hostType: ${{ parameters.hostType }}
           username: ${{ parameters.bbOwner }}
           secretRef: ${{ parameters.hostType != 'GitHub' }}
@@ -388,7 +431,9 @@ spec:
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           hostType: ${{ parameters.hostType }}
           ciType: ${{ parameters.ciType }}
-          gitRepoSlug: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
+          gitRepoOwner: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}
+          gitRepoName: ${{ parameters.repoName }}
+          azureProject: ${{ parameters.azureProject if parameters.ciType === 'azure' else '' }}
           owner: ${{ parameters.owner }}
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }}
