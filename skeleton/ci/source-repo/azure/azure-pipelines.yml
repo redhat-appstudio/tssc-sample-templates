@@ -1,0 +1,91 @@
+# Generated from templates/source-repo/azure-pipelines.yml.njk. Do not edit directly.
+
+trigger:
+- main
+
+pool:
+  name: resourcehub
+
+container:
+  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  options: --privileged
+
+steps:
+  - bash: |
+      echo "• init"
+      bash /work/rhtap/init.sh
+    name: Init
+    env:
+      ROX_API_TOKEN: $(ROX_API_TOKEN)
+      GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+      COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
+      COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
+  - bash: |
+      echo "• buildah-rhtap"
+      bash /work/rhtap/buildah-rhtap.sh
+      echo "• cosign-sign-attest"
+      bash /work/rhtap/cosign-sign-attest.sh
+    name: Build
+    env:
+      ROX_API_TOKEN: $(ROX_API_TOKEN)
+      GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+      COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
+      COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
+  - bash: |
+      echo "• update-deployment"
+      bash /work/rhtap/update-deployment.sh
+    name: Deploy
+    env:
+      ROX_API_TOKEN: $(ROX_API_TOKEN)
+      GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+      COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
+      COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
+  - bash: |
+      echo "• acs-deploy-check"
+      bash /work/rhtap/acs-deploy-check.sh
+      echo "• acs-image-check"
+      bash /work/rhtap/acs-image-check.sh
+      echo "• acs-image-scan"
+      bash /work/rhtap/acs-image-scan.sh
+    name: Scan
+    env:
+      ROX_API_TOKEN: $(ROX_API_TOKEN)
+      GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+      COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
+      COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
+  - bash: |
+      echo "• show-sbom-rhdh"
+      bash /work/rhtap/show-sbom-rhdh.sh
+      echo "• summary"
+      bash /work/rhtap/summary.sh
+    name: Summary
+    env:
+      ROX_API_TOKEN: $(ROX_API_TOKEN)
+      GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
+      # Set this password for your specific registry
+      IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+      COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
+      COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
