@@ -1,0 +1,41 @@
+# Generated from templates/gitops-template/azure-pipelines.yml.njk. Do not edit directly.
+
+trigger:
+- main
+
+pool:
+  name: resourcehub
+
+container:
+  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  options: --privileged
+
+steps:
+  - bash: |
+      echo "• gather-deploy-images"
+      bash /work/rhtap/gather-deploy-images.sh
+      echo "• verify-enterprise-contract"
+      bash /work/rhtap/verify-enterprise-contract.sh
+    name: Verify_ec
+    env:
+      TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
+      # Set this password for your specific registry
+      # IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
+  - bash: |
+      echo "• gather-images-to-upload-sbom"
+      bash /work/rhtap/gather-images-to-upload-sbom.sh
+      echo "• download-sbom-from-url-in-attestation"
+      bash /work/rhtap/download-sbom-from-url-in-attestation.sh
+      echo "• upload-sbom-to-trustification"
+      bash /work/rhtap/upload-sbom-to-trustification.sh
+    name: Upload_sbom
+    env:
+      TRUSTIFICATION_OIDC_CLIENT_SECRET: $(TRUSTIFICATION_OIDC_CLIENT_SECRET)
+      # Set this password for your specific registry
+      # IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
+      # QUAY_IO_CREDS_PSW: $(QUAY_IO_CREDS_PSW)
+      # ARTIFACTORY_IO_CREDS_PSW: $(ARTIFACTORY_IO_CREDS_PSW)
+      # NEXUS_IO_CREDS_PSW: $(NEXUS_IO_CREDS_PSW)
