@@ -1,0 +1,10 @@
+site_name: 'Documentation'
+
+nav:
+  - Home: index.md
+  - Source Component: source-component.md
+  - Pipelines: pipelines.md
+  - GitOps Application: gitops-application.md
+
+plugins:
+  - techdocs-core

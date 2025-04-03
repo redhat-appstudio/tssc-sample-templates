@@ -8,6 +8,7 @@ $SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-jav
 $SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-python-dance
 $SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-go-dance
 $SCRIPTDIR/import-samples https://github.com/redhat-appstudio/devfile-sample-dotnet60-dance
+$SCRIPTDIR/import-samples https://github.com/redhat-appstudio/ai-sample-chatbot-dance
 
 # cleanup cloned path
 rm -rf $SCRIPTDIR/samples
