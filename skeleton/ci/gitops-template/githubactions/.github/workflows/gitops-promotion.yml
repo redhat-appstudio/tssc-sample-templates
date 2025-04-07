@@ -53,7 +53,7 @@ jobs:
     name: Build and send Image Update PR
     runs-on: ubuntu-24.04
     container:
-      image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+      image: quay.io/redhat-appstudio/rhtap-task-runner:1.5
       options: --privileged
     environment: production
 

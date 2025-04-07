@@ -1,6 +1,6 @@
 # Generated from templates/source-repo/.gitlab-ci.yml.njk. Do not edit directly.
 
-image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+image: quay.io/redhat-appstudio/rhtap-task-runner:1.5
 
 variables:
   CI_TYPE: gitlab
@@ -48,7 +48,7 @@ update-deployment:
   artifacts:
     paths:
       - results/
-  rules: 
+  rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 acs-deploy-check:
