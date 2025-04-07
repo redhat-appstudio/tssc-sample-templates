@@ -26,6 +26,7 @@ env:
   # QUAY_IO_CREDS_USR: ${{ vars.QUAY_IO_CREDS_USR }}
   # ARTIFACTORY_IO_CREDS_USR: ${{ vars.ARTIFACTORY_IO_CREDS_USR }}
   # NEXUS_IO_CREDS_USR: ${{ vars.NEXUS_IO_CREDS_USR }}
+  # Used to verify the image signature and attestation
   COSIGN_PUBLIC_KEY: ${{ vars.COSIGN_PUBLIC_KEY }}
   # Secrets
   ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
@@ -84,6 +85,7 @@ jobs:
             /*QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`, */
             /*ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`, */
             /*NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`, */
+            /* Used to verify the image signature and attestation */
             COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`, 
           };
 

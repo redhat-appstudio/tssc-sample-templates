@@ -28,6 +28,8 @@ steps:
     name: init
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -44,6 +46,8 @@ steps:
     name: build
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -58,6 +62,8 @@ steps:
     name: deploy
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -76,6 +82,8 @@ steps:
     name: scan
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -92,6 +100,8 @@ steps:
     name: summary
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
