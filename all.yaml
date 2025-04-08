@@ -5,11 +5,5 @@ metadata:
   description: Dance Language Samples
 spec:
   targets:
-    - ./templates/ai-sample-chatbot-dance/template.yaml
-    - ./templates/devfile-sample-nodejs-dance/template.yaml  
-    - ./templates/devfile-sample-code-with-quarkus-dance/template.yaml  
-    - ./templates/devfile-sample-dotnet60-dance/template.yaml  
-    - ./templates/devfile-sample-go-dance/template.yaml  
-    - ./templates/devfile-sample-java-springboot-dance/template.yaml  
-    - ./templates/devfile-sample-python-dance/template.yaml  
+    - ./templates/ai-sample-chatbot-dance/template.yaml  
     - ./templates/generic-import-from-repo/template.yaml  
