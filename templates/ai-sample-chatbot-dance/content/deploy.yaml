@@ -1,19 +1,19 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: my-chatbot
+  name: my-rhtap-chatbot
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: chatbot-app
+      app: rhtap-chatbot-app
   template:
     metadata:
       labels:
-        app: chatbot-app
+        app: rhtap-chatbot-app
     spec:
       containers:
-        - name: my-chatbot
+        - name: my-rhtap-chatbot
           image: chatbot-image:latest
           ports:
             - name: http
@@ -27,7 +27,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: my-chatbot
+  name: my-rhtap-chatbot
 spec:
   ports:
     - name: http-8501
@@ -35,4 +35,4 @@ spec:
       protocol: TCP
       targetPort: 8501
   selector:
-    app: chatbot-app
+    app: rhtap-chatbot-app

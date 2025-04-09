@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: chatbot
+  name: rhtap-chatbot
   title:  Chatbot Application - Trusted Application Pipeline
   description: Build your own Large Language Model (LLM)-enabled chat application. Attach your own model server. This sample demonstrates software supply chain security functionality using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
   tags: ["ai", "llamacpp", "vllm", "python", "sscs", "sbom", "acs"]

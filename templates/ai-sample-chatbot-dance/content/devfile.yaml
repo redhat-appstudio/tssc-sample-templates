@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: chatbot
+  name: rhtap-chatbot
   projectType: Python
   displayName: Chatbot Application - Trusted Application Pipeline
   description: Build your own Large Language Model (LLM)-enabled chat application. Attach your own model server. This sample demonstrates software supply chain security functionality using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
