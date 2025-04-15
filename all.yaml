@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
-  name: dance-all
-  description: Dance Language Samples
+  name: ai-all
+  description: AI Samples
 spec:
   targets:
     - ./templates/ai-sample-chatbot-dance/template.yaml  
