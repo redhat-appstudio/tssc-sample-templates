@@ -20,6 +20,8 @@ container:
 # See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables
 variables:
 - group: rhtap
+- name: CI_TYPE
+  value: azure
 
 steps:
   - bash: |
