@@ -10,3 +10,4 @@ resources:
   - deployment.yaml
   - route.yaml
   - service.yaml
+  - model-config.yaml

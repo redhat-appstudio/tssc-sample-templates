@@ -207,6 +207,9 @@ spec:
         - imageOrg
         - imageName
         - namespace
+        - modelServerEndpoint
+        - modelServerName
+        - includeModelEndpointSecret
       properties:
         imageRegistry:
           title: Image Registry
@@ -232,6 +235,39 @@ spec:
           ui:options:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
+        modelServerEndpoint:
+          title: Model Server Endpoint
+          type: string
+          ui:help: API URL for accessing a target AI model server
+        modelServerName:
+          title: Model Server Name
+          type: string
+          ui:help: Title of target AI model server
+        includeModelEndpointSecret:
+          title: Is bearer authentication required for Model Server?
+          type: boolean
+          default: false
+          ui:help: Create a Secret containing the authentication bearer in the preferred targeted Namespace first.
+      dependencies:
+        includeModelEndpointSecret:
+          allOf:
+            - if:
+                properties:
+                  includeModelEndpointSecret:
+                    const: true
+              then:
+                properties:
+                  modelEndpointSecretName:
+                    title: Model Server Endpoint Secret Name
+                    ui:help: Paste in the name of the Secret containing your bearer.
+                    type: string
+                  modelEndpointSecretKey:
+                    title: Model Server Endpoint Secret Key
+                    ui:help: Paste in the key of the Secret containing the bearer value.
+                    type: string
+                required:
+                  - modelEndpointSecretName
+                  - modelEndpointSecretKey
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -276,6 +312,11 @@ spec:
           secretRef: ${{ parameters.hostType != 'GitHub' }}
           isTekton: ${{ parameters.ciType === 'tekton' }}
           isJenkins: ${{ parameters.ciType === 'jenkins' }}
+          modelServerEndpoint: ${{ parameters.modelServerEndpoint }}
+          modelServerName: ${{ parameters.modelServerName }}
+          includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
+          modelEndpointSecretName: ${{ parameters.modelEndpointSecretName if parameters.includeModelEndpointSecret else '' }}
+          modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey if parameters.includeModelEndpointSecret else '' }}
           gitSecret: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
