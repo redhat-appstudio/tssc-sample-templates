@@ -3,20 +3,35 @@
 trigger:
 - main
 
+# Using self-hosted 'Default' agent pool by default
+# Change accordingly when using a different agent pool
+# Can be deleted if self-hosted agents are not being used
+# See https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents
 pool:
-  name: resourcehub
+  name: Default
 
 container:
   image: quay.io/redhat-appstudio/rhtap-task-runner:latest
   options: --privileged
 
+# Using 'rhtap' variable group by default
+# Change accordingly when using a different variable group
+# Can be deleted if the variables are set differently
+# See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables
+variables:
+- group: rhtap
+- name: CI_TYPE
+  value: azure
+
 steps:
   - bash: |
       echo "• init"
       bash /work/rhtap/init.sh
-    name: Init
+    name: init
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -30,9 +45,11 @@ steps:
       bash /work/rhtap/buildah-rhtap.sh
       echo "• cosign-sign-attest"
       bash /work/rhtap/cosign-sign-attest.sh
-    name: Build
+    name: build
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -44,9 +61,11 @@ steps:
   - bash: |
       echo "• update-deployment"
       bash /work/rhtap/update-deployment.sh
-    name: Deploy
+    name: deploy
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -62,9 +81,11 @@ steps:
       bash /work/rhtap/acs-image-check.sh
       echo "• acs-image-scan"
       bash /work/rhtap/acs-image-scan.sh
-    name: Scan
+    name: scan
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
@@ -78,9 +99,11 @@ steps:
       bash /work/rhtap/show-sbom-rhdh.sh
       echo "• summary"
       bash /work/rhtap/summary.sh
-    name: Summary
+    name: summary
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
+      # Uncomment this when using Bitbucket
+      # GITOPS_AUTH_USERNAME: $(GITOPS_AUTH_USERNAME)
       GITOPS_AUTH_PASSWORD: $(GITOPS_AUTH_PASSWORD)
       # Set this password for your specific registry
       IMAGE_REGISTRY_PASSWORD: $(IMAGE_REGISTRY_PASSWORD)
