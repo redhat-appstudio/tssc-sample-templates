@@ -406,6 +406,7 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
+        targetPath: source
         url: ./content
         values:
           name: ${{ parameters.name }}
@@ -417,6 +418,7 @@ spec:
       name: Fetch Source Skeleton
       action: fetch:template
       input:
+        targetPath: source
         url: ../../skeleton/source-repo
         values:
           name: ${{ parameters.name }}
@@ -443,6 +445,7 @@ spec:
       name: Fetch Source CI
       action: fetch:template
       input:
+        targetPath: source
         url: ../../skeleton/ci/source-repo/${{ parameters.ciType}}
         copyWithoutRender:
           - .github/workflows/*
@@ -476,6 +479,7 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+        sourcePath: source
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-gitlab-source
       name: Publish Repository to GitLab
@@ -488,6 +492,7 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+        sourcePath: source
     # This action creates a new Bitbucket Cloud repository and publishes the files in the workspace directory to the repository.
     - id: publish-bitbucket-source
       name: Publish Repository to Bitbucket
@@ -500,6 +505,7 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+        sourcePath: source
 
     #
     # Register objects in Backstage
