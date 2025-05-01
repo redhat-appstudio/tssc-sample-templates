@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${{ values.name }}-model-config
+data:
+  MODEL_ENDPOINT: "${{ values.modelServerEndpoint }}"
+  MODEL_NAME: "${{ values.modelServerName }}"
