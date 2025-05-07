@@ -17,7 +17,7 @@ spec:
           image: chatbot-image:latest
           ports:
             - name: http
-              containerPort: 8501
+              containerPort: 8080
               protocol: TCP
           resources:
             requests:
@@ -30,9 +30,9 @@ metadata:
   name: my-rhtap-chatbot
 spec:
   ports:
-    - name: http-8501
-      port: 8501
+    - name: http-8080
+      port: 8080
       protocol: TCP
-      targetPort: 8501
+      targetPort: 8080
   selector:
     app: rhtap-chatbot-app

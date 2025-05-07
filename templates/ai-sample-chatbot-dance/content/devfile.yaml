@@ -16,7 +16,7 @@ metadata:
     - sbom
     - acs
   attributes:
-    alpha.dockerimage-port: 8501
+    alpha.dockerimage-port: 8080
 components:
   - name: image-build
     image:
@@ -30,12 +30,12 @@ components:
       deployment/replicas: 1
       deployment/cpuRequest: 10m
       deployment/memoryRequest: 50Mi
-      deployment/container-port: 8501
+      deployment/container-port: 8080
     kubernetes:
       uri: deploy.yaml
       endpoints:
-        - name: http-8501
-          targetPort: 8501
+        - name: http-8080
+          targetPort: 8080
           path: /
           secure: true
 commands:

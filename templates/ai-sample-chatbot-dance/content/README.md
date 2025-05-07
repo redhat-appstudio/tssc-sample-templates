@@ -1,6 +1,6 @@
 # Creating an application with a Chatbot code sample
 
-**Note:** The Chatbot code sample uses the **8501** HTTP port.
+**Note:** The Chatbot code sample uses the **8080** HTTP port.
 
 Before you begin creating an application with this `devfile` code sample, it's helpful to understand the relationship between the `devfile` and `Containerfile` and how they contribute to your build. You can find these files at the following URLs:
 
