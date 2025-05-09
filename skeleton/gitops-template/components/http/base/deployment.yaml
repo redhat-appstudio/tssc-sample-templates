@@ -50,4 +50,4 @@ spec:
         - name: GIT_REPO
           value: ${{ values.repoURL }}
       imagePullSecrets:
-        - name: rhtap-image-registry-auth
+        - name: tssc-image-registry-auth

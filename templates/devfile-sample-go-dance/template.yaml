@@ -228,7 +228,7 @@ spec:
         namespace:
           title: Deployment Namespace
           type: string
-          default: rhtap-app
+          default: tssc-app
           ui:options:
             rows: 5
           ui:help: "This will be the prefix of the following three namespaces for deployment: <namespace>-development, <namespace>-stage, <namespace>-prod"
@@ -253,8 +253,8 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: rhtap
-          defaultDeployNamespace: rhtap-app
+          rhtapNamespace: tssc
+          defaultDeployNamespace: tssc-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
@@ -265,7 +265,7 @@ spec:
           # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: 8081
-          argoNS: rhtap-gitops
+          argoNS: tssc-gitops
           argoProject: default
           ciType: ${{ parameters.ciType }}
           gitRepoOwner: ${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}
@@ -296,8 +296,8 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: rhtap
-          defaultDeployNamespace: rhtap-app
+          rhtapNamespace: tssc
+          defaultDeployNamespace: tssc-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}
@@ -308,7 +308,7 @@ spec:
           # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: 8081
-          argoNS: rhtap-gitops
+          argoNS: tssc-gitops
           argoProject: default
           hostType: ${{ parameters.hostType }}
           username: ${{ parameters.bbOwner }}
@@ -386,7 +386,7 @@ spec:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
         argoInstance: default
-        namespace: rhtap-gitops
+        namespace: tssc-gitops
         repoUrl: https://${{ parameters.ghHost if parameters.hostType === 'GitHub' else (parameters.glHost if parameters.hostType === 'GitLab' else parameters.bbHost)}}/${{ parameters.workspace if parameters.hostType === 'Bitbucket' else (parameters.ghOwner if parameters.hostType === 'GitHub' else parameters.glOwner)  }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # The wait for Repository CRs to be created, so the creation of the source repository triggers the first build.
