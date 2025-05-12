@@ -48,7 +48,7 @@ update-deployment:
   artifacts:
     paths:
       - results/
-  rules: 
+  rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 acs-deploy-check:
