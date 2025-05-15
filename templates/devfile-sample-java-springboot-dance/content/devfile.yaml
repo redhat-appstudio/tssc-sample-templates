@@ -3,7 +3,7 @@ metadata:
   name: java-springboot
   version: 1.2.1
   attributes:
-    alpha.dockerimage-port: 8081
+    alpha.dockerimage-port: 8080
   displayName: Spring Boot® - Trusted Application Pipeline
   description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
   icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/spring.svg
@@ -34,12 +34,12 @@ components:
       deployment/replicas: 1
       deployment/cpuRequest: 10m
       deployment/memoryRequest: 180Mi
-      deployment/container-port: 8081
+      deployment/container-port: 8080
     kubernetes:
       uri: deploy.yaml
       endpoints:
-        - name: http-8081
-          targetPort: 8081
+        - name: http-8080
+          targetPort: 8080
           path: /
           secure: true
 commands:

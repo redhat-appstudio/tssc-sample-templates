@@ -9,7 +9,7 @@ FROM registry.access.redhat.com/ubi9/ubi-micro:latest
 
 COPY --from=0 /opt/app-root/src/main ./main
 
-ENV PORT 8081
-EXPOSE 8081
+ENV PORT 8080
+EXPOSE 8080
 
 CMD [ "./main" ]

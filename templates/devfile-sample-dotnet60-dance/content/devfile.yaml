@@ -15,7 +15,7 @@ metadata:
     - sbom
     - acs
   attributes:
-    alpha.dockerimage-port: 8081
+    alpha.dockerimage-port: 8080
 starterProjects:
   - name: s2i-example
     git:
@@ -53,12 +53,12 @@ components:
       deployment/replicas: 1
       deployment/cpuRequest: 10m
       deployment/memoryRequest: 100Mi
-      deployment/container-port: 8081
+      deployment/container-port: 8080
     kubernetes:
       uri: kubernetes/deployment.yaml
       endpoints:
-        - name: http-8081
-          targetPort: 8081
+        - name: http-8080
+          targetPort: 8080
           path: /
           secure: true
   - name: kubernetes-service
@@ -66,7 +66,7 @@ components:
       deployment/replicas: 1
       deployment/cpuRequest: 10m
       deployment/memoryRequest: 100Mi
-      deployment/container-port: 8081
+      deployment/container-port: 8080
     kubernetes:
       uri: kubernetes/service.yaml
 commands:

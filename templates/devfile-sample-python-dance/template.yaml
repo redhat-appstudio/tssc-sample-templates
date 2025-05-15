@@ -264,7 +264,7 @@ spec:
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
           # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          port: 8081
+          port: 8080
           argoNS: tssc-gitops
           argoProject: default
           ciType: ${{ parameters.ciType }}
@@ -307,7 +307,7 @@ spec:
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
           # actual src image will be updated by the CI pipeline.
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          port: 8081
+          port: 8080
           argoNS: tssc-gitops
           argoProject: default
           hostType: ${{ parameters.hostType }}
