@@ -1,18 +1,20 @@
+# This Dockerfile is used to create a build in Konflux
+
 FROM registry.access.redhat.com/ubi9/ubi:9.5-1745854298
 
 LABEL KONFLUX_CI="true"
 
 # renovate: datasource=repology depName=homebrew/openshift-cli
-ARG OC_VERSION=4.14.8
+ARG OC_VERSION=4.17.9
 
 # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=4.43.1
+ARG YQ_VERSION=4.45.4
 
 # renovate: datasource=github-releases depName=oras-project/oras
-ARG ORAS_VERSION=1.2.0
+ARG ORAS_VERSION=1.2.3
 
 # renovate: datasource=github-releases depName=sigstore/cosign
-ARG COSIGN_VERSION=v2.4.3
+ARG COSIGN_VERSION=v2.5.0
 
 RUN curl --proto "=https" --tlsv1.2 -sSf -LO "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_amd64.tar.gz" && \
     mkdir -p oras-install/ && \

@@ -1,7 +1,9 @@
+#
 # This is file used for integration tests (PR checks, post-merge checks)
+# Reference: https://github.com/redhat-appstudio/rhtap-cli/blob/main/integration-tests/pict-models/default.pict
 #
 
-# OCP: valid OCP versions, for example: 4.17, 4.16
+# OCP: valid OCP versions, for example: 4.18, 4.17, 4.16
 # ACS: valid values is "new" and "hosted"
 # Registry: valid values are "quay", "quay.io", "artifactory" and "nexus"
 # TPA: valid values are "new" and "hosted"
@@ -9,9 +11,9 @@
 # Pipeline: valid values are "tekton", "jenkins", "gitlabci", "actions"
 # AUTH: valid values are "github" and "gitlab"
 
-OCP: 4.17
+OCP: 4.18
 AUTH: github
-ACS: new
+ACS: hosted
 Registry: quay.io
 TPA: new
 SCM: github
