@@ -60,4 +60,4 @@ spec:
               key: ${{  values.modelEndpointSecretKey  }}
         {%- endif %}
       imagePullSecrets:
-        - name: rhtap-image-registry-auth
+        - name: tssc-image-registry-auth
