@@ -38,7 +38,6 @@ env:
   # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
   # ARTIFACTORY_IO_CREDS_PSW: ${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}
   # NEXUS_IO_CREDS_PSW: ${{ secrets.NEXUS_IO_CREDS_PSW }}
-  
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -58,107 +57,107 @@ jobs:
     environment: production
 
     steps:
-    - name: Check for required secrets
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const vars = {
-            IMAGE_REGISTRY: `${{ vars.IMAGE_REGISTRY }}`,
+      - name: Check for required secrets
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const vars = {
+              IMAGE_REGISTRY: `${{ vars.IMAGE_REGISTRY }}`,
 
-            /* Used to verify the image signature and attestation */
-            COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`, 
-            /* URL of the BOMbastic api host (e.g. https://sbom.trustification.dev) */
-            TRUSTIFICATION_BOMBASTIC_API_URL: `${{ vars.TRUSTIFICATION_BOMBASTIC_API_URL }}`, 
-            /* URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken) */
-            TRUSTIFICATION_OIDC_ISSUER_URL: `${{ vars.TRUSTIFICATION_OIDC_ISSUER_URL }}`, 
-            TRUSTIFICATION_OIDC_CLIENT_ID: `${{ vars.TRUSTIFICATION_OIDC_CLIENT_ID }}`, 
-            TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: `${{ vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}`, 
-            /* Set this to the user for your specific registry */
-            IMAGE_REGISTRY_USER: `${{ vars.IMAGE_REGISTRY_USER }}`, 
-            /* Set this only when using an external Rekor instance */
-            REKOR_HOST: `${{ vars.REKOR_HOST }}`, 
-            /* Set this only when using an external TUF instance */
-            TUF_MIRROR: `${{ vars.TUF_MIRROR }}`, 
-            /*QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`, */
-            /*ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`, */
-            /*NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`, */
-          };
+             /* Used to verify the image signature and attestation */
+             COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`,
+             /* URL of the BOMbastic api host (e.g. https://sbom.trustification.dev) */
+             TRUSTIFICATION_BOMBASTIC_API_URL: `${{ vars.TRUSTIFICATION_BOMBASTIC_API_URL }}`,
+             /* URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken) */
+             TRUSTIFICATION_OIDC_ISSUER_URL: `${{ vars.TRUSTIFICATION_OIDC_ISSUER_URL }}`,
+             TRUSTIFICATION_OIDC_CLIENT_ID: `${{ vars.TRUSTIFICATION_OIDC_CLIENT_ID }}`,
+             TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: `${{ vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}`,
+             /* Set this to the user for your specific registry */
+             IMAGE_REGISTRY_USER: `${{ vars.IMAGE_REGISTRY_USER }}`,
+             /* Set this only when using an external Rekor instance */
+             REKOR_HOST: `${{ vars.REKOR_HOST }}`,
+             /* Set this only when using an external TUF instance */
+             TUF_MIRROR: `${{ vars.TUF_MIRROR }}`,
+             /*QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`,*/
+             /*ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`,*/
+             /*NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`,*/
+            };
 
-          const missingVars = Object.entries(vars).filter(([ name, value ]) => {
-            if (value.length === 0) {
-              core.error(`Variable "${name}" is not set`);
-              return true;
+            const missingVars = Object.entries(vars).filter(([ name, value ]) => {
+              if (value.length === 0) {
+                core.error(`Variable "${name}" is not set`);
+                return true;
+              }
+              core.info(`✔️ Variable "${name}" is set`);
+              return false;
+            });
+
+            const secrets = {
+
+             TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`,
+              /* Set this password for your specific registry */
+             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
+             /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`,*/
+             /*ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`,*/
+             /*NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`,*/
+            };
+
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+              if (value.length === 0) {
+                core.error(`Secret "${name}" is not set`);
+                return true;
+              }
+              core.info(`✔️ Secret "${name}" is set`);
+              return false;
+            });
+
+            if (missingVars.length > 0) {
+              core.error(`❌ At least one required variable is not set in the repository. \n` +
+                "You can add it using:\n" +
+                "GitHub UI: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository \n" +
+                "GitHub CLI: https://cli.github.com/manual/gh_variable_set \n" +
+                "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
             }
-            core.info(`✔️ Variable "${name}" is set`);
-            return false;
-          });
 
-          const secrets = {
-
-            TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`, 
-            /* Set this password for your specific registry */
-            IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`, 
-            /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`, */
-            /*ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`, */
-            /*NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`, */
-          };
-
-          const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
-            if (value.length === 0) {
-              core.error(`Secret "${name}" is not set`);
-              return true;
+            if (missingSecrets.length > 0) {
+              core.error(`❌ At least one required secret is not set in the repository. \n` +
+                "You can add it using:\n" +
+                "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+                "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+                "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
             }
-            core.info(`✔️ Secret "${name}" is set`);
-            return false;
-          });
 
-          if (missingVars.length > 0) {
-            core.error(`❌ At least one required variable is not set in the repository. \n` +
-              "You can add it using:\n" +
-              "GitHub UI: https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository \n" +
-              "GitHub CLI: https://cli.github.com/manual/gh_variable_set \n" +
-              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
-          }
-
-          if (missingSecrets.length > 0) {
-            core.error(`❌ At least one required secret is not set in the repository. \n` +
-              "You can add it using:\n" +
-              "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
-              "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
-              "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
-          }
-
-          if (missingVars.length > 0 || missingSecrets.length > 0) {
-            core.setFailed()
-          } else {
-            core.info(`✅ All the required variables and secrets are set`);
-          }
-    - name: Check out repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: '2'
-    - name: Pre-init
-      run: |
-        buildah --version
-        syft --version
-        cosign version
-        ec version
-        git config --global --add safe.directory $(pwd)
-        cat rhtap/env.sh
-    - name: Verify Ec
-      run: |
-        echo "• gather-deploy-images"
-        bash /work/rhtap/gather-deploy-images.sh
-        echo "• verify-enterprise-contract"
-        bash /work/rhtap/verify-enterprise-contract.sh
-    - name: Upload Sbom
-      run: |
-        echo "• gather-images-to-upload-sbom"
-        bash /work/rhtap/gather-images-to-upload-sbom.sh
-        echo "• download-sbom-from-url-in-attestation"
-        bash /work/rhtap/download-sbom-from-url-in-attestation.sh
-        echo "• upload-sbom-to-trustification"
-        bash /work/rhtap/upload-sbom-to-trustification.sh
-    - name: Done
-      run: |
-        echo "Done"
+            if (missingVars.length > 0 || missingSecrets.length > 0) {
+              core.setFailed()
+            } else {
+              core.info(`✅ All the required variables and secrets are set`);
+            }
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '2'
+      - name: Pre-init
+        run: |
+          buildah --version
+          syft --version
+          cosign version
+          ec version
+          git config --global --add safe.directory $(pwd)
+          cat rhtap/env.sh
+      - name: Verify Ec
+        run: |
+          echo "• gather-deploy-images"
+          bash /work/rhtap/gather-deploy-images.sh
+          echo "• verify-enterprise-contract"
+          bash /work/rhtap/verify-enterprise-contract.sh
+      - name: Upload Sbom
+        run: |
+          echo "• gather-images-to-upload-sbom"
+          bash /work/rhtap/gather-images-to-upload-sbom.sh
+          echo "• download-sbom-from-url-in-attestation"
+          bash /work/rhtap/download-sbom-from-url-in-attestation.sh
+          echo "• upload-sbom-to-trustification"
+          bash /work/rhtap/upload-sbom-to-trustification.sh
+      - name: Done
+        run: |
+          echo "Done"

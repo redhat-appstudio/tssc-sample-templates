@@ -99,7 +99,7 @@ spec:
                     - properties:
                         ciType:
                           const: jenkins
-                    - required: 
+                    - required:
                         - azureProject
                         - ciType
                       properties:
@@ -191,7 +191,7 @@ spec:
                     - properties:
                         ciType:
                           const: jenkins
-                    - required: 
+                    - required:
                         - azureProject
                         - ciType
                       properties:

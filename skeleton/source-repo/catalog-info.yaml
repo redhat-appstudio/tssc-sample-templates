@@ -9,8 +9,8 @@ metadata:
       icon: dashboard
       type: admin-dashboard
   annotations:
-    # ArgoCD apps from this template used rhtap-gitops as the grouping
-    argocd/app-selector: rhtap/gitops=${{  values.name  }}
+    # ArgoCD apps from this template used tssc-gitops as the grouping
+    argocd/app-selector: tssc/gitops=${{  values.name  }}
     backstage.io/kubernetes-id: ${{ values.name }} 
     backstage.io/techdocs-ref: dir:.  
   {%- if values.ciType == 'githubactions' %} 
