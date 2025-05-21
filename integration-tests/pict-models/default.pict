@@ -1,0 +1,38 @@
+#
+# This is file used for integration tests (PR checks, post-merge checks)
+# Reference: https://github.com/redhat-appstudio/rhtap-cli/blob/main/integration-tests/pict-models/default.pict
+#
+
+# OCP: valid OCP versions, for example: 4.18, 4.17, 4.16
+# ACS: valid values is "new" and "hosted"
+# Registry: valid values are "quay", "quay.io", "artifactory" and "nexus"
+# TPA: valid values are "new" and "hosted"
+# SCM: valid values are "github", "gitlab" and "bitbucket"
+# Pipeline: valid values are "tekton", "jenkins", "gitlabci", "actions"
+# AUTH: valid values are "github" and "gitlab"
+
+OCP: 4.18
+AUTH: github
+ACS: hosted
+Registry: quay.io
+TPA: new
+SCM: github
+Pipeline: tekton
+
+# Constraints
+## Parameter value validation. This doesn't work with the current pict docker image, we can uncomment it when we figure out it in future
+[ACS] IN {"new", "hosted"};
+[Registry] IN {"quay", "quay.io", "artifactory", "nexus"};
+[TPA] IN {"new", "hosted"};
+[SCM] IN {"github", "gitlab", "bitbucket"};
+[Pipeline] IN {"tekton", "jenkins", "gitlabci", "actions"};
+[AUTH] IN {"github", "gitlab"};
+
+## SCM and AUTH must match for GitHub and GitLab
+IF [SCM] = "github" THEN [AUTH] = "github";
+IF [SCM] = "gitlab" THEN [AUTH] = "gitlab";
+
+## Pipeline restrictions based on SCM
+IF [SCM] = "github" THEN [Pipeline] IN {"tekton", "jenkins", "actions"};
+IF [SCM] = "gitlab" THEN [Pipeline] IN {"tekton", "jenkins", "gitlabci"};
+IF [SCM] = "bitbucket" THEN [Pipeline] IN {"tekton", "jenkins"};
