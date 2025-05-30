@@ -11,7 +11,7 @@ pool:
   name: Default
 
 container:
-  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  image: registry.access.redhat.com/rhtap-task-runner/rhtap-task-runner-rhel9:1.6
   options: --privileged
 
 # Using 'rhtap' variable group by default
