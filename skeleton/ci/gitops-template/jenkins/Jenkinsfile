@@ -1,6 +1,6 @@
 /* Generated from templates/gitops-template/Jenkinsfile.njk. Do not edit directly. */
 
-library identifier: 'RHTAP_Jenkins@v1.6', retriever: modernSCM(
+library identifier: 'RHTAP_Jenkins@release-v1.6.x', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
 
