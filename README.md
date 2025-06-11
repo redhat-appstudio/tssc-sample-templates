@@ -57,21 +57,12 @@ On `Application Repository Information` Page, provide your Git host in the `Repo
 On `Deployment information` Page, provide your Quay host in the `Image Registry`
 
 ![Screenshot](on-prem-quay.png)
- 
+
 ## Contributing
 
-The templates are found in `./templates` and reference reusable content in `./skeleton`.  
+The templates are found in `./templates` and reference reusable content in `./skeleton`.
 
-The templates are maintained by importing external samples into the software template format. This allows the external samples to be used standalone, developed, and evolved and then imported.
-
-The pipelines are also maintained externally to allow standalone use outside of software templates, as well as evolution of the pipelines in one of more software templates.
-
-To update the templates from these or any new samples you update the list of imported repos and run the following. 
-
-
- `./generate.sh` to generate all the templates before commit to this repository.
-
-
+The pipelines are maintained externally to allow standalone use outside of software templates, as well as evolution of the pipelines in one of more software templates.
 
 ### MacOS 
 
