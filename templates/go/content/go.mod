@@ -1,3 +1,3 @@
-module github.com/devfile-samples/devfile-sample-go-basic
+module github.com/redhat-appstudio/tssc-sample-templates/templates/go/content
 
 go 1.22
