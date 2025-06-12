@@ -3,7 +3,7 @@ metadata:
   name: java-quarkus
   version: 1.2.1
   provider: Red Hat
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
   icon: https://design.jboss.org/quarkus/logo/final/SVG/quarkus_icon_rgb_default.svg
   website: https://quarkus.io
   displayName: Quarkus Java - Trusted Application Pipeline

@@ -9,7 +9,7 @@ metadata:
   tags: ["Go", "sscs", "sbom", "acs"]
   version: 1.1.0
   provider: Red Hat
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
   attributes:
     alpha.dockerimage-port: 8081
 parent:

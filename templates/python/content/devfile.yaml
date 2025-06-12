@@ -15,7 +15,7 @@ metadata:
     - sscs
     - sbom
     - acs
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
   attributes:
     alpha.dockerimage-port: 8081
 parent:

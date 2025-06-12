@@ -10,7 +10,7 @@ metadata:
   attributes:
     alpha.dockerimage-port: 3001
   provider: Red Hat
-  supportUrl: https://github.com/devfile-samples/devfile-support#support-information
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
 parent:
   id: nodejs
   registryUrl: "https://registry.devfile.io"
