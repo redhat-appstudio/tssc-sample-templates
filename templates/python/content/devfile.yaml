@@ -3,7 +3,7 @@ metadata:
   name: python
   projectType: Python
   displayName: Python - Trusted Application Pipeline
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/python.svg
+  icon: https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg
   description: Python is an interpreted,  object-oriented, high-level programming language with dynamic semantics. This sample demonstrates software supply chain security functionalty using an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
   language: Python
   version: 1.0.1
