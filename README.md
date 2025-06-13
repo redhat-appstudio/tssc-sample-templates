@@ -4,13 +4,13 @@
 
 This repository provides a suite of language/framework examples that implement end-to-end software supply chain security (SSCS).
 
-The examples contain an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+The examples contain an advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
 
-Software Template authors and IDP builders can take these samples to create their own SSCS based starters. The components in the samples are designed to be maintainable to ensure that day 2 maintainance of default build pipelines and deployment yaml ensures teams have
+Software Template authors and IDP builders can take these samples to create their own SSCS based starters.
 
 ## Usage in Red Hat Developer Hub
 
-To import these templates, register a component in on the golden path template page
+To import these templates, register a component in on the golden path template page:
 
 ![Screenshot](register.png)
 
@@ -20,7 +20,7 @@ Import `https://github.com/redhat-appstudio/tssc-sample-templates/blob/main/all.
 
 ## Usage in backstage
 
-Add the following to your `app-config.yaml` file in your backstage configuration
+Add the following to your `app-config.yaml` file in your backstage configuration:
 
 ```yaml
     - type: url
@@ -35,7 +35,7 @@ This will add the samples into a set of backstage templates.
 
 ## On-prem host support
 
-You need to ensure the on-prem host is being configured in `app-config.yaml` file in your backstage/RHDH configuration
+You need to ensure the on-prem host is being configured in `app-config.yaml` file in your backstage/RHDH configuration.
 
 ### Change default host for Git or Quay
 
@@ -51,7 +51,7 @@ On `Application Repository Information` Page, provide your Git host in the `Repo
 
 ![Screenshot](on-prem-git.png)
 
-On `Deployment information` Page, provide your Quay host in the `Image Registry`
+On `Deployment information` Page, provide your Quay host in the `Image Registry`:
 
 ![Screenshot](on-prem-quay.png)
 
