@@ -1,7 +1,9 @@
 # Generated from templates/gitops-template/azure-pipelines.yml.njk. Do not edit directly.
 
-trigger:
+pr:
   - main
+
+trigger: none
 
 # Using self-hosted 'Default' agent pool by default
 # Change accordingly when using a different agent pool

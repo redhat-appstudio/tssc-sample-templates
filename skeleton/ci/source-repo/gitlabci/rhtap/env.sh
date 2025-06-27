@@ -11,7 +11,7 @@ export IMAGE=${IMAGE-$IMAGE_URL}
 
 export DOCKERFILE=${DOCKERFILE-${{ values.dockerfile }}}
 export CONTEXT=${CONTEXT-${{ values.buildContext }}}
-export TLSVERIFY=${TLSVERIFY-false}
+export TLSVERIFY=${TLSVERIFY-true}
 export BUILD_ARGS=${BUILD_ARGS-""}
 export BUILD_ARGS_FILE=${BUILD_ARGS_FILE-""}
 
@@ -48,6 +48,8 @@ export STRICT=${STRICT-true}
 export EFFECTIVE_TIME=${EFFECTIVE_TIME-now}
 export HOMEDIR=${HOMEDIR-$(pwd)}
 export TUF_MIRROR=${TUF_MIRROR-http://tuf.tssc-tas.svc}
+
+export CUSTOM_ROOT_CA=${CUSTOM_ROOT_CA-""}
 
 # Allow PR to succeed even if TAS vars not configured
 export FAIL_IF_TRUSTIFICATION_NOT_CONFIGURED=false
