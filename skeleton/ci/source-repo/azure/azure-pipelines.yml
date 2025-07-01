@@ -1,5 +1,7 @@
 # Generated from templates/source-repo/azure-pipelines.yml.njk. Do not edit directly.
 
+pr: none
+
 trigger:
   - main
 

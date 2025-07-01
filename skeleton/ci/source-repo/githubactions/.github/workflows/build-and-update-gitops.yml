@@ -26,6 +26,8 @@ env:
   # NEXUS_IO_CREDS_USR: ${{ vars.NEXUS_IO_CREDS_USR }}
   # Used to verify the image signature and attestation
   COSIGN_PUBLIC_KEY: ${{ vars.COSIGN_PUBLIC_KEY }}
+  # Custom Root CA to be used in scripts as trusted
+  CUSTOM_ROOT_CA: ${{ vars.CUSTOM_ROOT_CA }}
   # Secrets
   ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
   GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
