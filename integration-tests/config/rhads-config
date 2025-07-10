@@ -1,0 +1,6 @@
+OCP="4.18"
+ACS="remote"
+REGISTRY="quay.io,artifactory,nexus"
+TPA="remote"
+SCM="github,gitlab,bitbucket"
+PIPELINE="tekton,actions,gitlabci"
