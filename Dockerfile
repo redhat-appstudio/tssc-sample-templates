@@ -1,6 +1,6 @@
 # This Dockerfile is used to create a build in Konflux
 
-FROM registry.access.redhat.com/ubi9/ubi:9.5-1745854298
+FROM registry.access.redhat.com/ubi9/ubi:9.6-1752625787
 
 LABEL KONFLUX_CI="true"
 
