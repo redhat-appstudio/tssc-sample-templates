@@ -28,8 +28,8 @@ function update_template() {
     app_name="$(yq '.metadata.name' devfile.yaml)"
     app_display_name="$(yq '.metadata.displayName' devfile.yaml)"
     app_desc="$(yq '.metadata.description' devfile.yaml)"
-    # TODO: what in the world is this doing?
-    app_tags=$(yq '.metadata.tags' devfile.yaml |  yq -o json | yq | tr '[:upper:]' '[:lower:]' | tr -d "\.")
+    # Clean up the tags for consistency
+    app_tags="$(< devfile.yaml yq '[.metadata.tags[] | downcase | sub("\.", "")] | .[] style="double" | . style="flow"')"
     if [ "$app_desc" == "null" ]; then
         app_desc="Sample Code for $app_display_name"
     fi
