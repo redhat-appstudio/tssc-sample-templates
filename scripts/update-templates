@@ -45,9 +45,8 @@ function update_template() {
     cp "${ROOT_DIR}/skeleton/backstage/mkdocs.yml" "${template_content_path}/mkdocs.yml"
 
     cp -r "${template_content_path}/README.md" "${template_content_path}/docs/source-component.md"
-    # Because the README.md is now under the docs directory, relative links need to be updated. This
+    # Because this copy of the README.md is now under the docs directory, relative links need to be updated. This
     # is replacing [foo](./foo) with [foo](../foo)
-    # TODO: This may need a static reference? Check what this looks like in the UI. How is source-component.md used?
     sed -i 's/(\.\//(\.\.\//g' "${template_content_path}/docs/source-component.md"
 
     sed -i "s!sed.edit.NAME!$app_name!g" "${template_path}/template.yaml"
