@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: dotnet-basic
   title:  C# .NET - Trusted Application Pipeline
-  description: C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+  description: C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
   tags: ["net", "sscs", "sbom", "acs"]
 spec:
   type: service
@@ -423,7 +423,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+          description: Secure Supply Chain Example for C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
           dockerfile: docker/Dockerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
@@ -452,7 +452,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+          description: Secure Supply Chain Example for C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
           dockerfile: docker/Dockerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else ('gitlab-auth-secret' if parameters.hostType === 'GitLab' else 'bitbucket-auth-secret')}}
