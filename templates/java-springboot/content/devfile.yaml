@@ -5,7 +5,7 @@ metadata:
   attributes:
     alpha.dockerimage-port: 8081
   displayName: Spring Boot® - Trusted Application Pipeline
-  description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment
+  description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
   icon: https://spring.io/img/spring.svg
   tags:
     - Java

@@ -2,7 +2,7 @@ schemaVersion: 2.2.0
 metadata:
   name: go
   displayName: Go Runtime - Trusted Application Pipeline
-  description: 'Go Runtime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures,  attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment'
+  description: 'Go Runtime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.'
   icon: https://go.dev/blog/go-brand/Go-Logo/SVG/Go-Logo_Blue.svg
   language: Go
   projectType: Go
