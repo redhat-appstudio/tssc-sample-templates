@@ -1,0 +1,59 @@
+schemaVersion: 2.2.0
+metadata:
+  name: java-springboot
+  version: 1.2.1
+  attributes:
+    alpha.dockerimage-port: 8081
+  displayName: Spring Boot® - Trusted Application Pipeline
+  description: Spring Boot® using Maven sample HTTP/REST application based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
+  icon: https://spring.io/img/spring.svg
+  tags:
+    - Java
+    - Spring
+    - sscs
+    - sbom
+    - acs
+  projectType: springboot
+  language: Java
+  provider: Red Hat
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
+parent:
+  id: java-springboot
+  registryUrl: 'https://registry.devfile.io'
+  version: 1.2.0
+components:
+  - name: image-build
+    image:
+      imageName: java-springboot-image:latest
+      dockerfile:
+        uri: docker/Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: kubernetes-deploy
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuRequest: 10m
+      deployment/memoryRequest: 180Mi
+      deployment/container-port: 8081
+    kubernetes:
+      uri: deploy.yaml
+      endpoints:
+        - name: http-8081
+          targetPort: 8081
+          path: /
+          secure: true
+commands:
+  - id: build-image
+    apply:
+      component: image-build
+  - id: deployk8s
+    apply:
+      component: kubernetes-deploy
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deployk8s
+      group:
+        kind: deploy
+        isDefault: true

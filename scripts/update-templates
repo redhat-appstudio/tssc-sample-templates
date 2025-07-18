@@ -1,0 +1,73 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+ROOT_DIR=$(realpath $SCRIPT_DIR/..)
+cd "${ROOT_DIR}"
+
+function update_template() {
+    local template_path=$1
+    local template_content_path="${template_path}/content"
+
+    # Skip if content directory doesn't exist
+    if [ ! -d "$template_content_path" ]; then
+        echo "Skipping $template_path - no content directory found"
+        return
+    fi
+
+    local app_name
+    local app_display_name
+    local app_desc
+    local app_tags
+    local docker_file
+    local build_context
+    local image_port
+
+    pushd "${template_content_path}" > /dev/null
+
+    app_name="$(yq '.metadata.name' devfile.yaml)"
+    app_display_name="$(yq '.metadata.displayName' devfile.yaml)"
+    app_desc="$(yq '.metadata.description' devfile.yaml)"
+    # Clean up the tags for consistency
+    app_tags="$(< devfile.yaml yq '[.metadata.tags[] | downcase | sub("\.", "")] | .[] style="double" | . style="flow"')"
+    if [ "$app_desc" == "null" ]; then
+        app_desc="Sample Code for $app_display_name"
+    fi
+
+    docker_file="$(yq '.components[] | select(.name == "image-build").image.dockerfile.uri' devfile.yaml)"
+    build_context="$(yq '.components[] | select(.name == "image-build").image.dockerfile.buildContext' devfile.yaml)"
+    image_port="$(yq '.components[] | select(.name == "kubernetes-deploy").attributes.deployment/container-port' devfile.yaml)"
+
+    popd > /dev/null
+
+    cp "${ROOT_DIR}/skeleton/backstage/template.yaml" "${template_path}/template.yaml"
+    cp -r "${ROOT_DIR}/skeleton/backstage/docs" "${template_content_path}/"
+    cp "${ROOT_DIR}/skeleton/backstage/mkdocs.yml" "${template_content_path}/mkdocs.yml"
+
+    cp -r "${template_content_path}/README.md" "${template_content_path}/docs/source-component.md"
+    # Because this copy of the README.md is now under the docs directory, relative links need to be updated. This
+    # is replacing [foo](./foo) with [foo](../foo)
+    sed -i 's/(\.\//(\.\.\//g' "${template_content_path}/docs/source-component.md"
+
+    sed -i "s!sed.edit.NAME!$app_name!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.TITLE!$app_display_name!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.DESCRIPTION!$app_desc!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.APPTAGS!$app_tags!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $app_desc!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.DOCKERFILE!$docker_file!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.BUILDCONTEXT!$build_context!g" "${template_path}/template.yaml"
+    sed -i "s!sed.edit.IMAGEPORT!$image_port!g" "${template_path}/template.yaml"
+
+    source $ROOT_DIR/properties
+    source "${ROOT_DIR}/properties"
+    cat "${template_path}/template.yaml" | envsubst > "${template_path}/new-template.yaml"
+    mv "${template_path}/new-template.yaml" "${template_path}/template.yaml"
+}
+
+# Process all template directories
+for template_dir in templates/*/; do
+    if [ -d "$template_dir" ]; then
+        echo "Processing template: $template_dir"
+        update_template "$template_dir"
+    fi
+done

@@ -1,0 +1,53 @@
+schemaVersion: 2.2.0
+metadata:
+  name: go
+  displayName: Go Runtime - Trusted Application Pipeline
+  description: 'Go Runtime http based application with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.'
+  icon: https://go.dev/blog/go-brand/Go-Logo/SVG/Go-Logo_Blue.svg
+  language: Go
+  projectType: Go
+  tags: ["Go", "sscs", "sbom", "acs"]
+  version: 1.1.0
+  provider: Red Hat
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
+  attributes:
+    alpha.dockerimage-port: 8081
+parent:
+  id: go
+  registryUrl: 'https://registry.devfile.io'
+components:
+  - name: image-build
+    image:
+      imageName: go-image:latest
+      dockerfile:
+        uri: docker/Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: kubernetes-deploy
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuRequest: 10m
+      deployment/memoryRequest: 10Mi
+      deployment/container-port: 8081
+    kubernetes:
+      uri: deploy.yaml
+      endpoints:
+      - name: http-8081
+        targetPort: 8081
+        path: /
+        secure: true
+commands:
+  - id: build-image
+    apply:
+      component: image-build
+  - id: deployk8s
+    apply:
+      component: kubernetes-deploy
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deployk8s
+      group:
+        kind: deploy
+        isDefault: true
