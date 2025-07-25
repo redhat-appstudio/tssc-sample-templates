@@ -1,0 +1,106 @@
+schemaVersion: 2.2.0
+metadata:
+  name: dotnet-basic
+  displayName: C# .NET - Trusted Application Pipeline
+  description: C# .Net 6.0 example with advanced continuous integration pipeline covering building, CVE scanning, security scanning, signatures, attestations, SLSA provenance and SBOM along with Gitops-based continuous deployment.
+  version: 1.1.1
+  icon: https://github.com/dotnet/brand/raw/main/logo/dotnet-logo.png
+  provider: Red Hat
+  supportUrl: https://github.com/redhat-appstudio/tssc-sample-templates
+  language: .NET
+  projectType: dotnet
+  tags:
+    - .NET
+    - sscs
+    - sbom
+    - acs
+  attributes:
+    alpha.dockerimage-port: 8081
+starterProjects:
+  - name: s2i-example
+    git:
+      checkoutFrom:
+        remote: origin
+        revision: dotnet-6.0
+      remotes:
+        origin: https://github.com/redhat-developer/s2i-dotnetcore-ex
+    subDir: app
+components:
+  - name: dotnet
+    container:
+      image: registry.access.redhat.com/ubi8/dotnet-60:6.0
+      command: ['tail', '-f', '/dev/null']
+      mountSources: true
+      env:
+        - name: CONFIGURATION
+          value: Debug
+        - name: STARTUP_PROJECT
+          value: app.csproj
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+      endpoints:
+        - name: http-8080
+          targetPort: 8080
+  - name: image-build
+    image:
+      imageName: 'dotnet-image:latest'
+      dockerfile:
+        uri: docker/Dockerfile
+        buildContext: .
+        rootRequired: false
+  - name: kubernetes-deploy
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuRequest: 10m
+      deployment/memoryRequest: 100Mi
+      deployment/container-port: 8081
+    kubernetes:
+      uri: kubernetes/deployment.yaml
+      endpoints:
+        - name: http-8081
+          targetPort: 8081
+          path: /
+          secure: true
+  - name: kubernetes-service
+    attributes:
+      deployment/replicas: 1
+      deployment/cpuRequest: 10m
+      deployment/memoryRequest: 100Mi
+      deployment/container-port: 8081
+    kubernetes:
+      uri: kubernetes/service.yaml
+commands:
+  - id: build
+    exec:
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: kill $(pidof dotnet); dotnet build -c $CONFIGURATION $STARTUP_PROJECT /p:UseSharedCompilation=false
+      component: dotnet
+      group:
+        isDefault: true
+        kind: build
+  - id: run
+    exec:
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: dotnet run -c $CONFIGURATION --no-build --project $STARTUP_PROJECT --no-launch-profile
+      component: dotnet
+      group:
+        isDefault: true
+        kind: run
+  - id: build-image
+    apply:
+      component: image-build
+  - id: deploy-deployment
+    apply:
+      component: kubernetes-deploy
+  - id: deploy-service
+    apply:
+      component: kubernetes-service
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deploy-deployment
+        - deploy-service
+      group:
+        isDefault: true
+        kind: deploy
