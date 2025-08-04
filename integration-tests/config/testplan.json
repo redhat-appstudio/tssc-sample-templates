@@ -3,7 +3,7 @@
     "tssc": [{
       "git": "github",
       "ci": "tekton",
-      "registry": "quay.io",
+      "registry": "quay",
       "tpa": "remote",
       "acs": "remote"
     }],
