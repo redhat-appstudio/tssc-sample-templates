@@ -1,6 +1,8 @@
 # Generated from templates/gitops-template/.gitlab-ci.yml.njk. Do not edit directly.
 
-image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+image:
+  name: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  pull_policy: always
 
 variables:
   CI_TYPE: gitlab
