@@ -25,6 +25,8 @@ spec:
             rows: 5
           ui:field: EntityNamePicker
           maxLength: 63
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          ui:help: "Lowercase letters, digits, and hyphens; must start/end with alphanumeric (RFC 1123). Example: my-service-1"
         owner:
           title: Owner
           type: string
