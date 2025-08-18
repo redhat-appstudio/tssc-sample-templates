@@ -1,7 +1,7 @@
 # This Dockerfile is used to create a build in Konflux CI
 # The build is required to run CI checks for pull request and push events in this repository.
 
-FROM registry.access.redhat.com/ubi9/ubi:9.5-1745854298
+FROM registry.access.redhat.com/ubi9/ubi:9.6-1754586119
 
 LABEL KONFLUX_CI="true"
 
