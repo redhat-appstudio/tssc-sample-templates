@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: Location
 metadata:
-  name: dance-all
-  description: Dance Language Samples
+  name: tssc-all
+  description: TSSC Application Samples
 spec:
   targets:
     - ./templates/dotnet/template.yaml
