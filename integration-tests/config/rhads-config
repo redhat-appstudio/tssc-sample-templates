@@ -1,4 +1,4 @@
-OCP="4.18"
+OCP="4.19"
 ACS="remote"
 REGISTRY="quay,artifactory,nexus"
 TPA="remote"
