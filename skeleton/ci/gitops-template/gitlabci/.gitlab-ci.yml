@@ -1,7 +1,7 @@
 # Generated from templates/gitops-template/.gitlab-ci.yml.njk. Do not edit directly.
 
 image:
-  name: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  name: quay.io/redhat-tssc/task-runner:1.7
   pull_policy: always
 
 variables:
