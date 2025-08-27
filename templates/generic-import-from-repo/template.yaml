@@ -342,7 +342,7 @@ spec:
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
-          image: quay.io/redhat-appstudio/rhtap-task-runner:latest # bootstrap app image as placeholder
+          image: quay.io/redhat-tssc/task-runner:1.7 # bootstrap app image as placeholder
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: ${{ parameters.appPort }}
@@ -380,7 +380,7 @@ spec:
           argoComponent: './components/${{ parameters.name }}/overlays/development'
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
-          image: quay.io/redhat-appstudio/rhtap-task-runner:latest # bootstrap app image as placeholder
+          image: quay.io/redhat-tssc/task-runner:1.7 # bootstrap app image as placeholder
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           port: ${{ parameters.appPort }}
