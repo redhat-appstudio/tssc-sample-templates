@@ -16,12 +16,12 @@ container:
   image: quay.io/redhat-appstudio/rhtap-task-runner:latest
   options: --privileged
 
-# Using 'rhtap' variable group by default
+# Using 'tssc' variable group by default
 # Change accordingly when using a different variable group
 # Can be deleted if the variables are set differently
 # See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables
 variables:
-  - group: rhtap
+  - group: tssc
   - name: CI_TYPE
     value: azure
 
