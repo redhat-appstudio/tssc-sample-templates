@@ -362,7 +362,6 @@ spec:
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
     # This action creates a new Bitbucket repository and publishes the files in the workspace directory to the repository.
     - id: publish-bitbucket-gitops
@@ -492,7 +491,6 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
         sourcePath: source
     # This action creates a new Bitbucket Cloud repository and publishes the files in the workspace directory to the repository.

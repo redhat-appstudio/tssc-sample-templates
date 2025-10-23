@@ -306,7 +306,6 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
     - id: publish-bitbucket
       name: Publish Repository to BitBucket
@@ -422,7 +421,6 @@ spec:
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
     - id: publish-bitbucket-gitops
       name: Publish Gitops Repository to Bitbucket
