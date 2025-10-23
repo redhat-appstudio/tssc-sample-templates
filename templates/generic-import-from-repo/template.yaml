@@ -292,7 +292,6 @@ spec:
       action: publish:github
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
-        allowedHosts: [ '${{ parameters.ghHost}}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
@@ -304,7 +303,6 @@ spec:
       action: publish:gitlab
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
-        allowedHosts: [ '${{ parameters.glHost }}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
@@ -315,7 +313,6 @@ spec:
       action: publish:bitbucketCloud
       if: ${{ parameters.hostType === 'Bitbucket' }}
       input:
-        allowedHosts: [ '${{ parameters.bbHost }}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
         defaultBranch: ${{ parameters.branch }}
@@ -410,7 +407,6 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.ghHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.ghHost }}?owner=${{ parameters.ghOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: ${{ parameters.branch }}
@@ -423,7 +419,6 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.glHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: ${{ parameters.branch }}
@@ -435,7 +430,6 @@ spec:
       if: ${{ parameters.hostType === 'Bitbucket' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.bbHost }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}-gitops&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
         defaultBranch: ${{ parameters.branch }}
