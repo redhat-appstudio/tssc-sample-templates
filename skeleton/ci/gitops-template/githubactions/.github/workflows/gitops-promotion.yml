@@ -12,32 +12,32 @@ env:
 
   # 🖊️ EDIT to change the image registry settings.
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
-  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY: ${{ '${{' }} secrets.IMAGE_REGISTRY }}
 
   # Used to verify the image signature and attestation
-  COSIGN_PUBLIC_KEY: ${{ vars.COSIGN_PUBLIC_KEY }}
+  COSIGN_PUBLIC_KEY: ${{ '${{' }} vars.COSIGN_PUBLIC_KEY }}
   # URL of the BOMbastic api host (e.g. https://sbom.trustification.dev)
-  TRUSTIFICATION_BOMBASTIC_API_URL: ${{ vars.TRUSTIFICATION_BOMBASTIC_API_URL }}
+  TRUSTIFICATION_BOMBASTIC_API_URL: ${{ '${{' }} vars.TRUSTIFICATION_BOMBASTIC_API_URL }}
   # URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken)
-  TRUSTIFICATION_OIDC_ISSUER_URL: ${{ vars.TRUSTIFICATION_OIDC_ISSUER_URL }}
-  TRUSTIFICATION_OIDC_CLIENT_ID: ${{ vars.TRUSTIFICATION_OIDC_CLIENT_ID }}
-  TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: ${{ vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}
+  TRUSTIFICATION_OIDC_ISSUER_URL: ${{ '${{' }} vars.TRUSTIFICATION_OIDC_ISSUER_URL }}
+  TRUSTIFICATION_OIDC_CLIENT_ID: ${{ '${{' }} vars.TRUSTIFICATION_OIDC_CLIENT_ID }}
+  TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: ${{ '${{' }} vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}
   # Set this to the user for your specific registry
-  IMAGE_REGISTRY_USER: ${{ vars.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_USER: ${{ '${{' }} vars.IMAGE_REGISTRY_USER }}
   # Set this only when using an external Rekor instance
-  REKOR_HOST: ${{ vars.REKOR_HOST }}
+  REKOR_HOST: ${{ '${{' }} vars.REKOR_HOST }}
   # Set this only when using an external TUF instance
-  TUF_MIRROR: ${{ vars.TUF_MIRROR }}
-  # QUAY_IO_CREDS_USR: ${{ vars.QUAY_IO_CREDS_USR }}
-  # ARTIFACTORY_IO_CREDS_USR: ${{ vars.ARTIFACTORY_IO_CREDS_USR }}
-  # NEXUS_IO_CREDS_USR: ${{ vars.NEXUS_IO_CREDS_USR }}
+  TUF_MIRROR: ${{ '${{' }} vars.TUF_MIRROR }}
+  # QUAY_IO_CREDS_USR: ${{ '${{' }} vars.QUAY_IO_CREDS_USR }}
+  # ARTIFACTORY_IO_CREDS_USR: ${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}
+  # NEXUS_IO_CREDS_USR: ${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}
   # Secrets
-  TRUSTIFICATION_OIDC_CLIENT_SECRET: ${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}
+  TRUSTIFICATION_OIDC_CLIENT_SECRET: ${{ '${{' }} secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}
   # Set this password for your specific registry
-  IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-  # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
-  # ARTIFACTORY_IO_CREDS_PSW: ${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}
-  # NEXUS_IO_CREDS_PSW: ${{ secrets.NEXUS_IO_CREDS_PSW }}
+  IMAGE_REGISTRY_PASSWORD: ${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}
+  # QUAY_IO_CREDS_PSW: ${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}
+  # ARTIFACTORY_IO_CREDS_PSW: ${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}
+  # NEXUS_IO_CREDS_PSW: ${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -62,25 +62,25 @@ jobs:
         with:
           script: |
             const vars = {
-              IMAGE_REGISTRY: `${{ vars.IMAGE_REGISTRY }}`,
+              IMAGE_REGISTRY: `${{ '${{' }} vars.IMAGE_REGISTRY }}`,
 
              /* Used to verify the image signature and attestation */
-             COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`,
+             COSIGN_PUBLIC_KEY: `${{ '${{' }} vars.COSIGN_PUBLIC_KEY }}`,
              /* URL of the BOMbastic api host (e.g. https://sbom.trustification.dev) */
-             TRUSTIFICATION_BOMBASTIC_API_URL: `${{ vars.TRUSTIFICATION_BOMBASTIC_API_URL }}`,
+             TRUSTIFICATION_BOMBASTIC_API_URL: `${{ '${{' }} vars.TRUSTIFICATION_BOMBASTIC_API_URL }}`,
              /* URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken) */
-             TRUSTIFICATION_OIDC_ISSUER_URL: `${{ vars.TRUSTIFICATION_OIDC_ISSUER_URL }}`,
-             TRUSTIFICATION_OIDC_CLIENT_ID: `${{ vars.TRUSTIFICATION_OIDC_CLIENT_ID }}`,
-             TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: `${{ vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}`,
+             TRUSTIFICATION_OIDC_ISSUER_URL: `${{ '${{' }} vars.TRUSTIFICATION_OIDC_ISSUER_URL }}`,
+             TRUSTIFICATION_OIDC_CLIENT_ID: `${{ '${{' }} vars.TRUSTIFICATION_OIDC_CLIENT_ID }}`,
+             TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION: `${{ '${{' }} vars.TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION }}`,
              /* Set this to the user for your specific registry */
-             IMAGE_REGISTRY_USER: `${{ vars.IMAGE_REGISTRY_USER }}`,
+             IMAGE_REGISTRY_USER: `${{ '${{' }} vars.IMAGE_REGISTRY_USER }}`,
              /* Set this only when using an external Rekor instance */
-             REKOR_HOST: `${{ vars.REKOR_HOST }}`,
+             REKOR_HOST: `${{ '${{' }} vars.REKOR_HOST }}`,
              /* Set this only when using an external TUF instance */
-             TUF_MIRROR: `${{ vars.TUF_MIRROR }}`,
-             /*QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`,*/
-             /*ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`,*/
-             /*NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`,*/
+             TUF_MIRROR: `${{ '${{' }} vars.TUF_MIRROR }}`,
+             /*QUAY_IO_CREDS_USR: `${{ '${{' }} vars.QUAY_IO_CREDS_USR }}`,*/
+             /*ARTIFACTORY_IO_CREDS_USR: `${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}`,*/
+             /*NEXUS_IO_CREDS_USR: `${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}`,*/
             };
 
             const missingVars = Object.entries(vars).filter(([ name, value ]) => {
@@ -94,12 +94,12 @@ jobs:
 
             const secrets = {
 
-             TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`,
+             TRUSTIFICATION_OIDC_CLIENT_SECRET: `${{ '${{' }} secrets.TRUSTIFICATION_OIDC_CLIENT_SECRET }}`,
               /* Set this password for your specific registry */
-             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
-             /*QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`,*/
-             /*ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`,*/
-             /*NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`,*/
+             IMAGE_REGISTRY_PASSWORD: `${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}`,
+             /*QUAY_IO_CREDS_PSW: `${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}`,*/
+             /*ARTIFACTORY_IO_CREDS_PSW: `${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}`,*/
+             /*NEXUS_IO_CREDS_PSW: `${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}`,*/
             };
 
             const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
@@ -135,7 +135,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: '2'
+          fetch-depth: "2"
       - name: Pre-init
         run: |
           buildah --version
