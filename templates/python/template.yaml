@@ -372,7 +372,6 @@ spec:
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}-gitops&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
     # The git service may not serve the new repository immediately.
     - id: wait-for-repository
@@ -500,7 +499,6 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.bbHost }}?owner=${{ parameters.bbOwner }}&repo=${{ parameters.repoName }}&project=${{ parameters.project }}&workspace=${{ parameters.workspace }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
         sourcePath: source
 
