@@ -359,7 +359,6 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        description: This is GitOps repository for ${{ parameters.name }}
         repoUrl:  ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: ${{ parameters.branch }}
         repoVisibility: "public"
@@ -488,7 +487,6 @@ spec:
       action: publish:gitlab
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
-        description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.glHost }}?owner=${{ parameters.glOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         repoVisibility: "public"
