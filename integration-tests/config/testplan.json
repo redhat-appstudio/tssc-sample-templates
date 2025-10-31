@@ -1,11 +1,18 @@
 {
-    "templates": ["go", "python", "nodejs", "dotnet-basic", "java-quarkus", "java-springboot"],
-    "tssc": [{
-      "git": "github",
-      "ci": "tekton",
-      "registry": "quay",
-      "tpa": "remote",
-      "acs": "remote"
-    }],
-    "tests": ["full_workflow.test.ts"]
-  }
+  "testPlans": [
+    {
+      "name": "backend-tests",
+      "templates": ["go","python","nodejs","dotnet-basic","java-quarkus", "java-springboot"],
+      "tssc": [
+        {
+          "git": "github",
+          "ci": "tekton",
+          "registry": "quay",
+          "tpa": "remote",
+          "acs": "remote"
+        }
+      ],
+      "tests": ["full_workflow.test.ts"]
+    }
+  ]
+}
