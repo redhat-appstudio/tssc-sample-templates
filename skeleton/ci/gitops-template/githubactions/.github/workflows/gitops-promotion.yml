@@ -14,6 +14,8 @@ env:
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
   IMAGE_REGISTRY: ${{ '${{' }} secrets.IMAGE_REGISTRY }}
 
+  # Custom Root CA to be used in scripts as trusted
+  CUSTOM_ROOT_CA: ${{ vars.CUSTOM_ROOT_CA }}
   # Used to verify the image signature and attestation
   COSIGN_PUBLIC_KEY: ${{ '${{' }} vars.COSIGN_PUBLIC_KEY }}
   # URL of the BOMbastic api host (e.g. https://sbom.trustification.dev)
