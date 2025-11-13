@@ -1,16 +1,37 @@
 /* Generated from templates/source-repo/Jenkinsfile.njk. Do not edit directly. */
 
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
-
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: 'runner'
+                  image: 'quay.io/redhat-appstudio/rhtap-task-runner:latest'
+                  securityContext:
+                    privileged: true
+            """
+        }
+    }
     environment {
+        HOME = "${WORKSPACE}"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+        ROX_CENTRAL_ENDPOINT = credentials('ROX_CENTRAL_ENDPOINT')
+        GITOPS_AUTH_USERNAME = credentials('GITOPS_AUTH_USERNAME')
+        /* Set this to the user for your specific registry */
+        IMAGE_REGISTRY_USER = credentials('IMAGE_REGISTRY_USER')
+        REKOR_HOST = credentials('REKOR_HOST')
+        TUF_MIRROR = credentials('TUF_MIRROR')
+        /* Used to verify the image signature and attestation */
+        COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        /* Custom Root CA to be used in scripts as trusted */
+        /* CUSTOM_ROOT_CA = credentials('CUSTOM_ROOT_CA') */
         ROX_API_TOKEN = credentials('ROX_API_TOKEN')
         GITOPS_AUTH_PASSWORD = credentials('GITOPS_AUTH_PASSWORD')
         /* Set this password for your specific registry */
-        /* IMAGE_REGISTRY_PASSWORD = credentials('IMAGE_REGISTRY_PASSWORD') */
+        IMAGE_REGISTRY_PASSWORD = credentials('IMAGE_REGISTRY_PASSWORD')
         /* Default registry is set to quay.io */
         QUAY_IO_CREDS = credentials('QUAY_IO_CREDS')
         /* ARTIFACTORY_IO_CREDS = credentials('ARTIFACTORY_IO_CREDS') */
@@ -19,55 +40,76 @@ pipeline {
         COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
     }
     stages {
+        stage('pre-init') {
+            steps {
+                container('runner') {
+                    sh '''
+                        cp -R /work/* .
+                        env
+                        git config --global --add safe.directory $WORKSPACE
+                    '''
+                }
+            }
+        }
         stage('init') {
             steps {
-                script {
-                    rhtap.info('init')
-                    rhtap.init()
+                container('runner') {
+                    sh '''
+                        echo "running init"
+                        ./rhtap/init.sh
+                    '''
                 }
             }
         }
 
         stage('build') {
             steps {
-                script {
-                    rhtap.info('buildah_rhtap')
-                    rhtap.buildah_rhtap()
-                    rhtap.info('cosign_sign_attest')
-                    rhtap.cosign_sign_attest()
+                container('runner') {
+                    sh '''
+                        echo "running buildah-rhtap"
+                        ./rhtap/buildah-rhtap.sh
+                        echo "running cosign-sign-attest"
+                        ./rhtap/cosign-sign-attest.sh
+                    '''
                 }
             }
         }
 
         stage('deploy') {
             steps {
-                script {
-                    rhtap.info('update_deployment')
-                    rhtap.update_deployment()
+                container('runner') {
+                    sh '''
+                        echo "running update-deployment"
+                        ./rhtap/update-deployment.sh
+                    '''
                 }
             }
         }
 
         stage('scan') {
             steps {
-                script {
-                    rhtap.info('acs_deploy_check')
-                    rhtap.acs_deploy_check()
-                    rhtap.info('acs_image_check')
-                    rhtap.acs_image_check()
-                    rhtap.info('acs_image_scan')
-                    rhtap.acs_image_scan()
+                container('runner') {
+                    sh '''
+                        echo "running acs-deploy-check"
+                        ./rhtap/acs-deploy-check.sh
+                        echo "running acs-image-check"
+                        ./rhtap/acs-image-check.sh
+                        echo "running acs-image-scan"
+                        ./rhtap/acs-image-scan.sh
+                    '''
                 }
             }
         }
 
         stage('summary') {
             steps {
-                script {
-                    rhtap.info('show_sbom_rhdh')
-                    rhtap.show_sbom_rhdh()
-                    rhtap.info('summary')
-                    rhtap.summary()
+                container('runner') {
+                    sh '''
+                        echo "running show-sbom-rhdh"
+                        ./rhtap/show-sbom-rhdh.sh
+                        echo "running summary"
+                        ./rhtap/summary.sh
+                    '''
                 }
             }
         }

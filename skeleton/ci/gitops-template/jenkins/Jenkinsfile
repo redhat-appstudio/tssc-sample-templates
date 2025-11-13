@@ -1,57 +1,86 @@
 /* Generated from templates/gitops-template/Jenkinsfile.njk. Do not edit directly. */
 
-library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/redhat-appstudio/tssc-sample-jenkins.git'])
-
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml """
+              apiVersion: v1
+              kind: Pod
+              spec:
+                containers:
+                - name: 'runner'
+                  image: 'quay.io/redhat-appstudio/rhtap-task-runner:latest'
+                  securityContext:
+                    privileged: true
+            """
+        }
+    }
     environment {
-        /* Not used but init.sh will fail if they're missing */
-        COSIGN_SECRET_PASSWORD = 'dummy'
-        COSIGN_SECRET_KEY = 'dummy'
+        HOME = "${WORKSPACE}"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker"
+        ROX_CENTRAL_ENDPOINT = credentials('ROX_CENTRAL_ENDPOINT')
         /* Used to verify the image signature and attestation */
-        /* COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY') */
+        COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
         /* URL of the BOMbastic api host (e.g. https://sbom.trustification.dev) */
-        /* TRUSTIFICATION_BOMBASTIC_API_URL = credentials('TRUSTIFICATION_BOMBASTIC_API_URL') */
+        TRUSTIFICATION_BOMBASTIC_API_URL = credentials('TRUSTIFICATION_BOMBASTIC_API_URL')
         /* URL of the OIDC token issuer (e.g. https://sso.trustification.dev/realms/chicken) */
-        /* TRUSTIFICATION_OIDC_ISSUER_URL = credentials('TRUSTIFICATION_OIDC_ISSUER_URL') */
-        /* TRUSTIFICATION_OIDC_CLIENT_ID = credentials('TRUSTIFICATION_OIDC_CLIENT_ID') */
-        /* TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION = credentials('TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION') */
-        /* Set when using Jenkins on non-local cluster and using an external Rekor instance */
-        /* REKOR_HOST = credentials('REKOR_HOST') */
-        /* Set when using Jenkins on non-local cluster and using an external TUF instance */
-        /* TUF_MIRROR = credentials('TUF_MIRROR') */
+        TRUSTIFICATION_OIDC_ISSUER_URL = credentials('TRUSTIFICATION_OIDC_ISSUER_URL')
+        TRUSTIFICATION_OIDC_CLIENT_ID = credentials('TRUSTIFICATION_OIDC_CLIENT_ID')
+        TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION = credentials('TRUSTIFICATION_SUPPORTED_CYCLONEDX_VERSION')
         /* Set this to the user for your specific registry */
-        /* IMAGE_REGISTRY_USER = credentials('IMAGE_REGISTRY_USER') */
+        IMAGE_REGISTRY_USER = credentials('IMAGE_REGISTRY_USER')
+        REKOR_HOST = credentials('REKOR_HOST')
+        TUF_MIRROR = credentials('TUF_MIRROR')
         TRUSTIFICATION_OIDC_CLIENT_SECRET = credentials('TRUSTIFICATION_OIDC_CLIENT_SECRET')
         /* Set this password for your specific registry */
-        /* IMAGE_REGISTRY_PASSWORD = credentials('IMAGE_REGISTRY_PASSWORD') */
+        IMAGE_REGISTRY_PASSWORD = credentials('IMAGE_REGISTRY_PASSWORD')
         QUAY_IO_CREDS = credentials('QUAY_IO_CREDS')
         /* ARTIFACTORY_IO_CREDS = credentials('ARTIFACTORY_IO_CREDS') */
         /* NEXUS_IO_CREDS = credentials('NEXUS_IO_CREDS') */
+        COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
+        COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
+        ROX_API_TOKEN = credentials('ROX_API_TOKEN')
+        GITOPS_AUTH_PASSWORD = credentials('GITOPS_AUTH_PASSWORD')
     }
     stages {
+        stage('init') {
+            steps {
+                container('runner') {
+                    sh '''
+                        cp -R /work/* .
+                        env
+                        git config --global --add safe.directory $WORKSPACE
+                        chmod +x ./rhtap/gather-images-to-upload-sbom.sh
+                        echo "running init"
+                        ./rhtap/init.sh
+                    '''
+                }
+            }
+        }
         stage('Verify EC') {
             steps {
-                script {
-                    rhtap.info('gather_deploy_images')
-                    rhtap.gather_deploy_images()
-                    rhtap.info('verify_enterprise_contract')
-                    rhtap.verify_enterprise_contract()
+                container('runner') {
+                    sh '''
+                        echo "running gather-deploy-images"
+                        ./rhtap/gather-deploy-images.sh
+                        echo "running verify-enterprise-contract"
+                        ./rhtap/verify-enterprise-contract.sh
+                    '''
                 }
             }
         }
 
         stage('Upload SBOM') {
             steps {
-                script {
-                    rhtap.info('gather_images_to_upload_sbom')
-                    rhtap.gather_images_to_upload_sbom()
-                    rhtap.info('download_sbom_from_url_in_attestation')
-                    rhtap.download_sbom_from_url_in_attestation()
-                    rhtap.info('upload_sbom_to_trustification')
-                    rhtap.upload_sbom_to_trustification()
+                container('runner') {
+                    sh '''
+                        echo "running gather-images-to-upload-sbom"
+                        ./rhtap/gather-images-to-upload-sbom.sh
+                        echo "running download-sbom-from-url-in-attestation"
+                        ./rhtap/download-sbom-from-url-in-attestation.sh
+                        echo "running upload-sbom-to-trustification"
+                        ./rhtap/upload-sbom-to-trustification.sh
+                    '''
                 }
             }
         }
