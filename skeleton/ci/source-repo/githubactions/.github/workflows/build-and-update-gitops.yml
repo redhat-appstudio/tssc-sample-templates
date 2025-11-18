@@ -13,34 +13,34 @@ env:
   # 🖊️ EDIT to change the image registry settings.
 
   # Vars
-  ROX_CENTRAL_ENDPOINT: ${{ vars.ROX_CENTRAL_ENDPOINT }}
-  # GITOPS_AUTH_USERNAME: ${{ vars.GITOPS_AUTH_USERNAME }}
+  ROX_CENTRAL_ENDPOINT: ${{ '${{' }} vars.ROX_CENTRAL_ENDPOINT }}
+  # GITOPS_AUTH_USERNAME: ${{ '${{' }} vars.GITOPS_AUTH_USERNAME }}
   # Set this to the user for your specific registry
-  IMAGE_REGISTRY_USER: ${{ vars.IMAGE_REGISTRY_USER }}
+  IMAGE_REGISTRY_USER: ${{ '${{' }} vars.IMAGE_REGISTRY_USER }}
   # Set this only when using an external Rekor instance
-  REKOR_HOST: ${{ vars.REKOR_HOST }}
+  REKOR_HOST: ${{ '${{' }} vars.REKOR_HOST }}
   # Set this only when using an external TUF instance
-  TUF_MIRROR: ${{ vars.TUF_MIRROR }}
-  # QUAY_IO_CREDS_USR: ${{ vars.QUAY_IO_CREDS_USR }}
-  # ARTIFACTORY_IO_CREDS_USR: ${{ vars.ARTIFACTORY_IO_CREDS_USR }}
-  # NEXUS_IO_CREDS_USR: ${{ vars.NEXUS_IO_CREDS_USR }}
+  TUF_MIRROR: ${{ '${{' }} vars.TUF_MIRROR }}
+  # QUAY_IO_CREDS_USR: ${{ '${{' }} vars.QUAY_IO_CREDS_USR }}
+  # ARTIFACTORY_IO_CREDS_USR: ${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}
+  # NEXUS_IO_CREDS_USR: ${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}
   # Used to verify the image signature and attestation
-  COSIGN_PUBLIC_KEY: ${{ vars.COSIGN_PUBLIC_KEY }}
+  COSIGN_PUBLIC_KEY: ${{ '${{' }} vars.COSIGN_PUBLIC_KEY }}
   # Custom Root CA to be used in scripts as trusted
-  CUSTOM_ROOT_CA: ${{ vars.CUSTOM_ROOT_CA }}
+  CUSTOM_ROOT_CA: ${{ '${{' }} vars.CUSTOM_ROOT_CA }}
   # Secrets
-  ROX_API_TOKEN: ${{ secrets.ROX_API_TOKEN }}
-  GITOPS_AUTH_PASSWORD: ${{ secrets.GITOPS_AUTH_PASSWORD }}
+  ROX_API_TOKEN: ${{ '${{' }} secrets.ROX_API_TOKEN }}
+  GITOPS_AUTH_PASSWORD: ${{ '${{' }} secrets.GITOPS_AUTH_PASSWORD }}
   # Set this password for your specific registry
-  IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-  # QUAY_IO_CREDS_PSW: ${{ secrets.QUAY_IO_CREDS_PSW }}
-  # ARTIFACTORY_IO_CREDS_PSW: ${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}
-  # NEXUS_IO_CREDS_PSW: ${{ secrets.NEXUS_IO_CREDS_PSW }}
-  COSIGN_SECRET_PASSWORD: ${{ secrets.COSIGN_SECRET_PASSWORD }}
-  COSIGN_SECRET_KEY: ${{ secrets.COSIGN_SECRET_KEY }}
+  IMAGE_REGISTRY_PASSWORD: ${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}
+  # QUAY_IO_CREDS_PSW: ${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}
+  # ARTIFACTORY_IO_CREDS_PSW: ${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}
+  # NEXUS_IO_CREDS_PSW: ${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}
+  COSIGN_SECRET_PASSWORD: ${{ '${{' }} secrets.COSIGN_SECRET_PASSWORD }}
+  COSIGN_SECRET_KEY: ${{ '${{' }} secrets.COSIGN_SECRET_KEY }}
 
   # Registries such as GHCR, Quay.io, and Docker Hub are supported.
-  IMAGE_REGISTRY: ${{ secrets.IMAGE_REGISTRY }}
+  IMAGE_REGISTRY: ${{ '${{' }} secrets.IMAGE_REGISTRY }}
 
   # 🖊️ EDIT to specify custom tags for the container image, or default tags will be generated below.
   IMAGE_TAGS: ""
@@ -51,7 +51,7 @@ env:
 on:
   push:
     branches:
-      - 'main'
+      - "main"
   workflow_dispatch:
 
 jobs:
@@ -69,21 +69,21 @@ jobs:
         with:
           script: |
             const vars = {
-              IMAGE_REGISTRY: `${{ vars.IMAGE_REGISTRY }}`,
+              IMAGE_REGISTRY: `${{ '${{' }} vars.IMAGE_REGISTRY }}`,
 
-              ROX_CENTRAL_ENDPOINT: `${{ vars.ROX_CENTRAL_ENDPOINT }}`,
-              /* GITOPS_AUTH_USERNAME: `${{ vars.GITOPS_AUTH_USERNAME }}`, */
+              ROX_CENTRAL_ENDPOINT: `${{ '${{' }} vars.ROX_CENTRAL_ENDPOINT }}`,
+              /* GITOPS_AUTH_USERNAME: `${{ '${{' }} vars.GITOPS_AUTH_USERNAME }}`, */
               /* Set this to the user for your specific registry */
-              IMAGE_REGISTRY_USER: `${{ vars.IMAGE_REGISTRY_USER }}`,
+              IMAGE_REGISTRY_USER: `${{ '${{' }} vars.IMAGE_REGISTRY_USER }}`,
               /* Set this only when using an external Rekor instance */
-              REKOR_HOST: `${{ vars.REKOR_HOST }}`,
+              REKOR_HOST: `${{ '${{' }} vars.REKOR_HOST }}`,
               /* Set this only when using an external TUF instance */
-              TUF_MIRROR: `${{ vars.TUF_MIRROR }}`,
-              /* QUAY_IO_CREDS_USR: `${{ vars.QUAY_IO_CREDS_USR }}`, */
-              /* ARTIFACTORY_IO_CREDS_USR: `${{ vars.ARTIFACTORY_IO_CREDS_USR }}`, */
-              /* NEXUS_IO_CREDS_USR: `${{ vars.NEXUS_IO_CREDS_USR }}`, */
+              TUF_MIRROR: `${{ '${{' }} vars.TUF_MIRROR }}`,
+              /* QUAY_IO_CREDS_USR: `${{ '${{' }} vars.QUAY_IO_CREDS_USR }}`, */
+              /* ARTIFACTORY_IO_CREDS_USR: `${{ '${{' }} vars.ARTIFACTORY_IO_CREDS_USR }}`, */
+              /* NEXUS_IO_CREDS_USR: `${{ '${{' }} vars.NEXUS_IO_CREDS_USR }}`, */
               /* Used to verify the image signature and attestation */
-              COSIGN_PUBLIC_KEY: `${{ vars.COSIGN_PUBLIC_KEY }}`,
+              COSIGN_PUBLIC_KEY: `${{ '${{' }} vars.COSIGN_PUBLIC_KEY }}`,
             };
 
             const missingVars = Object.entries(vars).filter(([ name, value ]) => {
@@ -97,15 +97,15 @@ jobs:
 
             const secrets = {
 
-             ROX_API_TOKEN: `${{ secrets.ROX_API_TOKEN }}`,
-             GITOPS_AUTH_PASSWORD: `${{ secrets.GITOPS_AUTH_PASSWORD }}`,
+             ROX_API_TOKEN: `${{ '${{' }} secrets.ROX_API_TOKEN }}`,
+             GITOPS_AUTH_PASSWORD: `${{ '${{' }} secrets.GITOPS_AUTH_PASSWORD }}`,
              /* Set this password for your specific registry */
-             IMAGE_REGISTRY_PASSWORD: `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`,
-             /* QUAY_IO_CREDS_PSW: `${{ secrets.QUAY_IO_CREDS_PSW }}`, */
-             /* ARTIFACTORY_IO_CREDS_PSW: `${{ secrets.ARTIFACTORY_IO_CREDS_PSW }}`, */
-             /* NEXUS_IO_CREDS_PSW: `${{ secrets.NEXUS_IO_CREDS_PSW }}`, */
-             COSIGN_SECRET_PASSWORD: `${{ secrets.COSIGN_SECRET_PASSWORD }}`,
-             COSIGN_SECRET_KEY: `${{ secrets.COSIGN_SECRET_KEY }}`,
+             IMAGE_REGISTRY_PASSWORD: `${{ '${{' }} secrets.IMAGE_REGISTRY_PASSWORD }}`,
+             /* QUAY_IO_CREDS_PSW: `${{ '${{' }} secrets.QUAY_IO_CREDS_PSW }}`, */
+             /* ARTIFACTORY_IO_CREDS_PSW: `${{ '${{' }} secrets.ARTIFACTORY_IO_CREDS_PSW }}`, */
+             /* NEXUS_IO_CREDS_PSW: `${{ '${{' }} secrets.NEXUS_IO_CREDS_PSW }}`, */
+             COSIGN_SECRET_PASSWORD: `${{ '${{' }} secrets.COSIGN_SECRET_PASSWORD }}`,
+             COSIGN_SECRET_KEY: `${{ '${{' }} secrets.COSIGN_SECRET_KEY }}`,
             };
 
             const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
@@ -141,7 +141,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: '2'
+          fetch-depth: "2"
       - name: Pre-init
         run: |
           buildah --version
