@@ -50,7 +50,6 @@ pipeline {
                         cp -R /work/* .
                         env
                         git config --global --add safe.directory $WORKSPACE
-                        chmod +x ./rhtap/gather-images-to-upload-sbom.sh
                         echo "running init"
                         ./rhtap/init.sh
                     '''
