@@ -19,7 +19,7 @@ pipeline {
         HOME = "${WORKSPACE}"
         DOCKER_CONFIG = "${WORKSPACE}/.docker"
         ROX_CENTRAL_ENDPOINT = credentials('ROX_CENTRAL_ENDPOINT')
-        GITOPS_AUTH_USERNAME = credentials('GITOPS_AUTH_USERNAME')
+        /* GITOPS_AUTH_USERNAME = credentials('GITOPS_AUTH_USERNAME') */
         /* Set this to the user for your specific registry */
         IMAGE_REGISTRY_USER = credentials('IMAGE_REGISTRY_USER')
         REKOR_HOST = credentials('REKOR_HOST')
