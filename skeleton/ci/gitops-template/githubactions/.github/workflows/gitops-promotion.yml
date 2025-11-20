@@ -143,21 +143,21 @@ jobs:
           cosign version
           ec version
           git config --global --add safe.directory $(pwd)
-          cat rhtap/env.sh
-      - name: Verify Ec
+          cat tssc/env.sh
+      - name: Verify Conforma
         run: |
           echo "• gather-deploy-images"
-          bash /work/rhtap/gather-deploy-images.sh
-          echo "• verify-enterprise-contract"
-          bash /work/rhtap/verify-enterprise-contract.sh
+          bash /work/tssc/gather-deploy-images.sh
+          echo "• verify-conforma"
+          bash /work/tssc/verify-conforma.sh
       - name: Upload Sbom
         run: |
           echo "• gather-images-to-upload-sbom"
-          bash /work/rhtap/gather-images-to-upload-sbom.sh
+          bash /work/tssc/gather-images-to-upload-sbom.sh
           echo "• download-sbom-from-url-in-attestation"
-          bash /work/rhtap/download-sbom-from-url-in-attestation.sh
+          bash /work/tssc/download-sbom-from-url-in-attestation.sh
           echo "• upload-sbom-to-trustification"
-          bash /work/rhtap/upload-sbom-to-trustification.sh
+          bash /work/tssc/upload-sbom-to-trustification.sh
       - name: Done
         run: |
           echo "Done"

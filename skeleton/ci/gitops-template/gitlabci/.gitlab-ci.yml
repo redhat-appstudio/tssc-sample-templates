@@ -8,26 +8,26 @@ variables:
   CI_TYPE: gitlab
 
 stages:
-  - Verify EC
+  - Verify Conforma
   - Upload SBOM
 
 gather-deploy-images:
-  stage: Verify EC
+  stage: Verify Conforma
   script:
     - echo "• gather-deploy-images"
-    - bash /work/rhtap/gather-deploy-images.sh
+    - bash /work/tssc/gather-deploy-images.sh
   artifacts:
     paths:
       - results/
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-verify-enterprise-contract:
-  stage: Verify EC
+verify-conforma:
+  stage: Verify Conforma
   needs: [gather-deploy-images]
   script:
-    - echo "• verify-enterprise-contract"
-    - bash /work/rhtap/verify-enterprise-contract.sh
+    - echo "• verify-conforma"
+    - bash /work/tssc/verify-conforma.sh
   artifacts:
     paths:
       - results/
@@ -38,7 +38,7 @@ gather-images-to-upload-sbom:
   stage: Upload SBOM
   script:
     - echo "• gather-images-to-upload-sbom"
-    - bash /work/rhtap/gather-images-to-upload-sbom.sh
+    - bash /work/tssc/gather-images-to-upload-sbom.sh
   artifacts:
     paths:
       - results/
@@ -50,7 +50,7 @@ download-sbom-from-url-in-attestation:
   needs: [gather-images-to-upload-sbom]
   script:
     - echo "• download-sbom-from-url-in-attestation"
-    - bash /work/rhtap/download-sbom-from-url-in-attestation.sh
+    - bash /work/tssc/download-sbom-from-url-in-attestation.sh
   artifacts:
     paths:
       - results/
@@ -62,7 +62,7 @@ upload-sbom-to-trustification:
   needs: [download-sbom-from-url-in-attestation]
   script:
     - echo "• upload-sbom-to-trustification"
-    - bash /work/rhtap/upload-sbom-to-trustification.sh
+    - bash /work/tssc/upload-sbom-to-trustification.sh
   artifacts:
     paths:
       - results/

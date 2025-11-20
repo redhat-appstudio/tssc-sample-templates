@@ -4,7 +4,7 @@ export SKIP_CHECKS=${SKIP_CHECKS-true}
 
 CI_TYPE=${CI_TYPE:-jenkins}
 
-# from buildah-rhtap
+# from buildah-tssc
 TAG=$(git rev-parse HEAD)
 export IMAGE_URL=${IMAGE_URL-${{ values.image }}:$CI_TYPE-$TAG}
 export IMAGE=${IMAGE-$IMAGE_URL}
@@ -30,7 +30,7 @@ export GITOPS_REPO_URL=${{ values.repoURL }}
 export PARAM_IMAGE=${PARAM_IMAGE-$IMAGE}
 # Recompute this every time, otherwise it will be set BEFORE the file exists
 # and be stuck at latest
-export PARAM_IMAGE_DIGEST=$(cat "$BASE_RESULTS/buildah-rhtap/IMAGE_DIGEST" 2>/dev/null || echo "latest")
+export PARAM_IMAGE_DIGEST=$(cat "$BASE_RESULTS/buildah-tssc/IMAGE_DIGEST" 2>/dev/null || echo "latest")
 
 # From Summary
 export SOURCE_BUILD_RESULT_FILE=${SOURCE_BUILD_RESULT_FILE-""}
@@ -38,7 +38,7 @@ export SOURCE_BUILD_RESULT_FILE=${SOURCE_BUILD_RESULT_FILE-""}
 # gather images params
 
 export TARGET_BRANCH=${TARGET_BRANCH-""}
-# enterprise contract
+# conforma
 export POLICY_CONFIGURATION=${POLICY_CONFIGURATION-"github.com/conforma/config//rhtap-v0.6"}
 #internal, assumes jenkins is local openshift
 export REKOR_HOST=${REKOR_HOST-http://rekor-server.tssc-tas.svc}

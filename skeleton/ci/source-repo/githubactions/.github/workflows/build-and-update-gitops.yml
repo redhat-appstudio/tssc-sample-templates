@@ -149,35 +149,35 @@ jobs:
           cosign version
           ec version
           git config --global --add safe.directory $(pwd)
-          cat rhtap/env.sh
+          cat tssc/env.sh
       - name: Init
         run: |
           echo "• init"
-          bash /work/rhtap/init.sh
+          bash /work/tssc/init.sh
       - name: Build
         run: |
-          echo "• buildah-rhtap"
-          bash /work/rhtap/buildah-rhtap.sh
+          echo "• buildah-tssc"
+          bash /work/tssc/buildah-tssc.sh
           echo "• cosign-sign-attest"
-          bash /work/rhtap/cosign-sign-attest.sh
+          bash /work/tssc/cosign-sign-attest.sh
       - name: Deploy
         run: |
           echo "• update-deployment"
-          bash /work/rhtap/update-deployment.sh
+          bash /work/tssc/update-deployment.sh
       - name: Scan
         run: |
           echo "• acs-deploy-check"
-          bash /work/rhtap/acs-deploy-check.sh
+          bash /work/tssc/acs-deploy-check.sh
           echo "• acs-image-check"
-          bash /work/rhtap/acs-image-check.sh
+          bash /work/tssc/acs-image-check.sh
           echo "• acs-image-scan"
-          bash /work/rhtap/acs-image-scan.sh
+          bash /work/tssc/acs-image-scan.sh
       - name: Summary
         run: |
           echo "• show-sbom-rhdh"
-          bash /work/rhtap/show-sbom-rhdh.sh
+          bash /work/tssc/show-sbom-rhdh.sh
           echo "• summary"
-          bash /work/rhtap/summary.sh
+          bash /work/tssc/summary.sh
       - name: Done
         run: |
           echo "Done"

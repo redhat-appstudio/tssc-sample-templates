@@ -56,7 +56,7 @@ pipeline {
                 container('runner') {
                     sh '''
                         echo "running init"
-                        ./rhtap/init.sh
+                        ./tssc/init.sh
                     '''
                 }
             }
@@ -66,10 +66,10 @@ pipeline {
             steps {
                 container('runner') {
                     sh '''
-                        echo "running buildah-rhtap"
-                        ./rhtap/buildah-rhtap.sh
+                        echo "running buildah-tssc"
+                        ./tssc/buildah-tssc.sh
                         echo "running cosign-sign-attest"
-                        ./rhtap/cosign-sign-attest.sh
+                        ./tssc/cosign-sign-attest.sh
                     '''
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
                 container('runner') {
                     sh '''
                         echo "running update-deployment"
-                        ./rhtap/update-deployment.sh
+                        ./tssc/update-deployment.sh
                     '''
                 }
             }
@@ -91,11 +91,11 @@ pipeline {
                 container('runner') {
                     sh '''
                         echo "running acs-deploy-check"
-                        ./rhtap/acs-deploy-check.sh
+                        ./tssc/acs-deploy-check.sh
                         echo "running acs-image-check"
-                        ./rhtap/acs-image-check.sh
+                        ./tssc/acs-image-check.sh
                         echo "running acs-image-scan"
-                        ./rhtap/acs-image-scan.sh
+                        ./tssc/acs-image-scan.sh
                     '''
                 }
             }
@@ -106,9 +106,9 @@ pipeline {
                 container('runner') {
                     sh '''
                         echo "running show-sbom-rhdh"
-                        ./rhtap/show-sbom-rhdh.sh
+                        ./tssc/show-sbom-rhdh.sh
                         echo "running summary"
-                        ./rhtap/summary.sh
+                        ./tssc/summary.sh
                     '''
                 }
             }
