@@ -51,19 +51,19 @@ pipeline {
                         env
                         git config --global --add safe.directory $WORKSPACE
                         echo "running init"
-                        ./rhtap/init.sh
+                        ./tssc/init.sh
                     '''
                 }
             }
         }
-        stage('Verify EC') {
+        stage('Verify Conforma') {
             steps {
                 container('runner') {
                     sh '''
                         echo "running gather-deploy-images"
-                        ./rhtap/gather-deploy-images.sh
-                        echo "running verify-enterprise-contract"
-                        ./rhtap/verify-enterprise-contract.sh
+                        ./tssc/gather-deploy-images.sh
+                        echo "running verify-conforma"
+                        ./tssc/verify-conforma.sh
                     '''
                 }
             }
@@ -74,11 +74,11 @@ pipeline {
                 container('runner') {
                     sh '''
                         echo "running gather-images-to-upload-sbom"
-                        ./rhtap/gather-images-to-upload-sbom.sh
+                        ./tssc/gather-images-to-upload-sbom.sh
                         echo "running download-sbom-from-url-in-attestation"
-                        ./rhtap/download-sbom-from-url-in-attestation.sh
+                        ./tssc/download-sbom-from-url-in-attestation.sh
                         echo "running upload-sbom-to-trustification"
-                        ./rhtap/upload-sbom-to-trustification.sh
+                        ./tssc/upload-sbom-to-trustification.sh
                     '''
                 }
             }

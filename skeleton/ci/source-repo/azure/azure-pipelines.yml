@@ -28,7 +28,7 @@ variables:
 steps:
   - bash: |
       echo "• init"
-      bash /work/rhtap/init.sh
+      bash /work/tssc/init.sh
     name: init
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
@@ -43,10 +43,10 @@ steps:
       COSIGN_SECRET_PASSWORD: $(COSIGN_SECRET_PASSWORD)
       COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
   - bash: |
-      echo "• buildah-rhtap"
-      bash /work/rhtap/buildah-rhtap.sh
+      echo "• buildah-tssc"
+      bash /work/tssc/buildah-tssc.sh
       echo "• cosign-sign-attest"
-      bash /work/rhtap/cosign-sign-attest.sh
+      bash /work/tssc/cosign-sign-attest.sh
     name: build
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
@@ -62,7 +62,7 @@ steps:
       COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
   - bash: |
       echo "• update-deployment"
-      bash /work/rhtap/update-deployment.sh
+      bash /work/tssc/update-deployment.sh
     name: deploy
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
@@ -78,11 +78,11 @@ steps:
       COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
   - bash: |
       echo "• acs-deploy-check"
-      bash /work/rhtap/acs-deploy-check.sh
+      bash /work/tssc/acs-deploy-check.sh
       echo "• acs-image-check"
-      bash /work/rhtap/acs-image-check.sh
+      bash /work/tssc/acs-image-check.sh
       echo "• acs-image-scan"
-      bash /work/rhtap/acs-image-scan.sh
+      bash /work/tssc/acs-image-scan.sh
     name: scan
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)
@@ -98,9 +98,9 @@ steps:
       COSIGN_SECRET_KEY: $(COSIGN_SECRET_KEY)
   - bash: |
       echo "• show-sbom-rhdh"
-      bash /work/rhtap/show-sbom-rhdh.sh
+      bash /work/tssc/show-sbom-rhdh.sh
       echo "• summary"
-      bash /work/rhtap/summary.sh
+      bash /work/tssc/summary.sh
     name: summary
     env:
       ROX_API_TOKEN: $(ROX_API_TOKEN)

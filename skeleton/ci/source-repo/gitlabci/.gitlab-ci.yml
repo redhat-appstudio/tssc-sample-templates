@@ -18,26 +18,26 @@ init:
   stage: init
   script:
     - echo "• init"
-    - bash /work/rhtap/init.sh
+    - bash /work/tssc/init.sh
   artifacts:
     paths:
       - results/
 
-buildah-rhtap:
+buildah-tssc:
   stage: build
   script:
-    - echo "• buildah-rhtap"
-    - bash /work/rhtap/buildah-rhtap.sh
+    - echo "• buildah-tssc"
+    - bash /work/tssc/buildah-tssc.sh
   artifacts:
     paths:
       - results/
 
 cosign-sign-attest:
   stage: build
-  needs: [buildah-rhtap]
+  needs: [buildah-tssc]
   script:
     - echo "• cosign-sign-attest"
-    - bash /work/rhtap/cosign-sign-attest.sh
+    - bash /work/tssc/cosign-sign-attest.sh
   artifacts:
     paths:
       - results/
@@ -46,7 +46,7 @@ update-deployment:
   stage: deploy
   script:
     - echo "• update-deployment"
-    - bash /work/rhtap/update-deployment.sh
+    - bash /work/tssc/update-deployment.sh
   artifacts:
     paths:
       - results/
@@ -57,7 +57,7 @@ acs-deploy-check:
   stage: scan
   script:
     - echo "• acs-deploy-check"
-    - bash /work/rhtap/acs-deploy-check.sh
+    - bash /work/tssc/acs-deploy-check.sh
   artifacts:
     paths:
       - results/
@@ -66,7 +66,7 @@ acs-image-check:
   stage: scan
   script:
     - echo "• acs-image-check"
-    - bash /work/rhtap/acs-image-check.sh
+    - bash /work/tssc/acs-image-check.sh
   artifacts:
     paths:
       - results/
@@ -75,7 +75,7 @@ acs-image-scan:
   stage: scan
   script:
     - echo "• acs-image-scan"
-    - bash /work/rhtap/acs-image-scan.sh
+    - bash /work/tssc/acs-image-scan.sh
   artifacts:
     paths:
       - results/
@@ -84,7 +84,7 @@ show-sbom-rhdh:
   stage: summary
   script:
     - echo "• show-sbom-rhdh"
-    - bash /work/rhtap/show-sbom-rhdh.sh
+    - bash /work/tssc/show-sbom-rhdh.sh
   artifacts:
     paths:
       - results/
@@ -93,7 +93,7 @@ summary:
   stage: summary
   script:
     - echo "• summary"
-    - bash /work/rhtap/summary.sh
+    - bash /work/tssc/summary.sh
   artifacts:
     paths:
       - results/
