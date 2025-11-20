@@ -9,7 +9,7 @@ pipeline {
               spec:
                 containers:
                 - name: 'runner'
-                  image: 'quay.io/redhat-appstudio/rhtap-task-runner:latest'
+                  image: 'quay.io/redhat-tssc/task-runner:1.8'
                   securityContext:
                     privileged: true
             """

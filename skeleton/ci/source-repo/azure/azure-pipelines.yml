@@ -13,7 +13,7 @@ pool:
   name: Default
 
 container:
-  image: quay.io/redhat-appstudio/rhtap-task-runner:latest
+  image: quay.io/redhat-tssc/task-runner:1.8
   options: --privileged
 
 # Using 'tssc' variable group by default
