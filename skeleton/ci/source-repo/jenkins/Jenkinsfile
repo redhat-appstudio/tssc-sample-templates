@@ -27,7 +27,7 @@ pipeline {
         /* Used to verify the image signature and attestation */
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
         /* Custom Root CA to be used in scripts as trusted */
-        CUSTOM_ROOT_CA = credentials('CUSTOM_ROOT_CA')
+        /* CUSTOM_ROOT_CA = credentials('CUSTOM_ROOT_CA') */
         ROX_API_TOKEN = credentials('ROX_API_TOKEN')
         GITOPS_AUTH_PASSWORD = credentials('GITOPS_AUTH_PASSWORD')
         /* Set this password for your specific registry */
